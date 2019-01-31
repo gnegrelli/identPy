@@ -37,9 +37,9 @@ dic['chsn_sim'] = simulations[chosen_simulation]
 dic['chsn_err'] = error_methods[chosen_error]
 dic['chsn_cla'] = classification_methods[chosen_classification]
 
-#dic['real'] = np.array([3., 6.])
-#dic['real'] = np.array([.01, .6, 9.8, .1])
-dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])
+#dic['real'] = np.array([3., 6.])   #Spring Mass
+#dic['real'] = np.array([.01, .6, 9.8, .1])  #Pendulum
+dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])   #Z-IM Load Model
 
 tol1 = 50
 
@@ -77,7 +77,7 @@ dic['KF'] = {}
 #RK4
 dic['RK4'] = {}
 dic['RK4']['t0'] = 0.
-dic['RK4']['tf'] = 1.#2.*np.pi
+dic['RK4']['tf'] = 1.
 dic['RK4']['step'] = 0.0005
 dic['RK4']['x0'] = np.array([[0., 0.]])
 dic['RK4']['u0'] = np.array([1.])
@@ -87,6 +87,8 @@ dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]]) # Para Load Model
 dic['RK4']['u0'] = np.array([1.])
 dic['RK4']['u'] = np.array([[0.0165]])
 
+
+#Start of Estimation Process
 
 estMTHD = __import__(dic['chsn_est1'])
 
