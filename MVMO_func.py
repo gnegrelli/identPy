@@ -99,7 +99,7 @@ def Function(dic, tolerance):
     print gen
     while list_inds[0][0] > tolerance:
         
-        if gen >= 50000:
+        if gen >= dic['MVMO']['max_gen']:
             break
         
         for i in range(population):

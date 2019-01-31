@@ -41,7 +41,7 @@ dic['chsn_cla'] = classification_methods[chosen_classification]
 #dic['real'] = np.array([.01, .6, 9.8, .1])
 dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])
 
-tol1 = 5000
+tol1 = 50
 
 tol2 = 0.0005
 
@@ -50,6 +50,7 @@ tol2 = 0.0005
 dic['MVMO'] = {}
 dic['MVMO']['population'] = 5
 dic['MVMO']['new_gen'] = 1
+dic['MVMO']['max_gen'] = 50000
 dic['MVMO']['p_min'] = np.array([0., 0., 0., 0., 0., 0., 0.8, -0.5])
 dic['MVMO']['p_max'] = np.array([.5, .2, 1., 1., 7., 5., 1.2, 0.5])
 dic['MVMO']['fs'] = 1.
