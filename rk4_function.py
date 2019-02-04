@@ -26,9 +26,7 @@ def rk4(dic,P):
 
     p = copy.copy(P)
     
-#    A,B,C,D = SYS.Matrix(p, x0,u0)
-    
-    y = np.dot(C,x) + np.dot(D,u.T)
+    y = SYS.g(p, x, u0, t)
     output = np.append(t, y.T)
     
     while t < tf:
