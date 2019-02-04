@@ -73,8 +73,11 @@ def g(p, x, u, t):
     
     import numpy as np
     
-    P = (p[4]*(u[t,0]*np.cos(u[t,1])*x[0] + u[t,0]*np.sin(u[t,1])*x[1] - u[t,0]**2) + p[5]*(u[t,0]*np.sin(u[t,1])*x[0] - u[t,0]*np.cos(u[t,1])*x[1]))/(p[4]**2 + p[5]**2)
+    Vtd = u[t,0]*np.cos(u[t,1])
+    Vtq = u[t,0]*np.sin(u[t,1])
     
-    Q = (p[5]*(u[t,0]*np.cos(u[t,1])*x[0] + u[t,0]*np.sin(u[t,1])*x[1] - u[t,0]**2) - p[4]*(u[t,0]*np.sin(u[t,1])*x[0] - u[t,0]*np.cos(u[t,1])*x[1]))/(p[4]**2 + p[5]**2)    
+    P = (p[4]*(Vtd*x[0] + Vtq*x[1] - u[t,0]**2) + p[5]*(Vtq*x[0] - Vtd*x[1]))/(p[4]**2 + p[5]**2)
+    
+    Q = (p[5]*(Vtd*x[0] + Vtq*x[1] - u[t,0]**2) - p[4]*(Vtq*x[0] - Vtd*x[1]))/(p[4]**2 + p[5]**2)    
     
     return P + Q
