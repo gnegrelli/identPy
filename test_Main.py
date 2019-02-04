@@ -36,7 +36,21 @@ dic['chsn_sys'] = systems[chosen_system]
 dic['chsn_sim'] = simulations[chosen_simulation]
 dic['chsn_err'] = error_methods[chosen_error]
 dic['chsn_cla'] = classification_methods[chosen_classification]
-dic['file'] = "Data.txt"
+
+
+dic['import_data'] = True
+
+
+#Declare file to import from or real parameter values
+if dic['import_data']:
+    dic['file'] = "Data.txt"
+else:
+    #dic['real'] = np.array([3., 6.])   #Spring Mass
+    #dic['real'] = np.array([.01, .6, 9.8, .1])  #Pendulum
+    #dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])   #Z-IM Load Model
+    dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])   #DFIG
+    
+        
 
 
 #Reading real measurement file
@@ -49,12 +63,6 @@ for eachLine in dataList:
         t, v, theta, p, q, a, b, c = eachLine.split(",")
         u = np.vstack((u, np.array([float(t), float(v), float(theta), float(p), float(q)]))) if u.size else np.array([float(t), float(v), float(theta), float(p), float(q)])
 
-
-
-#dic['real'] = np.array([3., 6.])   #Spring Mass
-#dic['real'] = np.array([.01, .6, 9.8, .1])  #Pendulum
-#dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])   #Z-IM Load Model
-dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])   #DFIG
 
 tol1 = 50
 
