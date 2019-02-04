@@ -57,12 +57,11 @@ else:
 pullData = open(dic['file'],"r").read()
 dataList = pullData.split("\n")
 
-u = np.array([])
+dic['u'] = np.array([])
 for eachLine in dataList:
     if len(eachLine) > 1:
-        t, v, theta, p, q, a, b, c = eachLine.split(",")
-        u = np.vstack((u, np.array([float(t), float(v), float(theta), float(p), float(q)]))) if u.size else np.array([float(t), float(v), float(theta), float(p), float(q)])
-
+        t, v, theta, p, q, trash, garbage, litter = eachLine.split(",")
+        dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v), float(theta), float(p), float(q)]))) if dic['u'].size else np.array([float(t), float(v), float(theta), float(p), float(q)])
 
 tol1 = 50
 

@@ -187,14 +187,14 @@ def Function(dic, tolerance):
     print "Final Error: %f" %list_inds[0][0]
     
     plt.figure(1)
-    plt.plot(op_real[:,0], op_real[:,1],  linewidth=2.5, color="y", label = "Real System")
+    plt.plot(op_real[:,0], op_real[:,1], linewidth=2.5, color="y", label = "Real System")
     plt.plot(SIM.rk4(dic,(list_inds[0][1]*(lim_max-lim_min)+lim_min))[:,0],SIM.rk4(dic,(list_inds[0][1]*(lim_max-lim_min)+lim_min))[:,1],"--", label = "MVMO")
     plt.title("Active Power")
     plt.xlabel("Time (s)")
     plt.ylabel(r'$\Delta$P')
     
     plt.figure(2)
-    plt.plot(op_real[:,0], op_real[:,2],  linewidth=2.5, color="y", label = "Real System")
+    plt.plot(op_real[:,0], op_real[:,2], linewidth=2.5, color="y", label = "Real System")
     plt.plot(SIM.rk4(dic,(list_inds[0][1]*(lim_max-lim_min)+lim_min))[:,0],SIM.rk4(dic,(list_inds[0][1]*(lim_max-lim_min)+lim_min))[:,2], "--", label = "MVMO")
     plt.title("Reactive Power")
     plt.xlabel("Time (s)")

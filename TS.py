@@ -19,7 +19,7 @@ def Gamma(A,B,C):
         dJdp += np.dot(i.T[:,1:],np.array([(B-C)[line,1:]]).T)
         line += 1
             
-    return gamma,dJdp
+    return gamma, dJdp
 ###
 
 
@@ -38,9 +38,23 @@ def Function(dic, tolerance):
     CLASS = __import__(dic['chsn_cla'])
     
     num_param = dic['TS']['p0'].shape[0]
-
-    p_real = dic['real']
-    op_real = SIM.rk4(dic, p_real)
+    
+    plt.figure(1)
+    plt.plot(dic['u'][:,0], dic['u'][:,1], linewidth=2.5, color="y", label = "Real System")
+    
+    plt.figure(2)
+    plt.plot(dic['u'][:,0], dic['u'][:,2], linewidth=2.5, color="y", label = "Real System")
+    
+    plt.figure(3)
+    plt.plot(dic['u'][:,0], dic['u'][:,3], linewidth=2.5, color="y", label = "Real System")
+    
+    plt.figure(4)
+    plt.plot(dic['u'][:,0], dic['u'][:,4], linewidth=2.5, color="y", label = "Real System")
+    
+    
+    if not dic['import_data']:
+        p_real = dic['real']
+        op_real = SIM.rk4(dic, p_real)
     
     p = dic['TS']['p0']
 #    print p
