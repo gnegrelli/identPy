@@ -36,6 +36,20 @@ dic['chsn_sys'] = systems[chosen_system]
 dic['chsn_sim'] = simulations[chosen_simulation]
 dic['chsn_err'] = error_methods[chosen_error]
 dic['chsn_cla'] = classification_methods[chosen_classification]
+dic['file'] = "Data.txt"
+
+
+#Reading real measurement file
+pullData = open(dic['file'],"r").read()
+dataList = pullData.split("\n")
+
+u = np.array([])
+for eachLine in dataList:
+    if len(eachLine) > 1:
+        t, v, theta, p, q, a, b, c = eachLine.split(",")
+        u = np.vstack((u, np.array([float(t), float(v), float(theta), float(p), float(q)]))) if u.size else np.array([float(t), float(v), float(theta), float(p), float(q)])
+
+
 
 #dic['real'] = np.array([3., 6.])   #Spring Mass
 #dic['real'] = np.array([.01, .6, 9.8, .1])  #Pendulum
