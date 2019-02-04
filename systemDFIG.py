@@ -22,11 +22,11 @@ def f(p, x, u ,t):
     
     x = [Vd, Vq]
     """
-    qtref = 0.
-    vtref = 1.
-    ptref = 1.
-    imax = 1.
-    vtmin = 0.8
+    qtref = 0.0576
+    vtref = 1.0105
+    ptref = 0.982
+    imax = 1.1
+    vtmin = 0.9
     stepi = 0.1
     
     Ix = 0.
