@@ -113,7 +113,7 @@ dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]]) # Para Load Model
 dic['RK4']['u0'] = np.array([1.])
 dic['RK4']['u'] = np.array([[0.0165]])
 
-dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]]) # Para Load Model
+dic['RK4']['x0'] = np.array([[0.9904, 0.2002]]) # Para DFIG
 
 
 """
