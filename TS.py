@@ -60,6 +60,9 @@ def Function(dic, tolerance):
 #    print p
     op = SIM.rk4(dic,p)
     
+    print op[:,1:].size
+    print dic['u'][:,3:].size
+    
     plt.figure(3)
     plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
     
@@ -76,7 +79,8 @@ def Function(dic, tolerance):
     
     evolution = copy.copy(p)
     
-    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:],op[:,1:])])
+#    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])])
+    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
     
     while error_log[-1] > tolerance:
         

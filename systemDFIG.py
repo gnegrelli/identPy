@@ -64,10 +64,10 @@ def f(p, x, u ,t):
     
     B = np.array([[-np.cos(u[t,2])/p[3], -np.sin(u[t,2])/p[3]], [np.sin(u[t,2])/p[3], -np.cos(u[t,2])/p[3]]])
     
-    print 'x: ', x, "\n"    
-    print 'A: ', A, "\n"
-    print 'B: ', B, "\n"
-    print 'U: ', U, "\n"
+#    print 'x: ', x, "\n"    
+#    print 'A: ', A, "\n"
+#    print 'B: ', B, "\n"
+#    print 'U: ', U, "\n"
     
     x = np.dot(A,x) + np.dot(B,U)
     

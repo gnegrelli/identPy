@@ -43,7 +43,7 @@ dic['import_data'] = True
 
 #Declare file to import from or real parameter values
 if dic['import_data']:
-    dic['file'] = "Data.txt"
+    dic['file'] = "Datatest.csv"
 else:
     #dic['real'] = np.array([3., 6.])   #Spring Mass
     #dic['real'] = np.array([.01, .6, 9.8, .1])  #Pendulum
@@ -60,7 +60,7 @@ dataList = pullData.split("\n")
 dic['u'] = np.array([])
 for eachLine in dataList:
     if len(eachLine) > 1:
-        t, v, theta, p, q, trash, garbage, litter = eachLine.split(",")
+        t, v, theta, trash, p, q, garbage, litter = eachLine.split(";")
         if dic['u'].size:
             dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])))
         else:
@@ -104,7 +104,7 @@ dic['KF'] = {}
 dic['RK4'] = {}
 dic['RK4']['t0'] = 0.
 dic['RK4']['tf'] = 1.
-dic['RK4']['step'] = 0.0005
+dic['RK4']['step'] = 0.001
 dic['RK4']['x0'] = np.array([[0., 0.]])
 dic['RK4']['u0'] = np.array([1.])
 dic['RK4']['u'] = np.array([[4.]])
