@@ -85,4 +85,4 @@ def g(p, x, u, t):
     
     Q = (p[5]*(Vtd*x[0] + Vtq*x[1] - u[t,0]**2) - p[4]*(Vtq*x[0] - Vtd*x[1]))/(p[4]**2 + p[5]**2)    
     
-    return P + Q
+    return np.array([[P], [Q]])

@@ -62,9 +62,9 @@ for eachLine in dataList:
     if len(eachLine) > 1:
         t, v, theta, p, q, trash, garbage, litter = eachLine.split(",")
         if dic['u'].size:
-            dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v), float(theta), float(p), float(q)])))
+            dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])))
         else:
-            dic['u'] = np.array([float(t), float(v), float(theta), float(p), float(q)])
+            dic['u'] = np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])
 
 #Tolerances
 tol1 = 50

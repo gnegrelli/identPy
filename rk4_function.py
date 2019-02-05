@@ -33,7 +33,7 @@ def rk4(dic,P):
     output = np.append(t, y.T)
     
     while t < tf:
-        print t
+        
         K1 = step*(SYS.f(p, x, u, t))
         K2 = step*(SYS.f(p, x + K1, u, t))
         K3 = step*(SYS.f(p, x + K2, u, t))
@@ -46,6 +46,5 @@ def rk4(dic,P):
         
         output = np.vstack((output, np.append(t, y.T)))
         
-        print t
-
+        
     return output

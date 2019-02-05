@@ -60,6 +60,12 @@ def Function(dic, tolerance):
 #    print p
     op = SIM.rk4(dic,p)
     
+    plt.figure(3)
+    plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
+    
+    plt.figure(4)
+    plt.plot(op[:,0], op[:,2], linewidth=2.5, color="b", label = "Real System")
+    
     delta_p = dic['TS']['delta_p']
     
     aux = np.zeros(num_param)
