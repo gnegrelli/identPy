@@ -55,12 +55,14 @@ def Function(dic, tolerance):
     if not dic['import_data']:
         p_real = dic['real']
         op_real = SIM.rk4(dic, p_real)
+    else:
+        op_real = dic['u'][:,[0,3,4]]
     
     p = dic['TS']['p0']
 #    print p
     op = SIM.rk4(dic,p)
     
-    print op[:,1:].size
+    print op.size
     print dic['u'][:,3:].size
     
     plt.figure(3)
@@ -79,8 +81,8 @@ def Function(dic, tolerance):
     
     evolution = copy.copy(p)
     
-#    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])])
-    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
+    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])])
+#    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
     
     while error_log[-1] > tolerance:
         

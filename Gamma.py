@@ -15,8 +15,8 @@ def Gamma(A,B,C):
     line = 0
 
     for i in A:
-        gamma += np.dot(i.T[:,1:],i[1:,:])
-        dJdp += np.dot(i.T[:,1:],np.array([(B-C)[line,1:]]).T)
+        gamma += np.dot(i.T[:,1:], i[1:,:])
+        dJdp += np.dot(i.T[:,1:], np.array([(B-C)[line,1:]]).T)
         line += 1
             
     return gamma,dJdp
