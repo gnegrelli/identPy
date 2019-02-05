@@ -18,7 +18,7 @@ def f(p, x, u ,t):
     p[4] = r
     p[5] = X
     
-    u = [Vt, thetav, P, Q]
+    u = [t, Vt, thetav, P, Q]
     
     x = [Vd, Vq]
     """
@@ -34,7 +34,7 @@ def f(p, x, u ,t):
     
     
         
-    Ire = qtref/vtref + p[0]*(vtref - u[t,0])
+    Ire = qtref/vtref + p[0]*(vtref - u[t,1])
     
     Iac = ptref/vtref
     
@@ -50,19 +50,24 @@ def f(p, x, u ,t):
             ipref = min(Iac, imax)
             iqref = np.sqrt(imax**2 - ipref**2)
     
-    for ti in range(0, t, stepi):
-        Ix += (ipref - u[ti,2]/u[ti,0])*stepi/p[2]
-        Iy += (u[ti,3]/u[ti,0] - iqref)*stepi/p[2]
+    for ti in np.arange(0, t, stepi):
+        Ix += (ipref - u[ti,3]/u[ti,1])*stepi/p[2]
+        Iy += (u[ti,4]/u[ti,1] - iqref)*stepi/p[2]
         
         
-    Vpa = p[1]*(ipref - u[t,2]/u[t,0] + Ix)
-    Vqa = p[1]*(u[t,3]/u[t,0] - iqref + Ix)
+    Vpa = p[1]*(ipref - u[t,3]/u[t,1] + Ix)
+    Vqa = p[1]*(u[t,4]/u[t,1] - iqref + Ix)
     
     U = np.array([[Vpa],[Vqa]])
     
     A = np.array([[-1./p[3], 0],[0, -1./p[3]]])    
     
-    B = np.array([[-np.cos(u[t,1])/p[3], -np.sin(u[t,1])/p[3]],[np.sin(u[1,t])/p[3], -np.cos(u[1,t])/p[3]]])
+    B = np.array([[-np.cos(u[t,2])/p[3], -np.sin(u[t,2])/p[3]], [np.sin(u[t,2])/p[3], -np.cos(u[t,2])/p[3]]])
+    
+    print 'x: ', x, "\n"    
+    print 'A: ', A, "\n"
+    print 'B: ', B, "\n"
+    print 'U: ', U, "\n"
     
     x = np.dot(A,x) + np.dot(B,U)
     
@@ -73,8 +78,8 @@ def g(p, x, u, t):
     
     import numpy as np
     
-    Vtd = u[t,0]*np.cos(u[t,1])
-    Vtq = u[t,0]*np.sin(u[t,1])
+    Vtd = u[t,1]*np.cos(u[t,2])
+    Vtq = u[t,1]*np.sin(u[t,2])
     
     P = (p[4]*(Vtd*x[0] + Vtq*x[1] - u[t,0]**2) + p[5]*(Vtq*x[0] - Vtd*x[1]))/(p[4]**2 + p[5]**2)
     

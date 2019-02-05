@@ -61,10 +61,13 @@ dic['u'] = np.array([])
 for eachLine in dataList:
     if len(eachLine) > 1:
         t, v, theta, p, q, trash, garbage, litter = eachLine.split(",")
-        dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v), float(theta), float(p), float(q)]))) if dic['u'].size else np.array([float(t), float(v), float(theta), float(p), float(q)])
+        if dic['u'].size:
+            dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v), float(theta), float(p), float(q)])))
+        else:
+            dic['u'] = np.array([float(t), float(v), float(theta), float(p), float(q)])
 
+#Tolerances
 tol1 = 50
-
 tol2 = 0.0005
 
 
@@ -110,8 +113,12 @@ dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]]) # Para Load Model
 dic['RK4']['u0'] = np.array([1.])
 dic['RK4']['u'] = np.array([[0.0165]])
 
+dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]]) # Para Load Model
 
-#Start of Estimation Process
+
+"""
+Start of Estimation Process
+"""
 
 estMTHD = __import__(dic['chsn_est1'])
 
