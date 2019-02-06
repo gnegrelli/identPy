@@ -79,7 +79,7 @@ def Function(dic, tolerance):
     
     indiv = np.zeros(len(lim_min))
     list_inds = []
-    error_log = []
+#    error_log = []
 
     
     #First generation of random genes
@@ -90,21 +90,19 @@ def Function(dic, tolerance):
         list_inds.append((ERROR.Error(op_real, SIM.rk4(dic,(indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
     
     list_inds.sort(key = takeFirst)
-    error_log.append(list_inds[0][0])
+#    error_log.append(list_inds[0][0])
+    dic['error_log'] =  np.hstack((dic['error_log'], list_inds[0][0]))
     
+#    print error_log, dic['error_log']
+        
     nonzero_var = None
     
 
-    gen = 0
-    print gen
-    while list_inds[0][0] > tolerance:
-        
-        if gen >= dic['MVMO']['max_gen']:
-            break
+    while dic['error_log'][-1] > tolerance and dic['MVMO']['counter'] > dic['MVMO']['max_gen']:
         
         for i in range(population):
-            print "Gen. %d - Specimen #%d: %s" %(gen, i, list_inds[i][1])
-        gen += 1
+            print "Gen. %d - Specimen #%d: %s" %(dic['MVMO']['counter'], i, list_inds[i][1])
+        dic['MVMO']['counter'] += 1
         
         mean = np.zeros((1,len(lim_min)))
         var = np.zeros((1,len(lim_min)))
@@ -116,7 +114,7 @@ def Function(dic, tolerance):
         
         #Variance calculation
         for i in range(population):
-            var += np.power(list_inds[i][1]-mean,2)
+            var += np.power(list_inds[i][1] - mean,2)
         var /= population
         
         if 0 in var:
@@ -126,7 +124,7 @@ def Function(dic, tolerance):
         print "----------------------------"
         print "Mean: ", mean
         print "Variance: ", var
-        print "Error: ", error_log[0]
+        print "Error: ", dic['error_log'][-1]
         print "----------------------------\n\n"
         
         #Shape factor calculation
@@ -172,19 +170,23 @@ def Function(dic, tolerance):
             list_inds.append((ERROR.Error(op_real, SIM.rk4(dic,(indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
         
         list_inds = sorted(list_inds, key = takeFirst)[:population]
-        error_log.append(list_inds[0][0])
+#        error_log.append(list_inds[0][0])
+        dic['error_log'] =  np.hstack((dic['error_log'], list_inds[0][0]))
+        
+#        print error_log
+#        print dic['error_log']
 
     
     print "----------------------------"
     print "Mean: ", mean
     print "Variance: ", var
-    print "Error: ", error_log[0]
+    print "Error: ", dic['error_log'][-1]
     print "----------------------------" 
     
     
     for i in range(population):
-        print "Final Generation #%d - Specimen #%d: %s" %(gen, i, list_inds[i][1])
-    print "Final Error: %f" %list_inds[0][0]
+        print "Final Generation #%d - Specimen #%d: %s" %(dic['MVMO']['counter'], i, list_inds[i][1])
+    print "Final Error: %f" %dic['error_log'][-1]
     
     plt.figure(1)
     plt.plot(op_real[:,0], op_real[:,1], linewidth=2.5, color="y", label = "Real System")
@@ -201,7 +203,7 @@ def Function(dic, tolerance):
     plt.ylabel(r'$\Delta$Q')
     
     plt.figure(3)
-    plt.plot(error_log, label = "MVMO")
+    plt.plot(dic['error_log'], label = "MVMO")
     plt.title("Error evolution")
     plt.xlabel("Generation")
     plt.ylabel("Error")

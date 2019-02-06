@@ -62,9 +62,6 @@ def Function(dic, tolerance):
 #    print p
     op = SIM.rk4(dic,p)
     
-    print op.size
-    print dic['u'][:,3:].size
-    
     plt.figure(3)
     plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
     
@@ -81,13 +78,16 @@ def Function(dic, tolerance):
     
     evolution = copy.copy(p)
     
-    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])])
-#    error_log = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
+    dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])])
+#    dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
     
-    while error_log[-1] > tolerance:
         
-        if len(error_log) >= 50:
-            break
+    while dic['error_log'][-1] > tolerance and dic['TS']['counter'] < 50:
+        
+        print '\n\n', dic['error_log'][-1], '\n\n'
+        
+#        if dic['TS']['counter'] >= 50:
+#            break
         
         for i in range(num_param):
             op_p = SIM.rk4(dic,p + np.roll(aux,i)*delta_p)
@@ -108,7 +108,8 @@ def Function(dic, tolerance):
         try:
             DP = -np.linalg.solve(gamma, dJdp)
         except Exception:
-            break
+            print "DEU XABU!!"
+#            break
         p += p_ativo.reshape(num_param,) * DP.reshape(num_param,)
         
         print "Iteration #%d: %s" %(dic['TS']['counter']+1, p)
@@ -120,7 +121,7 @@ def Function(dic, tolerance):
         
         #Error is recalculated and stored
         Jp = .5*dic['TS']['step']*ERROR.Error(op_real[:,1:],op[:,1:])
-        error_log = np.hstack((error_log, Jp))
+        dic['error_log'] = np.hstack((dic['error_log'], Jp))
         
         #Number of iterations is increased
         dic['TS']['counter'] += 1
@@ -134,11 +135,11 @@ def Function(dic, tolerance):
     plt.legend()    
     
     plt.figure(3)
-    plt.plot(error_log, label = "TS")
+    plt.plot(dic['error_log'], label = "TS")
     plt.legend()
     
     print "Final result: %s" %p
-    print "Final Error: ", error_log[-1]
+    print "Final Error: ", dic['error_log'][-1]
     print "Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time
     
     

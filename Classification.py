@@ -10,7 +10,6 @@ def Classification(A):
     from scipy.linalg import qr as QRS
     import numpy as np
     
-#    print A
     
     V, U = np.linalg.eig(A)
     Vnorm = np.sqrt(abs(np.amax(V)/V))
@@ -27,16 +26,16 @@ def Classification(A):
            [-4372.36884977606,902.590009048401,-1392.16298076536,12640.1219891103,59.1562556682830,0.184217618636096,6.56962009773013],
            [9.70566096510859,-2.85505513579881,9.20059171036572,-183.135384780116,0.184217618636096,0.930258362200925,0],
            [-576.948411888186,117.788193401234,-163.477888321700,1348.89391477318,6.56962009773013,0,0.930258362200925]])
-"""
+   """
 
     Up = np.empty(shape=[U.shape[0],0])
     
-    print Vnorm
+#    print Vnorm
 
     for j in Vnorm:
         if j < 1000:
             Up = np.hstack((Up,U[:,np.where(Vnorm==j)].reshape((U.shape[0],-1))))
-            print j, np.where(Vnorm==j)
+#            print j, np.where(Vnorm==j)
 
     print "\nParameters Classification:\n"
     print QRS(Up.T, pivoting=True)[2] + 1
