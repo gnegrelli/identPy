@@ -66,9 +66,11 @@ if dic['import_data']:
                 dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])))
             else:
                 dic['u'] = np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])
+    
+
 
 #Tolerances
-tol1 = 50
+tol1 = 5000
 tol2 = 0.0005
 
 
@@ -125,15 +127,16 @@ Start of Estimation Process
 
 estMTHD = __import__(dic['chsn_est1'])
 
+
 dic['TS']['p0'] = estMTHD.Function(dic, tol1)
 
 #winsound.Beep(1320,1000)
-#winsound.MessageBeep()
+winsound.MessageBeep()
 
-#print "\n\n\n"
+print "\n\n\n"
 
-#estMTHD = __import__(dic['chsn_est2'])
+estMTHD = __import__(dic['chsn_est2'])
 
-#print estMTHD.Function(dic, tol2)
+print estMTHD.Function(dic, tol2)
 
-#winsound.MessageBeep()
+winsound.MessageBeep()

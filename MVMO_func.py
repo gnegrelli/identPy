@@ -39,9 +39,10 @@ def Function(dic, tolerance):
     
     selected_genes = []
     
-    
-#    real = dic['real']
-    op_real = SIM.rk4(dic,dic['real'])
+    if not dic['import_data']:
+        op_real = SIM.rk4(dic, dic['real'])
+    else:
+        op_real = dic['u'][:,[0,3,4]]
     
 #    plt.figure(1)
 #    plt.plot(op_real[:,1], label = str(real))
@@ -93,13 +94,15 @@ def Function(dic, tolerance):
 #    error_log.append(list_inds[0][0])
     dic['error_log'] =  np.hstack((dic['error_log'], list_inds[0][0]))
     
-#    print error_log, dic['error_log']
+    print "error :", dic['error_log'][-1]
         
     nonzero_var = None
+    mean = None
+    var = None
     
-
-    while dic['error_log'][-1] > tolerance and dic['MVMO']['counter'] > dic['MVMO']['max_gen']:
+    while dic['error_log'][-1] > tolerance and dic['MVMO']['counter'] < dic['MVMO']['max_gen']:
         
+                
         for i in range(population):
             print "Gen. %d - Specimen #%d: %s" %(dic['MVMO']['counter'], i, list_inds[i][1])
         dic['MVMO']['counter'] += 1
@@ -203,7 +206,7 @@ def Function(dic, tolerance):
     plt.ylabel(r'$\Delta$Q')
     
     plt.figure(3)
-    plt.plot(dic['error_log'], label = "MVMO")
+    plt.plot(range(0,dic['MVMO']['counter'] + 1), dic['error_log'][:dic['MVMO']['counter'] + 1], label = "MVMO")
     plt.title("Error evolution")
     plt.xlabel("Generation")
     plt.ylabel("Error")

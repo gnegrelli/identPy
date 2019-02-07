@@ -38,23 +38,22 @@ def Function(dic, tolerance):
     CLASS = __import__(dic['chsn_cla'])
     
     num_param = dic['TS']['p0'].shape[0]
-    
-    plt.figure(1)
-    plt.plot(dic['u'][:,0], dic['u'][:,1], linewidth=2.5, color="y", label = "Real System")
-    
-    plt.figure(2)
-    plt.plot(dic['u'][:,0], dic['u'][:,2], linewidth=2.5, color="y", label = "Real System")
-    
-    plt.figure(3)
-    plt.plot(dic['u'][:,0], dic['u'][:,3], linewidth=2.5, color="y", label = "Real System")
-    
-    plt.figure(4)
-    plt.plot(dic['u'][:,0], dic['u'][:,4], linewidth=2.5, color="y", label = "Real System")
+#    
+#    plt.figure(1)
+#    plt.plot(dic['u'][:,0], dic['u'][:,1], linewidth=2.5, color="y", label = "Real System")
+#    
+#    plt.figure(2)
+#    plt.plot(dic['u'][:,0], dic['u'][:,2], linewidth=2.5, color="y", label = "Real System")
+#    
+#    plt.figure(3)
+#    plt.plot(dic['u'][:,0], dic['u'][:,3], linewidth=2.5, color="y", label = "Real System")
+#    
+#    plt.figure(4)
+#    plt.plot(dic['u'][:,0], dic['u'][:,4], linewidth=2.5, color="y", label = "Real System")
     
     
     if not dic['import_data']:
-        p_real = dic['real']
-        op_real = SIM.rk4(dic, p_real)
+        op_real = SIM.rk4(dic, dic['real'])
     else:
         op_real = dic['u'][:,[0,3,4]]
     
@@ -62,11 +61,11 @@ def Function(dic, tolerance):
 #    print p
     op = SIM.rk4(dic,p)
     
-    plt.figure(3)
-    plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
-    
-    plt.figure(4)
-    plt.plot(op[:,0], op[:,2], linewidth=2.5, color="b", label = "Real System")
+#    plt.figure(3)
+#    plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
+#    
+#    plt.figure(4)
+#    plt.plot(op[:,0], op[:,2], linewidth=2.5, color="b", label = "Real System")
     
     delta_p = dic['TS']['delta_p']
     
@@ -78,16 +77,14 @@ def Function(dic, tolerance):
     
     evolution = copy.copy(p)
     
-    dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])])
+    print '\n\nERRO1: ', dic['error_log'][-1], '\n\n'
+    
+    dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])))
 #    dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
     
+    print '\n\nERRO2: ', dic['error_log'][-1], '\n\n'
         
     while dic['error_log'][-1] > tolerance and dic['TS']['counter'] < 50:
-        
-        print '\n\n', dic['error_log'][-1], '\n\n'
-        
-#        if dic['TS']['counter'] >= 50:
-#            break
         
         for i in range(num_param):
             op_p = SIM.rk4(dic,p + np.roll(aux,i)*delta_p)
@@ -135,7 +132,7 @@ def Function(dic, tolerance):
     plt.legend()    
     
     plt.figure(3)
-    plt.plot(dic['error_log'], label = "TS")
+    plt.plot(range(dic['MVMO']['counter'], dic['MVMO']['counter'] + dic['TS']['counter'] + 1), dic['error_log'][dic['MVMO']['counter']:], label = "TS")
     plt.legend()
     
     print "Final result: %s" %p

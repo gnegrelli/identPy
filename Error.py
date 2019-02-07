@@ -16,5 +16,4 @@ def Error(y,x):
                 err += j
         return err
     else:
-        print "Estoy aqui!!!!"
         print("Error: Arrays must have the same shapes")
