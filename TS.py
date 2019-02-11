@@ -58,8 +58,7 @@ def Function(dic, tolerance):
         op_real = dic['u'][:,[0,3,4]]
     
     p = dic['TS']['p0']
-#    print p
-    op = SIM.rk4(dic,p)
+    op = SIM.rk4(dic, p)
     
 #    plt.figure(3)
 #    plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
@@ -77,13 +76,12 @@ def Function(dic, tolerance):
     
     evolution = copy.copy(p)
     
-    print '\n\nERRO1: ', dic['error_log'][-1], '\n\n'
-    
     dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])))
 #    dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
     
-    print '\n\nERRO2: ', dic['error_log'][-1], '\n\n'
-        
+    print "Error: ", dic['error_log'][-1]
+    
+            
     while dic['error_log'][-1] > tolerance and dic['TS']['counter'] < 50:
         
         for i in range(num_param):
@@ -92,9 +90,9 @@ def Function(dic, tolerance):
             if i == 0:
                 dopdp = (op_p - op)/delta_p[i]
             else:
-                dopdp = np.dstack((dopdp,((op_p - op)/delta_p[i])))
+                dopdp = np.dstack((dopdp, ((op_p - op)/delta_p[i]) ))
                 
-        (gamma, dJdp) = Gamma(dopdp,op,op_real)
+        (gamma, dJdp) = Gamma(dopdp, op, op_real)
         
         
         #Parameters area classified due to its conditioning
@@ -110,29 +108,32 @@ def Function(dic, tolerance):
         p += p_ativo.reshape(num_param,) * DP.reshape(num_param,)
         
         print "Iteration #%d: %s" %(dic['TS']['counter']+1, p)
-        evolution = np.vstack((evolution,p))
+        evolution = np.vstack((evolution, p))
     #    x0[0,0], x0[0,1] = p[6], p[7]  # IS THIS RIGHT??????
         
         #System output is reevaluated, now with the modified parameters
-        op = SIM.rk4(dic,p)
+        op = SIM.rk4(dic, p)
         
         #Error is recalculated and stored
-        Jp = .5*dic['TS']['step']*ERROR.Error(op_real[:,1:],op[:,1:])
+        Jp = .5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])
         dic['error_log'] = np.hstack((dic['error_log'], Jp))
         
         #Number of iterations is increased
         dic['TS']['counter'] += 1
     
     plt.figure(1)
-    plt.plot(op[:,0],op[:,1], "k--", label = "TS")
+    plt.plot(op[:,0], op[:,1], "k--", label = "TS")
     plt.legend()
     
     plt.figure(2)
-    plt.plot(op[:,0],op[:,2], "k--", label = "TS")
+    plt.plot(op[:,0], op[:,2], "k--", label = "TS")
     plt.legend()    
     
     plt.figure(3)
-    plt.plot(range(dic['MVMO']['counter'], dic['MVMO']['counter'] + dic['TS']['counter'] + 2), dic['error_log'][dic['MVMO']['counter']:], label = "TS")
+    if (dic['error_log'].size - dic['TS']['counter'] - 1) == 0:
+        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label = "TS")
+    else:
+        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label = "TS")
     plt.legend()
     
     print "Final result: %s" %p

@@ -25,7 +25,7 @@ def Function(dic, tolerance):
     import random, copy, datetime
     import matplotlib.pyplot as plt
     
-
+    
     start_time = datetime.datetime.now()
     
     print "------------------MVMO------------------"
@@ -206,7 +206,10 @@ def Function(dic, tolerance):
     plt.ylabel(r'$\Delta$Q')
     
     plt.figure(3)
-    plt.plot(range(0,dic['MVMO']['counter'] + 1), dic['error_log'][:dic['MVMO']['counter'] + 1], label = "MVMO")
+    if (dic['error_log'].size - dic['MVMO']['counter'] - 1) == 0:
+        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label = "MVMO")
+    else:
+        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label = "MVMO")
     plt.title("Error evolution")
     plt.xlabel("Generation")
     plt.ylabel("Error")
