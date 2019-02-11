@@ -88,7 +88,7 @@ def Function(dic, tolerance):
         for j in range(len(lim_min)):
             indiv[j] = random.random()
     
-        list_inds.append((ERROR.Error(op_real, SIM.rk4(dic,(indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
+        list_inds.append((.5*dic['TS']['step']*ERROR.Error(op_real, SIM.rk4(dic,(indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
     
     list_inds.sort(key = takeFirst)
 #    error_log.append(list_inds[0][0])
@@ -170,7 +170,7 @@ def Function(dic, tolerance):
                     #Crossover
                     indiv[j] = copy.copy(list_inds[0][1][j])
             
-            list_inds.append((ERROR.Error(op_real, SIM.rk4(dic,(indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
+            list_inds.append((.5*dic['TS']['step']*ERROR.Error(op_real, SIM.rk4(dic,(indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
         
         list_inds = sorted(list_inds, key = takeFirst)[:population]
 #        error_log.append(list_inds[0][0])

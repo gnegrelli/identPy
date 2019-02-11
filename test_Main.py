@@ -70,7 +70,7 @@ if dic['import_data']:
 
 
 #Tolerances
-tol1 = 5000
+tol1 = 1
 tol2 = 0.0005
 
 

@@ -132,7 +132,7 @@ def Function(dic, tolerance):
     plt.legend()    
     
     plt.figure(3)
-    plt.plot(range(dic['MVMO']['counter'], dic['MVMO']['counter'] + dic['TS']['counter'] + 1), dic['error_log'][dic['MVMO']['counter']:], label = "TS")
+    plt.plot(range(dic['MVMO']['counter'], dic['MVMO']['counter'] + dic['TS']['counter'] + 2), dic['error_log'][dic['MVMO']['counter']:], label = "TS")
     plt.legend()
     
     print "Final result: %s" %p
