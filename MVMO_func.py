@@ -214,6 +214,8 @@ def Function(dic, tolerance):
     plt.xlabel("Generation")
     plt.ylabel("Error")
     
+    plt.show()    
+    
     print "MVMO elapsed time: ", datetime.datetime.now() - start_time
 
     return (list_inds[0][1]*(lim_max-lim_min)+lim_min)   

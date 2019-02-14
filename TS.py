@@ -38,7 +38,7 @@ def Function(dic, tolerance):
     CLASS = __import__(dic['chsn_cla'])
     
     num_param = dic['TS']['p0'].shape[0]
-#    
+    
 #    plt.figure(1)
 #    plt.plot(dic['u'][:,0], dic['u'][:,1], linewidth=2.5, color="y", label = "Real System")
 #    
@@ -60,6 +60,13 @@ def Function(dic, tolerance):
     p = dic['TS']['p0']
     op = SIM.rk4(dic, p)
     
+    
+    plt.figure(1)
+    plt.plot(op_real[:,0], op_real[:,1], linewidth=2.5, color="y", label = "Real System")
+    
+    plt.figure(2)
+    plt.plot(op_real[:,0], op_real[:,2], linewidth=2.5, color="y", label = "Real System")
+    
 #    plt.figure(3)
 #    plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
 #    
@@ -79,13 +86,10 @@ def Function(dic, tolerance):
     dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:,1:], op[:,1:])))
 #    dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
     
-    print "Error: ", dic['error_log'][-1]
-    
-            
     while dic['error_log'][-1] > tolerance and dic['TS']['counter'] < 50:
         
         for i in range(num_param):
-            op_p = SIM.rk4(dic,p + np.roll(aux,i)*delta_p)
+            op_p = SIM.rk4(dic, p + np.roll(aux,i)*delta_p)
             
             if i == 0:
                 dopdp = (op_p - op)/delta_p[i]
@@ -104,7 +108,9 @@ def Function(dic, tolerance):
             DP = -np.linalg.solve(gamma, dJdp)
         except Exception:
             print "DEU XABU!!"
-#            break
+            break
+        
+        
         p += p_ativo.reshape(num_param,) * DP.reshape(num_param,)
         
         print "Iteration #%d: %s" %(dic['TS']['counter']+1, p)
@@ -136,6 +142,7 @@ def Function(dic, tolerance):
         plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label = "TS")
     plt.legend()
     
+    print "\n\n\n"
     print "Final result: %s" %p
     print "Final Error: ", dic['error_log'][-1]
     print "Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time
