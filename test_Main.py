@@ -7,7 +7,7 @@ Created on Mon Sep 24 15:12:45 2018
 
 import numpy as np
 import matplotlib.pyplot as plt
-import os, winsound
+import os
 
 os.system('cls')
 plt.close('all')
@@ -17,7 +17,7 @@ dic = {}
 chosen_estimation1 = "MVMO"
 chosen_estimation2 = "Trajectory Sensitivity"
 
-chosen_system = "Linearized Load Model Z-IM"# "Simple Pendulum"# "Spring-Mass"# "Type-3 Wind Turbine"# 
+chosen_system = "Linearized Load Model Z-IM"  # "Simple Pendulum"  # "Spring-Mass"  # "Type-3 Wind Turbine"  #
 chosen_simulation = "Runge-Kutta Method"
 chosen_error = "Least-Square Method"
 chosen_classification = "QR Decomposition"
@@ -29,7 +29,7 @@ error_methods = {"Least-Square Method": "Error"}
 classification_methods = {"-": "", "QR Decomposition": "Classification"}
 
 
-#Global instances
+# Global instances
 dic['chsn_est1'] = estimation_methods[chosen_estimation1]
 dic['chsn_est2'] = estimation_methods[chosen_estimation2]
 dic['chsn_sys'] = systems[chosen_system]
@@ -42,22 +42,21 @@ dic['error_log'] = np.array([])
 dic['import_data'] = not True
 
 
-#Declare file to import from or real parameter values
+# Declare file to import from or real parameter values
 if dic['import_data']:
     dic['file'] = "Datatest.csv"
 else:
-#    dic['real'] = np.array([3., 6.])   #Spring Mass
-#    dic['real'] = np.array([.1, 1., 9.8, 1.])  #Pendulum
-    dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])   #Z-IM Load Model
-#    dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])   #DFIG
-    
-        
+    # dic['real'] = np.array([3., 6.])  # Spring Mass
+    # dic['real'] = np.array([.1, 1., 9.8, 1.])  # Pendulum
+    dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])  # Z-IM Load Model
+    # dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
+
 
 if dic['import_data']:
-    #Reading real measurement file
+    # Reading real measurement file
     pullData = open(dic['file'],"r").read()
     dataList = pullData.split("\n")
-    
+
     dic['u'] = np.array([])
     for eachLine in dataList:
         if len(eachLine) > 1:
@@ -66,25 +65,24 @@ if dic['import_data']:
                 dic['u'] = np.vstack((dic['u'], np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])))
             else:
                 dic['u'] = np.array([float(t), float(v)/33, float(theta), float(p)/90, float(q)/90])
-    
 
 
-#Tolerances
+# Tolerances
 tol1 = 1
 tol2 = 0.0005
 
 
-#MVMO
+# MVMO
 dic['MVMO'] = {}
 dic['MVMO']['population'] = 5
 dic['MVMO']['new_gen'] = 1
 dic['MVMO']['max_gen'] = 50000
 
-#Pendulum
-#dic['MVMO']['p_min'] = np.array([0., .5, 9., 0.])
-#dic['MVMO']['p_max'] = np.array([1., 1.5, 11., 2.])
+# Pendulum
+# dic['MVMO']['p_min'] = np.array([0., .5, 9., 0.])
+# dic['MVMO']['p_max'] = np.array([1., 1.5, 11., 2.])
 
-#Z-IM Load Model
+# Z-IM Load Model
 dic['MVMO']['p_min'] = np.array([0., 0., 0., 0., 0., 0., 0.8, -0.5])
 dic['MVMO']['p_max'] = np.array([.5, .2, 1., 1., 7., 5., 1.2, 0.5])
 
@@ -99,40 +97,40 @@ dic['MVMO']['wndw_step'] = 1
 dic['MVMO']['counter'] = 0
 
 
-#TS
+# TS
 dic['TS'] = {}
 
-#dic['TS']['p0'] = np.array([.8, 9.])  #Spring-Mass
-#dic['TS']['p0'] = np.array([.1, .8, 10, 1.])  #Pendulum
-dic['TS']['p0'] = np.array([.32620312, .0453461, .165223186, .01357852, 3.536177, 5.8111137, .976726836, -0.38856365])  #Z-IM
-#dic['TS']['p0'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  #DFIG
+# dic['TS']['p0'] = np.array([.8, 9.])  # Spring-Mass
+# dic['TS']['p0'] = np.array([.1, .8, 10, 1.])  # Pendulum
+dic['TS']['p0'] = np.array([.32620312, .0453461, .165223186, .01357852, 3.536177, 5.8111137, .976726836, -0.38856365])  # Z-IM
+# dic['TS']['p0'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
 
 dic['TS']['delta_p'] = .001*np.ones_like(dic['TS']['p0'])
 dic['TS']['counter'] = 0
 dic['TS']['step'] = 0.005
 
 
-#KF
+# KF
 dic['KF'] = {}
 
 
-#RK4
+# RK4
 dic['RK4'] = {}
 dic['RK4']['t0'] = 0.
 dic['RK4']['tf'] = 1.
 dic['RK4']['step'] = 0.001
 
-#dic['RK4']['x0'] = np.array([[0., 0.]])
-#dic['RK4']['u0'] = np.array([1.])
-#dic['RK4']['u'] = np.array([[4.]])
+# dic['RK4']['x0'] = np.array([[0., 0.]])
+# dic['RK4']['u0'] = np.array([1.])
+# dic['RK4']['u'] = np.array([[4.]])
 
-dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]]) # Para Load Model
+dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]])  # Para Load Model
 dic['RK4']['u0'] = np.array([1.])
 dic['RK4']['u'] = np.array([[0.0165]])
-#
-#dic['RK4']['x0'] = np.array([[0.9904, 0.2002]]) # Para DFIG
-#dic['RK4']['u0'] = np.array([1., 0., 1., 0.2])
-#dic['RK4']['u'] = np.array([[0.9, 0.1, 0.97, 0.32]])
+
+# dic['RK4']['x0'] = np.array([[0.9904, 0.2002]]) # Para DFIG
+# dic['RK4']['u0'] = np.array([1., 0., 1., 0.2])
+# dic['RK4']['u'] = np.array([[0.9, 0.1, 0.97, 0.32]])
 
 """
 Start of Estimation Process
@@ -143,8 +141,7 @@ estMTHD = __import__(dic['chsn_est1'])
 
 dic['TS']['p0'] = estMTHD.Function(dic, tol1)
 
-#winsound.Beep(1320,1000)
-winsound.MessageBeep()
+print '\007'  # Warning Sound
 
 print "\n\n", dic['TS']['p0'], "\n\n"
 
@@ -152,4 +149,4 @@ estMTHD = __import__(dic['chsn_est2'])
 
 print estMTHD.Function(dic, tol2)
 
-winsound.MessageBeep()
+os.system('spd-say "your program has finished"')
