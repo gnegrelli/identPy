@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Created on Thu Apr 25 23:36:44 2017
 System Matrices
@@ -6,7 +6,8 @@ University of Sao Paulo
 @author: Gabriel
 """
 
-def f(p, x, u ,t):
+
+def f(p, x, u, t):
     
     import numpy as np
 
@@ -22,67 +23,73 @@ def f(p, x, u ,t):
     
     x = [Vd, Vq]
     """
+
     qtref = 0.0576
     vtref = 1.0105
     ptref = 0.982
     imax = 1.1
     vtmin = 0.9
     stepi = 0.1
-    
+
+    pos = np.where(u == t)[0][0]
+
+    # print pos
+
     Ix = 0.
     Iy = 0.
-    
-    
-        
-    Ire = qtref/vtref + p[0]*(vtref - u[t,1])
+
+    Ire = qtref/vtref + p[0]*(vtref - u[pos, 1])
     
     Iac = ptref/vtref
-    
-    
+
     if np.sqrt(Iac**2 + Ire**2) < imax:
         ipref = Iac
         iqref = Ire
     else:
-        if u[t,0] < vtmin:
+        if u[pos, 0] < vtmin:
             iqref = min(Ire, imax)
             ipref = np.sqrt(imax**2 - iqref**2)
         else:
             ipref = min(Iac, imax)
             iqref = np.sqrt(imax**2 - ipref**2)
+
+    # try:
+    #     print "range: ", range(0, int(t/stepi))
+    # except:
+    #     None
+
+    for ti in [x/(1/stepi) for x in range(0, int(t/stepi + 1))]:
+        # print "For statement: ", ti
+        # print np.where(u == ti)[0][0]
+        tx = np.where(u == ti)[0][0]
+        Ix += (ipref - u[tx, 3]/u[tx, 1])*stepi/p[2]
+        Iy += (u[tx, 4]/u[tx, 1] - iqref)*stepi/p[2]
+
+    Vpa = p[1]*(ipref - u[pos, 3]/u[pos, 1] + Ix)
+    Vqa = p[1]*(u[pos, 4]/u[pos, 1] - iqref + Ix)
     
-    for ti in np.arange(0, t, stepi):
-        Ix += (ipref - u[ti,3]/u[ti,1])*stepi/p[2]
-        Iy += (u[ti,4]/u[ti,1] - iqref)*stepi/p[2]
-        
-        
-    Vpa = p[1]*(ipref - u[t,3]/u[t,1] + Ix)
-    Vqa = p[1]*(u[t,4]/u[t,1] - iqref + Ix)
+    U = np.array([Vpa, Vqa])
     
-    U = np.array([[Vpa],[Vqa]])
+    A = np.array([[-1./p[3], 0], [0, -1./p[3]]])
     
-    A = np.array([[-1./p[3], 0],[0, -1./p[3]]])    
+    B = np.array([[-np.cos(u[pos, 2])/p[3], -np.sin(u[pos, 2])/p[3]], [np.sin(u[pos, 2])/p[3], -np.cos(u[pos, 2])/p[3]]])
     
-    B = np.array([[-np.cos(u[t,2])/p[3], -np.sin(u[t,2])/p[3]], [np.sin(u[t,2])/p[3], -np.cos(u[t,2])/p[3]]])
+    x1 = np.dot(A, x) + np.dot(B, U)
     
-#    print 'x: ', x, "\n"    
-#    print 'A: ', A, "\n"
-#    print 'B: ', B, "\n"
-#    print 'U: ', U, "\n"
-    
-    x = np.dot(A,x) + np.dot(B,U)
-    
-    return x
+    return x1
     
     
 def g(p, x, u, t):
     
     import numpy as np
+
+    pos = np.where(u == t)[0][0]
     
-    Vtd = u[t,1]*np.cos(u[t,2])
-    Vtq = u[t,1]*np.sin(u[t,2])
+    Vtd = u[pos, 1]*np.cos(u[pos, 2])
+    Vtq = u[pos, 1]*np.sin(u[pos, 2])
     
-    P = (p[4]*(Vtd*x[0] + Vtq*x[1] - u[t,0]**2) + p[5]*(Vtq*x[0] - Vtd*x[1]))/(p[4]**2 + p[5]**2)
+    P = (p[4]*(Vtd*x[0, 0] + Vtq*x[1, 0] - u[pos, 0]**2) + p[5]*(Vtq*x[0, 0] - Vtd*x[1, 0]))/(p[4]**2 + p[5]**2)
     
-    Q = (p[5]*(Vtd*x[0] + Vtq*x[1] - u[t,0]**2) - p[4]*(Vtq*x[0] - Vtd*x[1]))/(p[4]**2 + p[5]**2)    
+    Q = (p[5]*(Vtd*x[0, 0] + Vtq*x[1, 0] - u[pos, 0]**2) - p[4]*(Vtq*x[0, 0] - Vtd*x[1, 0]))/(p[4]**2 + p[5]**2)
     
     return np.array([[P], [Q]])
