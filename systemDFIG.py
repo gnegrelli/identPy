@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Apr 25 23:36:44 2017
-System Matrices
+DFIG System Functions
 University of Sao Paulo
 @author: Gabriel
 """
 
 
+# f function for DFIG Model
 def f(p, x, u, t):
     
     import numpy as np
@@ -33,8 +34,6 @@ def f(p, x, u, t):
 
     pos = np.where(u == t)[0][0]
 
-    # print pos
-
     Ix = 0.
     Iy = 0.
 
@@ -42,6 +41,7 @@ def f(p, x, u, t):
     
     Iac = ptref/vtref
 
+    # Current Priority Block
     if np.sqrt(Iac**2 + Ire**2) < imax:
         ipref = Iac
         iqref = Ire
@@ -53,14 +53,8 @@ def f(p, x, u, t):
             ipref = min(Iac, imax)
             iqref = np.sqrt(imax**2 - ipref**2)
 
-    # try:
-    #     print "range: ", range(0, int(t/stepi))
-    # except:
-    #     None
-
+    # Integration
     for ti in [x/(1/stepi) for x in range(0, int(t/stepi + 1))]:
-        # print "For statement: ", ti
-        # print np.where(u == ti)[0][0]
         tx = np.where(u == ti)[0][0]
         Ix += (ipref - u[tx, 3]/u[tx, 1])*stepi/p[2]
         Iy += (u[tx, 4]/u[tx, 1] - iqref)*stepi/p[2]
@@ -74,11 +68,10 @@ def f(p, x, u, t):
     
     B = np.array([[-np.cos(u[pos, 2])/p[3], -np.sin(u[pos, 2])/p[3]], [np.sin(u[pos, 2])/p[3], -np.cos(u[pos, 2])/p[3]]])
     
-    x1 = np.dot(A, x) + np.dot(B, U)
+    return np.dot(A, x) + np.dot(B, U)
     
-    return x1
-    
-    
+
+# g function for DFIG Model
 def g(p, x, u, t):
     
     import numpy as np
@@ -89,7 +82,6 @@ def g(p, x, u, t):
     Vtq = u[pos, 1]*np.sin(u[pos, 2])
     
     P = (p[4]*(Vtd*x[0, 0] + Vtq*x[1, 0] - u[pos, 0]**2) + p[5]*(Vtq*x[0, 0] - Vtd*x[1, 0]))/(p[4]**2 + p[5]**2)
-    
     Q = (p[5]*(Vtd*x[0, 0] + Vtq*x[1, 0] - u[pos, 0]**2) - p[4]*(Vtq*x[0, 0] - Vtd*x[1, 0]))/(p[4]**2 + p[5]**2)
     
     return np.array([[P], [Q]])

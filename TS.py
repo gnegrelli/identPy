@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Oct 04 15:04:38 2018
-Trajectory Sensibility Function
+Trajectory Sensitivity Function
 @author: gabriel
 """
 
@@ -22,14 +22,15 @@ def Gamma(A, B, C):
             
     return gamma, dJdp
 
-
+# Trajectory Sensitivity estimation process
 def Function(dic, tolerance):
     
     import numpy as np
     import matplotlib.pyplot as plt
     import copy
     import datetime
-    
+
+    # Timestamp for Traj. Sens. Method
     start_time = datetime.datetime.now()
     
     print "---------Trajectory Sensitivity---------"
@@ -37,27 +38,17 @@ def Function(dic, tolerance):
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
     CLASS = __import__(dic['chsn_cla'])
-    
-    num_param = dic['TS']['p0'].shape[0]
-    
-#    plt.figure(1)
-#    plt.plot(dic['u'][:,0], dic['u'][:,1], linewidth=2.5, color="y", label="Real System")
-#    
-#    plt.figure(2)
-#    plt.plot(dic['u'][:,0], dic['u'][:,2], linewidth=2.5, color="y", label="Real System")
-#    
-#    plt.figure(3)
-#    plt.plot(dic['u'][:,0], dic['u'][:,3], linewidth=2.5, color="y", label="Real System")
-#    
-#    plt.figure(4)
-#    plt.plot(dic['u'][:,0], dic['u'][:,4], linewidth=2.5, color="y", label="Real System")
 
-    if not dic['import_data']:
+    if dic['import_data']:
         op_real = SIM.rk4(dic, dic['real'])
     else:
         op_real = dic['u'][:, [0, 3, 4]]
     
     p = dic['TS']['p0']
+    delta_p = dic['TS']['delta_p']
+    num_param = p.shape[0]
+
+    # Output for initial values of p
     op = SIM.rk4(dic, p)
 
     plt.figure(1)
@@ -66,26 +57,28 @@ def Function(dic, tolerance):
     plt.figure(2)
     plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
     
-#    plt.figure(3)
-#    plt.plot(op[:,0], op[:,1], linewidth=2.5, color="b", label = "Real System")
-#    
-#    plt.figure(4)
-#    plt.plot(op[:,0], op[:,2], linewidth=2.5, color="b", label = "Real System")
-    
-    delta_p = dic['TS']['delta_p']
-    
+    plt.figure(1)
+    plt.plot(op[:, 0], op[:, 1], linewidth=2.5, color="b", label="TS start")
+
+    plt.figure(2)
+    plt.plot(op[:, 0], op[:, 2], linewidth=2.5, color="b", label="TS start")
+
+    # Auxiliary variable for Sensitivity Calculation
     aux = np.zeros(num_param)
     aux[0] = 1
 
+    # Parameters to be estimated
     p_active = np.ones(num_param)
-    
+
     evolution = copy.copy(p)
-    
+
+    # Error for initial values of p
     dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:, 1:], op[:, 1:])))
-    # dic['error_log'] = np.array([.5*dic['TS']['step']*ERROR.Error(dic['u'][:,3:], op[:,1:])])
-    
-    while dic['error_log'][-1] > tolerance and dic['TS']['counter'] < 50:
-        
+
+    # Iteration Process
+    while dic['error_log'][-1] > tolerance and dic['TS']['counter'] < dic['TS']['max_ite']:
+
+        # Sensitivities calculation
         for i in range(num_param):
             op_p = SIM.rk4(dic, p + np.roll(aux, i)*delta_p)
             
@@ -93,7 +86,8 @@ def Function(dic, tolerance):
                 dopdp = (op_p - op)/delta_p[i]
             else:
                 dopdp = np.dstack((dopdp, ((op_p - op)/delta_p[i])))
-                
+
+        # Γ and G(p) calculation
         (gamma, dJdp) = Gamma(dopdp, op, op_real)
 
         # Parameters area classified due to its conditioning
@@ -108,39 +102,46 @@ def Function(dic, tolerance):
             break
 
         p += p_active.reshape(num_param,) * DP.reshape(num_param,)
-        
-        print "Iteration #%d: %s" %(dic['TS']['counter']+1, p)
-        evolution = np.vstack((evolution, p))
-        # x0[0,0], x0[0,1] = p[6], p[7]  # IS THIS RIGHT??????
-        
+
         # System output is reevaluated, now with the modified parameters
         op = SIM.rk4(dic, p)
         
         # Error is recalculated and stored
         Jp = .5*dic['TS']['step']*ERROR.Error(op_real[:, 1:], op[:, 1:])
         dic['error_log'] = np.hstack((dic['error_log'], Jp))
-        
+
         # Number of iterations is increased
         dic['TS']['counter'] += 1
-    
-    plt.figure(1)
-    plt.plot(op[:, 0], op[:, 1], "k--", label="TS")
-    plt.legend()
-    
-    plt.figure(2)
-    plt.plot(op[:, 0], op[:, 2], "k--", label="TS")
-    plt.legend()    
-    
-    plt.figure(3)
-    if (dic['error_log'].size - dic['TS']['counter'] - 1) == 0:
-        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="TS")
-    else:
-        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="TS")
-    plt.legend()
-    
-    print "\n\n\n"
+
+        print "\nIteration #%d: %s" % (dic['TS']['counter'], p)
+        print "Error: ", dic['error_log'][-1]
+        evolution = np.vstack((evolution, p))
+        # x0[0,0], x0[0,1] = p[6], p[7]  # IS THIS RIGHT??????
+
+    # At the end of iteration process, values of p and final error value are presented
+    print "\n\n----------------------------"
     print "Final result: %s" % p
     print "Final Error: ", dic['error_log'][-1]
+
+    # Plot y1 from TS
+    plt.figure(1)
+    plt.plot(op[:, 0], op[:, 1], "k--", label="Traj. Sens.")
+    plt.legend()
+
+    # Plot y2 from TS
+    plt.figure(2)
+    plt.plot(op[:, 0], op[:, 2], "k--", label="Traj. Sens.")
+    plt.legend()
+
+    # Plot error evolution
+    plt.figure(3)
+    if (dic['error_log'].size - dic['TS']['counter'] - 1) == 0:
+        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
+    else:
+        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
+    plt.legend()
+
     print "Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time
 
+    # Return optimal set of parameters
     return p

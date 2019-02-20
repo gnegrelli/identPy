@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Mar 24 00:11:20 2017
-Least square erro
+Least squares error
 University of Sao Paulo
 @author: Gabriel
 """
 
-def Error(y,x):
+
+def Error(y, x):
     
     err = 0
     

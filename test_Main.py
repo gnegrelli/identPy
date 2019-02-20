@@ -9,8 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-os.system('cls')
+os.system('clear')
 plt.close('all')
+# plt.ion()
 
 dic = {}
 
@@ -46,6 +47,7 @@ dic['import_data'] = True
 if dic['import_data']:
     # dic['file'] = 'Datatest.csv'  # For Windows
     dic['file'] = '/home/gabriel/Desktop/PyMod/Datatest.csv'  # For Linux
+    dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
 else:
     # dic['real'] = np.array([3., 6.])  # Spring Mass
     # dic['real'] = np.array([.1, 1., 9.8, 1.])  # Pendulum
@@ -53,8 +55,8 @@ else:
     dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
 
 
+# Reading data from measurement file
 if dic['import_data']:
-    # Reading real measurement file
     pullData = open(dic['file'], "r").read()
     dataList = pullData.split("\n")
 
@@ -72,8 +74,9 @@ if dic['import_data']:
 tol1 = 1
 tol2 = 0.0005
 
-
-# MVMO
+"""
+MVMO configuration
+"""
 dic['MVMO'] = {}
 dic['MVMO']['population'] = 5
 dic['MVMO']['new_gen'] = 1
@@ -102,24 +105,31 @@ dic['MVMO']['wndw_step'] = 1
 dic['MVMO']['counter'] = 0
 
 
-# TS
+"""
+Trajectory Sensitivity configuration
+"""
 dic['TS'] = {}
 
 # dic['TS']['p0'] = np.array([.8, 9.])  # Spring-Mass
 # dic['TS']['p0'] = np.array([.1, .8, 10, 1.])  # Pendulum
 # dic['TS']['p0'] = np.array([.32620312, .0453461, .165223186, .01357852, 3.536177, 5.8111137, .976726836, -0.38856365])  # Z-IM
-dic['TS']['p0'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
+dic['TS']['p0'] = np.array([2., 10., 0.04, 0.4, 0.4, 2.])  # DFIG
 
 dic['TS']['delta_p'] = .001*np.ones_like(dic['TS']['p0'])
 dic['TS']['counter'] = 0
 dic['TS']['step'] = 0.005
+dic['TS']['max_ite'] = 50
 
 
-# KF
+"""
+Kalman Filter configuration
+"""
 dic['KF'] = {}
 
 
-# RK4
+"""
+Runge-Kutta configuration
+"""
 dic['RK4'] = {}
 dic['RK4']['t0'] = 0.
 dic['RK4']['tf'] = 1.
@@ -141,19 +151,16 @@ dic['RK4']['u'] = np.array([[0.9, 0.1, 0.97, 0.32]])
 Start of Estimation Process
 """
 
-# estMTHD = __import__(dic['chsn_est1'])
+estMTHD = __import__(dic['chsn_est1'])
 
-
-# dic['TS']['p0'] = estMTHD.Function(dic, tol1)
+dic['TS']['p0'] = estMTHD.Function(dic, tol1)
 
 print '\007'  # Warning Sound
-
-print "\n\n", dic['TS']['p0'], "\n\n"
 
 estMTHD = __import__(dic['chsn_est2'])
 
 print estMTHD.Function(dic, tol2)
 
-plt.show()
-
 os.system('spd-say "Your estimation has finished"')
+
+plt.show()

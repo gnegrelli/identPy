@@ -1,33 +1,35 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Sep 05 11:24:59 2018
-MVMO Function
+MVMO Estimation Method
 University of Sao Paulo
 @author: Gabriel
 """
 
-
-# H Function
+# H Function: Mapping function of mutation
 def hFunc(m, s1, s2, u):
-    
+
     import numpy as np
     
-    h = m*(1 - np.power(np.e,-u*s1)) + (1 - m)*np.power(np.e,(-(1-u)*s2))
+    h = m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1-u)*s2))
     return h
 
-
-# Sorting method
+# Sorting method: Sorts individuals by lowest error (first element on the list of individuals)
 def takeFirst(elem):
+
     return elem[0]
 
 
+# MVMO Estimation Process
 def Function(dic, tolerance):
         
     import numpy as np
-    import random, copy
+    import random
+    import copy
     import datetime
     import matplotlib.pyplot as plt
 
+    # Timestamp for MVMO Method
     start_time = datetime.datetime.now()
     
     print "------------------MVMO------------------"
@@ -64,6 +66,7 @@ def Function(dic, tolerance):
     wndw_size = dic['MVMO']['wndw_size']
     wndw_step = dic['MVMO']['wndw_step']
 
+    # First set of genes for mutation
     if block:
         selected_genes.append(random.randint(0, len(lim_min)))
         for i in range(1, wndw_size):
@@ -84,7 +87,8 @@ def Function(dic, tolerance):
             indiv[j] = random.random()
     
         list_inds.append((.5*dic['TS']['step']*ERROR.Error(op_real, SIM.rk4(dic, (indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
-    
+
+    # Sorting and error calculation of first individuals
     list_inds.sort(key=takeFirst)
     dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
     
@@ -93,7 +97,8 @@ def Function(dic, tolerance):
     nonzero_var = None
     mean = None
     var = None
-    
+
+    # Iteration process
     while dic['error_log'][-1] > tolerance and dic['MVMO']['counter'] < dic['MVMO']['max_gen']:
 
         for i in range(population):
@@ -112,7 +117,8 @@ def Function(dic, tolerance):
         for i in range(population):
             var += np.power(list_inds[i][1] - mean, 2)
         var /= population
-        
+
+        # Repeat last non-null variance in case the new one is null
         if 0 in var:
             var = nonzero_var
         nonzero_var = copy.copy(var)
@@ -164,34 +170,40 @@ def Function(dic, tolerance):
                     indiv[j] = copy.copy(list_inds[0][1][j])
             
             list_inds.append((.5*dic['TS']['step']*ERROR.Error(op_real, SIM.rk4(dic, (indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
-        
+
+        # Sorting new list of individuals and discarding the worst individuals
         list_inds = sorted(list_inds, key=takeFirst)[:population]
         dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
 
+    # At the end of iteration process, mean, variance and final error value are presented
     print "----------------------------"
     print "Mean: ", mean
     print "Variance: ", var
     print "Error: ", dic['error_log'][-1]
-    print "----------------------------" 
+    print "----------------------------"
 
+    # Final generation with fittest individuals
     for i in range(population):
         print "Final Generation #%d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1])
     print "Final Error: %f" % dic['error_log'][-1]
-    
+
+    # Plot y1 real and from MVMO
     plt.figure(1)
     plt.plot(op_real[:, 0], op_real[:, 1], linewidth=2.5, color="y", label="Real System")
     plt.plot(SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 0], SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 1], "--", label="MVMO")
     plt.title("Active Power")
     plt.xlabel("Time (s)")
     plt.ylabel(r'$\Delta$P')
-    
+
+    # Plot y2 real and from MVMO
     plt.figure(2)
     plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
     plt.plot(SIM.rk4(dic, (list_inds[0][1]*(lim_max-lim_min) + lim_min))[:, 0], SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 2], "--", label="MVMO")
     plt.title("Reactive Power")
     plt.xlabel("Time (s)")
     plt.ylabel(r'$\Delta$Q')
-    
+
+    # Plot error evolution
     plt.figure(3)
     if (dic['error_log'].size - dic['MVMO']['counter'] - 1) == 0:
         plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
@@ -203,4 +215,5 @@ def Function(dic, tolerance):
 
     print "MVMO elapsed time: ", datetime.datetime.now() - start_time
 
+    # Return best individual
     return list_inds[0][1]*(lim_max-lim_min) + lim_min
