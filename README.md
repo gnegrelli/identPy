@@ -1,9 +1,23 @@
 # PyMod
 
 This project focus on building a parameter estimation software for any type of non-linear model.
-<!---
+
 ## Getting Started
 
+Run test_Main.py to estimate parameters of a non-linear model.
+
+Models implemented are:
+
+* Spring-Mass
+* Simple Pendulum
+* Z-IM Load Model
+* DFIG Model (in construction)
+
+Estimation process implemented are:
+
+* Mean-Variance Mapping Optimization (MVMO)
+* Trajectory Sensitivity
+<!---
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
