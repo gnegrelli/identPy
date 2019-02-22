@@ -57,7 +57,10 @@ def Function(dic, tolerance):
     
     lim_min = dic['MVMO']['p_min']
     lim_max = dic['MVMO']['p_max']
+
     fs = dic['MVMO']['fs']
+    d = np.array([dic['MVMO']['d']*np.ones(lim_min.shape)])
+    dd = np.array([dic['MVMO']['delta_d']*np.ones(lim_min.shape)])
 
     rndm = dic['MVMO']['rndm']
     seq_rndm = dic['MVMO']['seq_rndm']
@@ -134,11 +137,23 @@ def Function(dic, tolerance):
         
         # Shape factor calculation
         s = -fs*np.log(var)
-        
-        # h=[]
-        # for i in np.linspace(0,1,101):
-        #     h.append(hFunc(mean[0][0],s[0][0],s[0][0],i) + i*(1 - hFunc(mean[0][0],s[0][0],s[0][0],1) + hFunc(mean[0][0],s[0][0],s[0][0],0)) - hFunc(mean[0][0],s[0][0],s[0][0],0))
-        # plt.plot(np.linspace(0,1,101),h)
+
+        sf = np.array([s[0], s[0]])
+
+        counts = 0
+        for v in np.greater(s, d)[0]:
+            if v:
+                d[0][counts] *= dd[0][counts]
+                sf[1][counts] = d[0][counts]
+            else:
+                d[0][counts] /= dd[0][counts]
+                sf[0][counts] = d[0][counts]
+            counts += 1
+
+        # h = []
+        # for i in np.linspace(0, 1, 101):
+            # h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
+        # plt.plot(np.linspace(0, 1, 101), h)
         # plt.ylabel("Mutated gene")
         # plt.xlabel("Random gene")
         # plt.legend(loc='best')

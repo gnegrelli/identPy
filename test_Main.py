@@ -95,6 +95,10 @@ dic['MVMO']['p_min'] = np.array([1., 5., 0., 0., 0., 0.])
 dic['MVMO']['p_max'] = np.array([5., 20., .1, 1., 1., 5.])
 
 
+
+dic['MVMO']['d'] = 5.
+dic['MVMO']['delta_d'] = 1.5
+
 dic['MVMO']['fs'] = 1.
 dic['MVMO']['rndm'] = not True
 dic['MVMO']['seq_rndm'] = not True
