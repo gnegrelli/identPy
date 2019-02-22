@@ -104,10 +104,10 @@ def Function(dic, tolerance):
         for i in range(population):
             print "Gen. %d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1])
         dic['MVMO']['counter'] += 1
-        
+
         mean = np.zeros((1, len(lim_min)))
         var = np.zeros((1, len(lim_min)))
-    
+
         # Mean calculation
         for i in range(population):
             mean += list_inds[i][1]
@@ -120,7 +120,10 @@ def Function(dic, tolerance):
 
         # Repeat last non-null variance in case the new one is null
         if 0 in var:
-            var = nonzero_var
+            for i in np.where(var == 0)[1]:
+                print var
+                var[0][i] = nonzero_var[0][i]
+                print var
         nonzero_var = copy.copy(var)
         
         print "----------------------------"
