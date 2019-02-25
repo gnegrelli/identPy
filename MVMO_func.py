@@ -136,6 +136,7 @@ def Function(dic, tolerance):
         print "----------------------------\n\n"
         
         # Shape factor calculation
+        print fs
         s = -fs*np.log(var)
 
         sf = np.array([s[0], s[0]])
@@ -150,14 +151,14 @@ def Function(dic, tolerance):
                 sf[0][counts] = d[0][counts]
             counts += 1
 
-        # h = []
-        # for i in np.linspace(0, 1, 101):
-            # h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
-        # plt.plot(np.linspace(0, 1, 101), h)
-        # plt.ylabel("Mutated gene")
-        # plt.xlabel("Random gene")
-        # plt.legend(loc='best')
-        # plt.show()
+        h = []
+        for i in np.linspace(0, 1, 101):
+            h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
+        plt.plot(np.linspace(0, 1, 101), h)
+        plt.ylabel("Mutated gene")
+        plt.xlabel("Random gene")
+        plt.legend(loc='best')
+        plt.show()
         
         # Gene selection for mutation
         if rndm:
@@ -192,6 +193,10 @@ def Function(dic, tolerance):
         # Sorting new list of individuals and discarding the worst individuals
         list_inds = sorted(list_inds, key=takeFirst)[:population]
         dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
+
+        # Increase scaling factor fs in 1% after each iteration, capping it around 15
+        if fs < 15:
+            fs *= 1.01
 
     # At the end of iteration process, mean, variance and final error value are presented
     print "----------------------------"
