@@ -135,21 +135,23 @@ def Function(dic, tolerance):
         print "Error: ", dic['error_log'][-1]
         print "----------------------------\n\n"
         
-        # Shape factor calculation
-        print fs
-        s = -fs*np.log(var)
+        # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
+        if dic['MVMO']["counter"] % 97. == 0.:
+            sf = 0*np.ones(sf.shape)
+        else:
+            s = -fs*np.log(var)
 
-        sf = np.array([s[0], s[0]])
+            sf = np.array([s[0], s[0]])
 
-        counts = 0
-        for v in np.greater(s, d)[0]:
-            if v:
-                d[0][counts] *= dd[0][counts]
-                sf[1][counts] = d[0][counts]
-            else:
-                d[0][counts] /= dd[0][counts]
-                sf[0][counts] = d[0][counts]
-            counts += 1
+            counts = 0
+            for v in np.greater(s, d)[0]:
+                if v:
+                    d[0][counts] *= dd[0][counts]
+                    sf[1][counts] = d[0][counts]
+                else:
+                    d[0][counts] /= dd[0][counts]
+                    sf[0][counts] = d[0][counts]
+                counts += 1
 
         h = []
         for i in np.linspace(0, 1, 101):
