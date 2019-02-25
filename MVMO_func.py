@@ -57,7 +57,10 @@ def Function(dic, tolerance):
     
     lim_min = dic['MVMO']['p_min']
     lim_max = dic['MVMO']['p_max']
+
     fs = dic['MVMO']['fs']
+    d = np.array([dic['MVMO']['d']*np.ones(lim_min.shape)])
+    dd = np.array([dic['MVMO']['delta_d']*np.ones(lim_min.shape)])
 
     rndm = dic['MVMO']['rndm']
     seq_rndm = dic['MVMO']['seq_rndm']
@@ -104,10 +107,10 @@ def Function(dic, tolerance):
         for i in range(population):
             print "Gen. %d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1])
         dic['MVMO']['counter'] += 1
-        
+
         mean = np.zeros((1, len(lim_min)))
         var = np.zeros((1, len(lim_min)))
-    
+
         # Mean calculation
         for i in range(population):
             mean += list_inds[i][1]
@@ -120,7 +123,10 @@ def Function(dic, tolerance):
 
         # Repeat last non-null variance in case the new one is null
         if 0 in var:
-            var = nonzero_var
+            for i in np.where(var == 0)[1]:
+                print var
+                var[0][i] = nonzero_var[0][i]
+                print var
         nonzero_var = copy.copy(var)
         
         print "----------------------------"
@@ -129,17 +135,32 @@ def Function(dic, tolerance):
         print "Error: ", dic['error_log'][-1]
         print "----------------------------\n\n"
         
-        # Shape factor calculation
-        s = -fs*np.log(var)
-        
-        # h=[]
-        # for i in np.linspace(0,1,101):
-        #     h.append(hFunc(mean[0][0],s[0][0],s[0][0],i) + i*(1 - hFunc(mean[0][0],s[0][0],s[0][0],1) + hFunc(mean[0][0],s[0][0],s[0][0],0)) - hFunc(mean[0][0],s[0][0],s[0][0],0))
-        # plt.plot(np.linspace(0,1,101),h)
-        # plt.ylabel("Mutated gene")
-        # plt.xlabel("Random gene")
-        # plt.legend(loc='best')
-        # plt.show()
+        # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
+        if dic['MVMO']["counter"] % 97. == 0.:
+            sf = 0*np.ones(sf.shape)
+        else:
+            s = -fs*np.log(var)
+
+            sf = np.array([s[0], s[0]])
+
+            counts = 0
+            for v in np.greater(s, d)[0]:
+                if v:
+                    d[0][counts] *= dd[0][counts]
+                    sf[1][counts] = d[0][counts]
+                else:
+                    d[0][counts] /= dd[0][counts]
+                    sf[0][counts] = d[0][counts]
+                counts += 1
+
+        h = []
+        for i in np.linspace(0, 1, 101):
+            h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
+        plt.plot(np.linspace(0, 1, 101), h)
+        plt.ylabel("Mutated gene")
+        plt.xlabel("Random gene")
+        plt.legend(loc='best')
+        plt.show()
         
         # Gene selection for mutation
         if rndm:
@@ -174,6 +195,10 @@ def Function(dic, tolerance):
         # Sorting new list of individuals and discarding the worst individuals
         list_inds = sorted(list_inds, key=takeFirst)[:population]
         dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
+
+        # Increase scaling factor fs in 1% after each iteration, capping it around 15
+        if fs < 15:
+            fs *= 1.01
 
     # At the end of iteration process, mean, variance and final error value are presented
     print "----------------------------"
