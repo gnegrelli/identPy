@@ -22,6 +22,7 @@ def Gamma(A, B, C):
             
     return gamma, dJdp
 
+
 # Trajectory Sensitivity estimation process
 def Function(dic, tolerance):
     
@@ -40,9 +41,9 @@ def Function(dic, tolerance):
     CLASS = __import__(dic['chsn_cla'])
 
     if dic['import_data']:
-        op_real = SIM.rk4(dic, dic['real'])
-    else:
         op_real = dic['u'][:, [0, 3, 4]]
+    else:
+        op_real = SIM.rk4(dic, dic['real'])
     
     p = dic['TS']['p0']
     delta_p = dic['TS']['delta_p']

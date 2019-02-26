@@ -47,7 +47,7 @@ dic['import_data'] = True
 if dic['import_data']:
     # dic['file'] = 'Datatest.csv'  # For Windows
     dic['file'] = '/home/gabriel/Desktop/PyMod/Datatest.csv'  # For Linux
-    dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
+    # dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
 else:
     # dic['real'] = np.array([3., 6.])  # Spring Mass
     # dic['real'] = np.array([.1, 1., 9.8, 1.])  # Pendulum
@@ -153,9 +153,9 @@ dic['RK4']['u'] = np.array([[0.9, 0.1, 0.97, 0.32]])
 Start of Estimation Process
 """
 
-estMTHD = __import__(dic['chsn_est1'])
+# estMTHD = __import__(dic['chsn_est1'])
 
-dic['TS']['p0'] = estMTHD.Function(dic, tol1)
+# dic['TS']['p0'] = estMTHD.Function(dic, tol1)
 
 print '\007'  # Warning Sound
 

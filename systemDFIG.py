@@ -47,10 +47,10 @@ def f(p, x, u, t):
         iqref = Ire
     else:
         if u[pos, 0] < vtmin:
-            iqref = min(Ire, imax)
+            iqref = (Ire/np.abs(Ire))*min(np.abs(Ire), imax)
             ipref = np.sqrt(imax**2 - iqref**2)
         else:
-            ipref = min(Iac, imax)
+            ipref = (Iac/np.abs(Iac))*min(np.abs(Iac), imax)
             iqref = np.sqrt(imax**2 - ipref**2)
 
     # Integration
