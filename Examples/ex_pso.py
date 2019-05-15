@@ -47,4 +47,11 @@ for indiv in list_ind:
 
 plt.plot(real[0], real[1], 'gx')
 plt.axis([xmin, xmax, ymin, ymax])
+
+delta = []
+# Update coordinates of individuals
+for i in range(pop_size):
+    delta.append((.3*(p_best[i][1][0] - list_ind[i][1][0]) + .2*(g_best[1][0] - list_ind[i][1][0]),\
+        .3*(p_best[i][1][1] - list_ind[i][1][1]) + .2*(g_best[1][1] - list_ind[i][1][1])))
+
 plt.show()
