@@ -12,6 +12,10 @@ xmin = 0.
 ymax = 10.
 ymin = 0.
 
+tol = 3.
+
+max_gen = 10
+
 list_ind = []
 
 real = (3., 5.)
