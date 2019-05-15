@@ -51,29 +51,33 @@ for i in range(pop_size):
 # Create global best
 g_best = copy.copy(sorted(list_ind)[0])
 
-gen += 1
+while gen < max_gen:
 
-# Update coordinates of individuals
-for i in range(pop_size):
-    list_ind[i][1] = (list_ind[i][1][0] + vp*(p_best[i][1][0] - list_ind[i][1][0]) + vg*(g_best[1][0] - list_ind[i][1][0]),
-                      list_ind[i][1][1] + vp*(p_best[i][1][1] - list_ind[i][1][1]) + vg*(g_best[1][1] - list_ind[i][1][1]))
+    gen += 1
 
-    # Update fitness value
-    list_ind[i][0] = abs(real[0] - list_ind[i][1][0] * (xmax - xmin) + xmin) + \
-                     abs(real[1] - list_ind[i][1][1] * (ymax - ymin) + ymin)
+    # Update coordinates of individuals
+    for i in range(pop_size):
+        list_ind[i][1] = (list_ind[i][1][0] + vp*(p_best[i][1][0] - list_ind[i][1][0]) + vg*(g_best[1][0] - list_ind[i][1][0]),
+                          list_ind[i][1][1] + vp*(p_best[i][1][1] - list_ind[i][1][1]) + vg*(g_best[1][1] - list_ind[i][1][1]))
 
-    # Update personal best vector
-    if p_best[i][0] > list_ind[i][0]:
-        p_best[i] = list_ind[i]
+        # Update fitness value
+        list_ind[i][0] = abs(real[0] - list_ind[i][1][0] * (xmax - xmin) + xmin) + \
+                         abs(real[1] - list_ind[i][1][1] * (ymax - ymin) + ymin)
 
-    # Plot new population
-    plt.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
-             color[gen % len(color)] + marker[gen % len(marker)])
+        # Update personal best vector
+        if p_best[i][0] > list_ind[i][0]:
+            p_best[i] = list_ind[i]
 
-if g_best[0] > min(list_ind)[0]:
-    g_best = copy.copy(sorted(list_ind)[0])
+        # Plot new population
+        plt.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
+                 color[gen % len(color)] + marker[gen % len(marker)])
+
+    if g_best[0] > min(list_ind)[0]:
+        g_best = copy.copy(sorted(list_ind)[0])
 
 for p in p_best:
     print p
+
+print g_best
 
 plt.show()
