@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import copy
 
 # Population size
 pop_size = 5
@@ -13,15 +14,28 @@ ymin = 0.
 
 list_ind = []
 
-real = (3, 5)
+real = (3., 5.)
+
+p_best = []
 
 # Create random population
 for i in range(pop_size):
     list_ind.append([0, (np.random.random(), np.random.random())])
-    list_ind[i][0] = abs(real[0] - list_ind[i][1][0]*(xmax - xmin) + xmin) + abs(real[1] - list_ind[i][1][1]*(ymax - ymin) + ymin)
 
-# Sort individuals by their fitness
-list_ind.sort()
+    # Evaluate fitness of individual
+    list_ind[i][0] = abs(real[0] - list_ind[i][1][0]*(xmax - xmin) + xmin) + \
+                     abs(real[1] - list_ind[i][1][1]*(ymax - ymin) + ymin)
+
+# Create personal best vector
+for i in range(len(list_ind)):
+    try:
+        if p_best[i][0] > list_ind[i][0]:
+            p_best[i] = list_ind[i]
+    except IndexError:
+        p_best.append(list_ind[i])
+
+# Create global best
+g_best = copy.copy(sorted(list_ind)[0])
 
 # Plotting population
 for indiv in list_ind:
