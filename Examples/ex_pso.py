@@ -51,7 +51,14 @@ plt.axis([xmin, xmax, ymin, ymax])
 delta = []
 # Update coordinates of individuals
 for i in range(pop_size):
-    delta.append((.3*(p_best[i][1][0] - list_ind[i][1][0]) + .2*(g_best[1][0] - list_ind[i][1][0]),\
-        .3*(p_best[i][1][1] - list_ind[i][1][1]) + .2*(g_best[1][1] - list_ind[i][1][1])))
+    list_ind[i][1] = (list_ind[i][1][0] + .3*(p_best[i][1][0] - list_ind[i][1][0]) + .2*(g_best[1][0] - list_ind[i][1][0]),
+                      list_ind[i][1][1] + .3*(p_best[i][1][1] - list_ind[i][1][1]) + .2*(g_best[1][1] - list_ind[i][1][1]))
+
+    # Update fitness value
+    list_ind[i][0] = abs(real[0] - list_ind[i][1][0] * (xmax - xmin) + xmin) + \
+                     abs(real[1] - list_ind[i][1][1] * (ymax - ymin) + ymin)
+
+    # Plot new population
+    plt.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin, "gp")
 
 plt.show()
