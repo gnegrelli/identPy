@@ -23,6 +23,10 @@ for i in range(pop_size):
 # Sort individuals by their fitness
 list_ind.sort()
 
+# Plotting population
 for indiv in list_ind:
-    print indiv
+    plt.plot(indiv[1][0]*(xmax - xmin) + xmin, indiv[1][1]*(ymax - ymin) + ymin, "ro")
 
+plt.plot(real[0], real[1], 'gx')
+plt.axis([xmin, xmax, ymin, ymax])
+plt.show()
