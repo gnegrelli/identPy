@@ -6,120 +6,137 @@ University of Sao Paulo
 @author: Gabriel
 """
 
-import numpy as np
 
-import matplotlib.pyplot as plt
-from matplotlib import style
+def Function(dic, tolerance):
+    
+    import numpy as np
 
-import copy
+    import matplotlib.pyplot as plt
+    from matplotlib import style
 
-# Population size
-pop_size = 10
+    import datetime
+    import copy
 
-# Boundaries
-xmax = 10.
-xmin = 0.
+    # Timestamp for PSO Method
+    start_time = datetime.datetime.now()
 
-ymax = 10.
-ymin = 0.
+    print "------------------PSO-------------------"
 
-# Speed constants
-vp = .3
-vg = .2
+    SIM = __import__(dic['chsn_sim'])
+    ERROR = __import__(dic['chsn_err'])
 
-# Control variables
-tol = .1
-max_gen = 50
-gen = 0
+    # Population size
+    pop_size = 10
 
-list_ind = []
+    # Boundaries
+    xmax = 10.
+    xmin = 0.
 
-real = (3., 5.)
+    ymax = 10.
+    ymin = 0.
 
-p_best = []
+    # Speed constants
+    vp = .3
+    vg = .2
 
-v = []
+    # Control variables
+    tol = .1
+    max_gen = 50
+    gen = 0
 
-# Plot configuration
-style.use('ggplot')
+    list_ind = []
 
-# Create figure
-fig = plt.figure()
-ax1 = fig.add_subplot(1, 1, 1)
-ax1.axis([xmin, xmax, ymin, ymax])
+    real = (3., 5.)
 
-# Plotting real values
-ax1.plot(real[0], real[1], 'gx')
+    p_best = []
 
+    v = []
 
-color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
-marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
+    # Plot configuration
+    style.use('ggplot')
 
-# Create random population
-for i in range(pop_size):
-    list_ind.append([0, (np.random.random(), np.random.random())])
-
-    # Evaluate fitness of individual
-    list_ind[i][0] = abs(real[0] - list_ind[i][1][0]*(xmax - xmin) + xmin) + \
-                     abs(real[1] - list_ind[i][1][1]*(ymax - ymin) + ymin)
-
-    # Create personal best vector
-    p_best.append(copy.copy(list_ind[i]))
-
-    # Initialize speed of particles
-    v.append((0., 0.))
-
-    # Plot new population
-    ax1.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
-             color[i % len(color)] + '*')
-
-# Create global best
-g_best = copy.copy(sorted(list_ind)[0])
-
-while gen < max_gen and g_best[0] > tol:
-
-    plt.pause(.1)
-
-    # Redraw graph
-    ax1.clear()
+    # Create figure
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 1, 1)
     ax1.axis([xmin, xmax, ymin, ymax])
-
-    gen += 1
-
-    # Update coordinates of individuals
-    for i in range(pop_size):
-
-        # Calculate acceleration of particles
-        a = (vp*(p_best[i][1][0] - list_ind[i][1][0]) + vg*(g_best[1][0] - list_ind[i][1][0]),
-             vp*(p_best[i][1][1] - list_ind[i][1][1]) + vg*(g_best[1][1] - list_ind[i][1][1]))
-
-        # Update position of particles
-        list_ind[i][1] = (min(max(list_ind[i][1][0] + v[i][0] + a[0], xmin), xmax),
-                          min(max(list_ind[i][1][1] + v[i][1] + a[1], ymin), ymax))
-
-        # Update speed of particles
-        v[i] = (v[i][0] + a[0], v[i][1] + a[1])
-
-        # Update fitness value
-        list_ind[i][0] = abs(real[0] - list_ind[i][1][0] * (xmax - xmin) + xmin) + \
-                         abs(real[1] - list_ind[i][1][1] * (ymax - ymin) + ymin)
-
-        # Update personal best vector
-        if p_best[i][0] > list_ind[i][0]:
-            p_best[i] = copy.copy(list_ind[i])
-
-        # Plot new population
-        ax1.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
-                 color[i % len(color)] + marker[i % len(marker)])
 
     # Plotting real values
     ax1.plot(real[0], real[1], 'gx')
 
-    if g_best[0] > min(list_ind)[0]:
-        g_best = copy.copy(sorted(list_ind)[0])
 
-print gen
+    color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+    marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
 
-print g_best
+    # Create random population
+    for i in range(pop_size):
+        list_ind.append([0, (np.random.random(), np.random.random())])
 
-plt.show()
+        # Evaluate fitness of individual
+        list_ind[i][0] = abs(real[0] - list_ind[i][1][0]*(xmax - xmin) + xmin) + \
+                         abs(real[1] - list_ind[i][1][1]*(ymax - ymin) + ymin)
+
+        # Create personal best vector
+        p_best.append(copy.copy(list_ind[i]))
+
+        # Initialize speed of particles
+        v.append((0., 0.))
+
+        # Plot new population
+        ax1.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
+                 color[i % len(color)] + '*')
+
+    # Create global best
+    g_best = copy.copy(sorted(list_ind)[0])
+
+    while gen < max_gen and g_best[0] > tol:
+
+        plt.pause(.1)
+
+        # Redraw graph
+        ax1.clear()
+        ax1.axis([xmin, xmax, ymin, ymax])
+
+        gen += 1
+
+        # Update coordinates of individuals
+        for i in range(pop_size):
+
+            # Calculate acceleration of particles
+            a = (vp*(p_best[i][1][0] - list_ind[i][1][0]) + vg*(g_best[1][0] - list_ind[i][1][0]),
+                 vp*(p_best[i][1][1] - list_ind[i][1][1]) + vg*(g_best[1][1] - list_ind[i][1][1]))
+
+            # Update position of particles
+            list_ind[i][1] = (min(max(list_ind[i][1][0] + v[i][0] + a[0], xmin), xmax),
+                              min(max(list_ind[i][1][1] + v[i][1] + a[1], ymin), ymax))
+
+            # Update speed of particles
+            v[i] = (v[i][0] + a[0], v[i][1] + a[1])
+
+            # Update fitness value
+            list_ind[i][0] = abs(real[0] - list_ind[i][1][0] * (xmax - xmin) + xmin) + \
+                             abs(real[1] - list_ind[i][1][1] * (ymax - ymin) + ymin)
+
+            # Update personal best vector
+            if p_best[i][0] > list_ind[i][0]:
+                p_best[i] = copy.copy(list_ind[i])
+
+            # Plot new population
+            ax1.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
+                     color[i % len(color)] + marker[i % len(marker)])
+
+        # Plotting real values
+        ax1.plot(real[0], real[1], 'gx')
+
+        if g_best[0] > min(list_ind)[0]:
+            g_best = copy.copy(sorted(list_ind)[0])
+
+    print gen
+
+    print g_best
+
+    plt.show()
+
+    print "PSO elapsed time: ", datetime.datetime.now() - start_time
+
+    # Return best individual
+    return g_best
