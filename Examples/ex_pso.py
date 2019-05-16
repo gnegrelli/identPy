@@ -6,7 +6,7 @@ from matplotlib import style
 import copy
 
 # Population size
-pop_size = 5
+pop_size = 10
 
 # Boundaries
 xmax = 10.
@@ -20,7 +20,7 @@ vp = .3
 vg = .2
 
 # Control variables
-tol = .3
+tol = .1
 max_gen = 50
 gen = 0
 
@@ -63,12 +63,18 @@ for i in range(pop_size):
 
     # Plot new population
     ax1.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
-             color[i] + '*')
+             color[i % len(color)] + '*')
 
 # Create global best
 g_best = copy.copy(sorted(list_ind)[0])
 
 while gen < max_gen and g_best[0] > tol:
+
+    plt.pause(.1)
+
+    # Redraw graph
+    ax1.clear()
+    ax1.axis([xmin, xmax, ymin, ymax])
 
     gen += 1
 
@@ -96,16 +102,16 @@ while gen < max_gen and g_best[0] > tol:
 
         # Plot new population
         ax1.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
-                 color[i] + marker[i])
+                 color[i % len(color)] + marker[i % len(marker)])
+
+    # Plotting real values
+    ax1.plot(real[0], real[1], 'gx')
 
     if g_best[0] > min(list_ind)[0]:
         g_best = copy.copy(sorted(list_ind)[0])
 
-for p in p_best:
-    print p
-
 print gen
 
-print "**", g_best, "**"
+print g_best
 
 plt.show()
