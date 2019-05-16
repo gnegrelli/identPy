@@ -1,5 +1,8 @@
 import numpy as np
+
 import matplotlib.pyplot as plt
+from matplotlib import style
+
 import copy
 
 # Population size
@@ -29,8 +32,17 @@ p_best = []
 
 v = []
 
-plt.plot(real[0], real[1], 'gx')
-plt.axis([xmin, xmax, ymin, ymax])
+# Plot configuration
+style.use('ggplot')
+
+# Create figure
+fig = plt.figure()
+ax1 = fig.add_subplot(1, 1, 1)
+ax1.axis([xmin, xmax, ymin, ymax])
+
+# Plotting real values
+ax1.plot(real[0], real[1], 'gx')
+
 
 color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
@@ -50,7 +62,7 @@ for i in range(pop_size):
     v.append((0., 0.))
 
     # Plot new population
-    plt.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
+    ax1.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
              color[i] + '*')
 
 # Create global best
@@ -83,7 +95,7 @@ while gen < max_gen and g_best[0] > tol:
             p_best[i] = copy.copy(list_ind[i])
 
         # Plot new population
-        plt.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
+        ax1.plot(list_ind[i][1][0]*(xmax - xmin) + xmin, list_ind[i][1][1]*(ymax - ymin) + ymin,
                  color[i] + marker[i])
 
     if g_best[0] > min(list_ind)[0]:
