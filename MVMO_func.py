@@ -160,7 +160,7 @@ def Function(dic, tolerance):
         plt.ylabel("Mutated gene")
         plt.xlabel("Random gene")
         plt.legend(loc='best')
-        plt.show()
+        # plt.show()
         
         # Gene selection for mutation
         if rndm:
