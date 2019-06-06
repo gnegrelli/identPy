@@ -52,8 +52,6 @@ else:
     # dic['real'] = np.array([3., 6.])  # Spring Mass
     # dic['real'] = np.array([.1, 1., 9.8, 1.])  # Pendulum
     dic['real'] = np.array([0.2089, 0.0446, 0.0963, 0.0139, 4.1358, 2.8004, 1.0750, -0.3689])  # Z-IM Load Model
-    # dic['real'] = np.array([0.371, 0.026, 0.102, 0.099, 3.984, 3.003, 0.956, 0.014])  # Z-IM Load Model
-    # dic['real'] = np.array([0.192, 0.067, 0.085, 0.020, 5.484, 2.006, 1.1, -0.25])  # Z-IM Load Model
     # dic['real'] = np.array([2.0, 10.516, 0.038, 0.393, 0.4022, 2.3861])  # DFIG
 
 
@@ -116,7 +114,7 @@ dic['TS'] = {}
 
 # dic['TS']['p0'] = np.array([.8, 9.])  # Spring-Mass
 # dic['TS']['p0'] = np.array([.1, .8, 10, 1.])  # Pendulum
-dic['TS']['p0'] = np.array([.32620312, .0453461, .165223186, .01357852, 3.536177, 5.8111137, .976726836, -0.38856365])  # Z-IM
+dic['TS']['p0'] = np.array([.208768173, .044601468, .096226578, .01390025, 4.141999022, 2.802250012, 1.075018903, -0.368917565])  # Z-IM
 # dic['TS']['p0'] = np.array([2., 10., 0.04, 0.4, 0.4, 2.])  # DFIG
 
 dic['TS']['delta_p'] = .001*np.ones_like(dic['TS']['p0'])
@@ -136,7 +134,7 @@ Runge-Kutta configuration
 """
 dic['RK4'] = {}
 dic['RK4']['t0'] = 0.
-dic['RK4']['tf'] = 1.
+dic['RK4']['tf'] = .5
 dic['RK4']['step'] = 0.001
 
 # dic['RK4']['x0'] = np.array([[0., 0.]])
@@ -144,8 +142,8 @@ dic['RK4']['step'] = 0.001
 # dic['RK4']['u'] = np.array([[4.]])
 
 dic['RK4']['x0'] = np.array([[1.0750, -0.3689, 364.381]])  # Para Load Model
-dic['RK4']['u0'] = np.array([1.])
-dic['RK4']['u'] = np.array([[0.0165]])
+dic['RK4']['u0'] = .95*np.array([1.])
+dic['RK4']['u'] = 3*np.array([[0.0165]])
 
 # dic['RK4']['x0'] = np.array([[0.9904, 0.2002]])  # Para DFIG
 # dic['RK4']['u0'] = np.array([1., 0., 1., 0.2])
@@ -155,17 +153,16 @@ dic['RK4']['u'] = np.array([[0.0165]])
 Start of Estimation Process
 """
 
-estMTHD = __import__(dic['chsn_est1'])
+# estMTHD = __import__(dic['chsn_est1'])
 
-dic['TS']['p0'] = estMTHD.Function(dic, tol1)
+# dic['TS']['p0'] = estMTHD.Function(dic, tol1)
 
 # print '\007'  # Warning Sound
 
 estMTHD = __import__(dic['chsn_est2'])
-
 print estMTHD.Function(dic, tol2)
 print "EOF"
 
 # os.system('spd-say "Your estimation has finished"')
 
-# plt.show()
+plt.show()

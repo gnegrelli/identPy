@@ -52,11 +52,11 @@ def Function(dic, tolerance):
     # Output for initial values of p
     op = SIM.rk4(dic, p)
 
-    # plt.figure(1)
-    # plt.plot(op_real[:, 0], op_real[:, 1], linewidth=2.5, color="y", label="Real System")
+    plt.figure(1)
+    plt.plot(op_real[:, 0], op_real[:, 1], linewidth=4, color="darkgray", label="Real System")
     
-    # plt.figure(2)
-    # plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
+    plt.figure(2)
+    plt.plot(op_real[:, 0], op_real[:, 2], linewidth=4, color="darkgray", label="Real System")
     
     # plt.figure(1)
     # plt.plot(op[:, 0], op[:, 1], linewidth=2.5, color="b", label="TS start")
@@ -125,22 +125,22 @@ def Function(dic, tolerance):
     print "Final Error: ", dic['error_log'][-1]
 
     # Plot y1 from TS
-    # plt.figure(1)
-    # plt.plot(op[:, 0], op[:, 1], "k--", label="Traj. Sens.")
-    # plt.legend()
+    plt.figure(1)
+    plt.plot(op[:, 0], op[:, 1], "k-.", linewidth=1, label="Traj. Sens.")
+    plt.legend()
 
     # Plot y2 from TS
-    # plt.figure(2)
-    # plt.plot(op[:, 0], op[:, 2], "k--", label="Traj. Sens.")
-    # plt.legend()
+    plt.figure(2)
+    plt.plot(op[:, 0], op[:, 2], "k-.", linewidth=1, label="Traj. Sens.")
+    plt.legend()
 
     # Plot error evolution
-    # plt.figure(3)
-    # if (dic['error_log'].size - dic['TS']['counter'] - 1) == 0:
-    #     plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
-    # else:
-    #     plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
-    # plt.legend()
+    plt.figure(3)
+    if (dic['error_log'].size - dic['TS']['counter'] - 1) == 0:
+        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
+    else:
+        plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
+    plt.legend()
 
     print "Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time
 
