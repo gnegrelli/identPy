@@ -165,4 +165,22 @@ print "EOF"
 
 # os.system('spd-say "Your estimation has finished"')
 
+plt.figure(1)
+plt.title("Active Power", fontsize=25)
+plt.xlabel("Time (s)", fontsize=20)
+plt.ylabel(r'$\Delta$P', fontsize=20)
+plt.tick_params(labelsize="larger")
+
+plt.figure(2)
+plt.title("Reactive Power", fontsize=25)
+plt.xlabel("Time (s)", fontsize=20)
+plt.ylabel(r'$\Delta$Q', fontsize=20)
+plt.tick_params(labelsize="larger")
+
+plt.figure(3)
+plt.title("Error Evolution", fontsize=25)
+plt.xlabel("Generation", fontsize=20)
+plt.ylabel("Error", fontsize=20)
+plt.tick_params(labelsize="larger")
+
 plt.show()

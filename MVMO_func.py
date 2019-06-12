@@ -229,11 +229,11 @@ def Function(dic, tolerance):
     # plt.ylabel(r'$\Delta$Q')
 
     # Plot error evolution
-    # plt.figure(3)
-    # if (dic['error_log'].size - dic['MVMO']['counter'] - 1) == 0:
-    #     plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
-    # else:
-    #     plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
+    plt.figure(3)
+    if (dic['error_log'].size - dic['MVMO']['counter'] - 1) == 0:
+        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
+    else:
+        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
     # plt.title("Error evolution")
     # plt.xlabel("Generation")
     # plt.ylabel("Error")

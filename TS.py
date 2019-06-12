@@ -127,12 +127,12 @@ def Function(dic, tolerance):
     # Plot y1 from TS
     plt.figure(1)
     plt.plot(op[:, 0], op[:, 1], "k-.", linewidth=1, label="Traj. Sens.")
-    plt.legend()
+    plt.legend(loc=4, prop={'size': 18})
 
     # Plot y2 from TS
     plt.figure(2)
     plt.plot(op[:, 0], op[:, 2], "k-.", linewidth=1, label="Traj. Sens.")
-    plt.legend()
+    plt.legend(loc=4, prop={'size': 18})
 
     # Plot error evolution
     plt.figure(3)
@@ -140,7 +140,7 @@ def Function(dic, tolerance):
         plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
     else:
         plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
-    plt.legend()
+    plt.legend(loc=0, prop={'size': 18})
 
     print "Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time
 
