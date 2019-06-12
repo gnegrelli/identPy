@@ -68,7 +68,7 @@ def Function(dic, tolerance):
     ax1.axis([xmin, xmax, ymin, ymax])
 
     # Plotting real values
-    ax1.plot(real[0], real[1], 'gx')
+    ax1.plot(dic['real'][0], dic['real'][1], 'gx')
 
     color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
@@ -94,11 +94,9 @@ def Function(dic, tolerance):
     # Create global best
     g_best = copy.copy(sorted(particles)[0])
 
-    plt.show()
-
     while iter < max_it and g_best[0] > tolerance:
 
-        plt.pause(.1)
+        plt.pause(.001)
 
         # Redraw graph
         ax1.clear()
@@ -106,7 +104,7 @@ def Function(dic, tolerance):
 
         iter += 1
 
-        # Update coordinates of individuals
+        # Update coordinates of particles
         for i in range(swarm_size):
 
             # Calculate acceleration of particles
@@ -115,25 +113,25 @@ def Function(dic, tolerance):
 
             # Update position of particles
             particles[i][1] = (min(max(particles[i][1][0] + v[i][0] + a[0], xmin), xmax),
-                              min(max(particles[i][1][1] + v[i][1] + a[1], ymin), ymax))
+                               min(max(particles[i][1][1] + v[i][1] + a[1], ymin), ymax))
 
             # Update speed of particles
             v[i] = (v[i][0] + a[0], v[i][1] + a[1])
 
             # Update fitness value
-            particles[i][0] = abs(real[0] - particles[i][1][0] * (xmax - xmin) + xmin) + \
-                             abs(real[1] - particles[i][1][1] * (ymax - ymin) + ymin)
+            particles[i][0] = .5*dic['TS']['step'] * \
+                              ERROR.Error(op_real, SIM.rk4(dic, (particles[i][1] * (up_bound - low_bound) + low_bound)))
 
             # Update personal best vector
             if p_best[i][0] > particles[i][0]:
                 p_best[i] = copy.copy(particles[i])
 
-            # Plot new population
+            # Plot swarm
             ax1.plot(particles[i][1][0]*(xmax - xmin) + xmin, particles[i][1][1]*(ymax - ymin) + ymin,
                      color[i % len(color)] + marker[i % len(marker)])
 
         # Plotting real values
-        ax1.plot(real[0], real[1], 'gx')
+        ax1.plot(dic['real'][0], dic['real'][1], 'gx')
 
         if g_best[0] > min(particles)[0]:
             g_best = copy.copy(sorted(particles)[0])
@@ -146,5 +144,5 @@ def Function(dic, tolerance):
 
     print "PSO elapsed time: ", datetime.datetime.now() - start_time
 
-    # Return best individual
+    # Return best particle
     return g_best
