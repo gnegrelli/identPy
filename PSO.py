@@ -48,8 +48,10 @@ def Function(dic, tolerance):
 
     list_ind = []
 
-    real = (3., 5.)
-    real = np.array([3., 5.])
+    if not dic['import_data']:
+        op_real = SIM.rk4(dic, dic['real'])
+    else:
+        op_real = dic['u'][:, [0, 3, 4]]
 
     p_best = []
 
@@ -59,12 +61,12 @@ def Function(dic, tolerance):
     style.use('ggplot')
 
     # Create figure
-    fig = plt.figure()
-    ax1 = fig.add_subplot(1, 1, 1)
-    ax1.axis([xmin, xmax, ymin, ymax])
+    # fig = plt.figure()
+    # ax1 = fig.add_subplot(1, 1, 1)
+    # ax1.axis([xmin, xmax, ymin, ymax])
 
     # Plotting real values
-    ax1.plot(real[0], real[1], 'gx')
+    # ax1.plot(real[0], real[1], 'gx')
 
     color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
@@ -74,12 +76,8 @@ def Function(dic, tolerance):
         list_ind.append([0, (np.random.random(), np.random.random())])
 
         # Evaluate fitness of individual
-        list_ind[i][0] = sum(abs(real - list_ind[i][1]*(up_bound - low_bound) + low_bound))
-
-        print list_ind
-
-        list_ind[i][0] = abs(real[0] - list_ind[i][1][0]*(xmax - xmin) + xmin) + \
-                         abs(real[1] - list_ind[i][1][1]*(ymax - ymin) + ymin)
+        list_ind[i][0] = .5*dic['TS']['step'] * \
+                         ERROR.Error(op_real, SIM.rk4(dic, (list_ind[i][1]*(up_bound - low_bound) + low_bound)))
 
         print list_ind
 
@@ -90,8 +88,8 @@ def Function(dic, tolerance):
         v.append((0., 0.))
 
         # Plot new population
-        ax1.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
-                 color[i % len(color)] + '*')
+        # ax1.plot(list_ind[i][1][0] * (xmax - xmin) + xmin, list_ind[i][1][1] * (ymax - ymin) + ymin,
+        #          color[i % len(color)] + '*')
 
     # Create global best
     g_best = copy.copy(sorted(list_ind)[0])
