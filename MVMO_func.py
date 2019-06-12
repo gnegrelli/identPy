@@ -6,6 +6,7 @@ University of Sao Paulo
 @author: Gabriel
 """
 
+
 # H Function: Mapping function of mutation
 def hFunc(m, s1, s2, u):
 
@@ -13,6 +14,7 @@ def hFunc(m, s1, s2, u):
     
     h = m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1-u)*s2))
     return h
+
 
 # Sorting method: Sorts individuals by lowest error (first element on the list of individuals)
 def takeFirst(elem):
@@ -37,7 +39,10 @@ def Function(dic, tolerance):
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
 
+    # Size of population
     population = dic['MVMO']['population']
+
+    # Number of offsprings
     new_generation = dic['MVMO']['new_gen']
     
     selected_genes = []
