@@ -26,9 +26,12 @@ def Function(dic, tolerance):
     ERROR = __import__(dic['chsn_err'])
 
     # Population size
-    pop_size = 10
+    pop_size = dic['PSO']['population']
 
     # Boundaries
+    up_bound = dic['PSO']['p_max']
+    low_bound = dic['PSO']['p_min']
+
     xmax = 10.
     xmin = 0.
 
@@ -40,13 +43,13 @@ def Function(dic, tolerance):
     vg = .2
 
     # Control variables
-    tol = .1
-    max_gen = 50
-    gen = 0
+    max_it = dic['PSO']['max_iteration']
+    iter = 0
 
     list_ind = []
 
     real = (3., 5.)
+    real = np.array([3., 5.])
 
     p_best = []
 
@@ -63,7 +66,6 @@ def Function(dic, tolerance):
     # Plotting real values
     ax1.plot(real[0], real[1], 'gx')
 
-
     color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
 
@@ -72,8 +74,14 @@ def Function(dic, tolerance):
         list_ind.append([0, (np.random.random(), np.random.random())])
 
         # Evaluate fitness of individual
+        list_ind[i][0] = sum(abs(real - list_ind[i][1]*(up_bound - low_bound) + low_bound))
+
+        print list_ind
+
         list_ind[i][0] = abs(real[0] - list_ind[i][1][0]*(xmax - xmin) + xmin) + \
                          abs(real[1] - list_ind[i][1][1]*(ymax - ymin) + ymin)
+
+        print list_ind
 
         # Create personal best vector
         p_best.append(copy.copy(list_ind[i]))
@@ -88,7 +96,7 @@ def Function(dic, tolerance):
     # Create global best
     g_best = copy.copy(sorted(list_ind)[0])
 
-    while gen < max_gen and g_best[0] > tol:
+    while iter < max_it and g_best[0] > tolerance:
 
         plt.pause(.1)
 
@@ -96,7 +104,7 @@ def Function(dic, tolerance):
         ax1.clear()
         ax1.axis([xmin, xmax, ymin, ymax])
 
-        gen += 1
+        iter += 1
 
         # Update coordinates of individuals
         for i in range(pop_size):
@@ -130,7 +138,7 @@ def Function(dic, tolerance):
         if g_best[0] > min(list_ind)[0]:
             g_best = copy.copy(sorted(list_ind)[0])
 
-    print gen
+    print iter
 
     print g_best
 
