@@ -42,10 +42,6 @@ def Function(dic, tolerance):
     vp = dic['PSO']['p_speed']
     vg = dic['PSO']['g_speed']
 
-    # Control variables
-    max_it = dic['PSO']['max_iteration']
-    iter = 0
-
     particles = []
 
     if not dic['import_data']:
@@ -95,7 +91,7 @@ def Function(dic, tolerance):
     # Create global best
     g_best = copy.copy(sorted(particles)[0])
 
-    while iter < max_it and g_best[0] > tolerance:
+    while dic['PSO']['counter'] < dic['PSO']['max_iteration'] and g_best[0] > tolerance:
 
         plt.pause(.001)
 
@@ -103,7 +99,7 @@ def Function(dic, tolerance):
         ax1.clear()
         ax1.axis([xmin, xmax, ymin, ymax])
 
-        iter += 1
+        dic['PSO']['counter'] += 1
 
         # Update coordinates of particles
         for i in range(swarm_size):
@@ -137,7 +133,7 @@ def Function(dic, tolerance):
         if g_best[0] > min(particles)[0]:
             g_best = copy.copy(sorted(particles)[0])
 
-    print iter
+    print dic['PSO']['counter']
 
     print g_best, np.array(g_best[1]*(up_bound - low_bound) + low_bound)
 

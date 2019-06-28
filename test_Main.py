@@ -124,6 +124,8 @@ dic['PSO']['g_speed'] = .02
 dic['PSO']['p_min'] = np.array([0., 0.])
 dic['PSO']['p_max'] = np.array([10., 10.])
 
+dic['PSO']['counter'] = 0
+
 
 """
 Trajectory Sensitivity configuration
