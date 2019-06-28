@@ -165,7 +165,7 @@ def Function(dic, tolerance):
         plt.ylabel("Mutated gene")
         plt.xlabel("Random gene")
         plt.legend(loc='best')
-        plt.show()
+        # plt.show()
         
         # Gene selection for mutation
         if rndm:
@@ -246,4 +246,5 @@ def Function(dic, tolerance):
     print "MVMO elapsed time: ", datetime.datetime.now() - start_time
 
     # Return best individual
+    print list_inds[0][1]*(lim_max-lim_min) + lim_min
     return list_inds[0][1]*(lim_max-lim_min) + lim_min

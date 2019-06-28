@@ -138,11 +138,11 @@ def Function(dic, tolerance):
 
     print iter
 
-    print g_best
+    print g_best, np.array(g_best[1]*(up_bound - low_bound) + low_bound)
 
     plt.show()
 
     print "PSO elapsed time: ", datetime.datetime.now() - start_time
 
     # Return best particle
-    return g_best
+    return np.array(g_best[1]*(up_bound - low_bound) + low_bound)
