@@ -79,7 +79,7 @@ def Function(dic, tolerance):
 
         # Evaluate fitness of particle
         particles[i][0] = .5*dic['TS']['step'] * \
-                         ERROR.Error(op_real, SIM.rk4(dic, (particles[i][1]*(up_bound - low_bound) + low_bound)))
+                          ERROR.Error(op_real, SIM.rk4(dic, (particles[i][1]*(up_bound - low_bound) + low_bound)))
 
         # Create personal best vector
         p_best.append(copy.copy(particles[i]))
@@ -88,7 +88,8 @@ def Function(dic, tolerance):
         v.append((0., 0.))
 
         # Plot new population
-        ax1.plot((particles[i][1]*(up_bound - low_bound) + low_bound)[0], (particles[i][1]*(up_bound - low_bound) + low_bound)[1],
+        ax1.plot((particles[i][1]*(up_bound - low_bound) + low_bound)[0],
+                 (particles[i][1]*(up_bound - low_bound) + low_bound)[1],
                  color[i % len(color)] + '*')
 
     # Create global best
@@ -120,7 +121,7 @@ def Function(dic, tolerance):
 
             # Update fitness value
             particles[i][0] = .5*dic['TS']['step'] * \
-                              ERROR.Error(op_real, SIM.rk4(dic, (particles[i][1] * (up_bound - low_bound) + low_bound)))
+                              ERROR.Error(op_real, SIM.rk4(dic, (particles[i][1]*(up_bound - low_bound) + low_bound)))
 
             # Update personal best vector
             if p_best[i][0] > particles[i][0]:
@@ -141,6 +142,38 @@ def Function(dic, tolerance):
     print g_best, np.array(g_best[1]*(up_bound - low_bound) + low_bound)
 
     plt.show()
+
+    # Plot y1 real and from MVMO
+    plt.figure(1)
+    plt.plot(op_real[:, 0], op_real[:, 1], linewidth=2.5, color="y", label="Real System")
+    plt.plot(SIM.rk4(dic, (g_best[1]*(up_bound - low_bound) + low_bound))[:, 0],
+             SIM.rk4(dic, (g_best[1]*(up_bound - low_bound) + low_bound))[:, 1], "--", label="PSO")
+    plt.title("Active Power")
+    plt.xlabel("Time (s)")
+    plt.ylabel(r'$\Delta$P')
+
+    # Plot y2 real and from MVMO
+    plt.figure(2)
+    plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
+    plt.plot(SIM.rk4(dic, (g_best[1]*(up_bound - low_bound) + low_bound))[:, 0],
+             SIM.rk4(dic, (g_best[1]*(up_bound - low_bound) + low_bound))[:, 2], "--", label="PSO")
+    plt.title("Reactive Power")
+    plt.xlabel("Time (s)")
+    plt.ylabel(r'$\Delta$Q')
+
+    # # Plot error evolution
+    # plt.figure(3)
+    # if (dic['error_log'].size - dic['MVMO']['counter'] - 1) == 0:
+    #     plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size),
+    #              dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size],
+    #              label="PSO")
+    # else:
+    #     plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 2, dic['error_log'].size - 1),
+    #              dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size],
+    #              label="PSO")
+    # plt.title("Error evolution")
+    # plt.xlabel("Generation")
+    # plt.ylabel("Error")
 
     print "PSO elapsed time: ", datetime.datetime.now() - start_time
 
