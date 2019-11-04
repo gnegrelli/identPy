@@ -6,7 +6,7 @@ from matplotlib import style
 import copy
 
 # Population size
-pop_size = 10
+pop_size = 5
 
 # Boundaries
 xmax = 10.
@@ -26,7 +26,7 @@ gen = 0
 
 list_ind = []
 
-real = (3., 5.)
+real = (10., 10.)
 
 p_best = []
 
@@ -74,7 +74,7 @@ while gen < max_gen and g_best[0] > tol:
 
     # Redraw graph
     ax1.clear()
-    ax1.axis([xmin, xmax, ymin, ymax])
+    ax1.axis([xmin, xmax + 10, ymin, ymax + 10])
 
     gen += 1
 
@@ -86,8 +86,8 @@ while gen < max_gen and g_best[0] > tol:
              vp*(p_best[i][1][1] - list_ind[i][1][1]) + vg*(g_best[1][1] - list_ind[i][1][1]))
 
         # Update position of particles
-        list_ind[i][1] = (min(max(list_ind[i][1][0] + v[i][0] + a[0], xmin), xmax),
-                          min(max(list_ind[i][1][1] + v[i][1] + a[1], ymin), ymax))
+        list_ind[i][1] = (min(max(list_ind[i][1][0] + v[i][0] + a[0], 0), 1),
+                          min(max(list_ind[i][1][1] + v[i][1] + a[1], 0), 1))
 
         # Update speed of particles
         v[i] = (v[i][0] + a[0], v[i][1] + a[1])

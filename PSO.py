@@ -110,8 +110,8 @@ def Function(dic, tolerance):
                  vp*(p_best[i][1][1] - particles[i][1][1]) + vg*(g_best[1][1] - particles[i][1][1]))
 
             # Update position of particles
-            particles[i][1] = (min(max(particles[i][1][0] + v[i][0] + a[0], xmin), xmax),
-                               min(max(particles[i][1][1] + v[i][1] + a[1], ymin), ymax))
+            particles[i][1] = (min(max(particles[i][1][0] + v[i][0] + a[0], 0), 1),
+                               min(max(particles[i][1][1] + v[i][1] + a[1], 0), 1))
 
             # Update speed of particles
             v[i] = (v[i][0] + a[0], v[i][1] + a[1])
