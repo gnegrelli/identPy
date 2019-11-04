@@ -34,9 +34,8 @@ for R2 in np.linspace(.1, 1.1, 5):
     leg.append("$R_{r}$ = " + '{:.2f}'.format(R2) + " $\Omega$")
     count += 1
 
-
 plt.legend(leg)
 plt.xlabel("$\omega\ (rad/s)$")
 plt.ylabel("$T\ (N\cdot m)$")
-plt.title("Curva Torque x velocidade da maquina assincrona")
+plt.title("Torque x speed curve")
 plt.show()

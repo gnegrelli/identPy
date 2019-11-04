@@ -158,13 +158,13 @@ def Function(dic, tolerance):
                     sf[0][counts] = d[0][counts]
                 counts += 1
 
-        h = []
-        for i in np.linspace(0, 1, 101):
-            h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
-        plt.plot(np.linspace(0, 1, 101), h)
-        plt.ylabel("Mutated gene")
-        plt.xlabel("Random gene")
-        plt.legend(loc='best')
+        # h = []
+        # for i in np.linspace(0, 1, 101):
+        #     h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
+        # plt.plot(np.linspace(0, 1, 101), h)
+        # plt.ylabel("Mutated gene")
+        # plt.xlabel("Random gene")
+        # plt.legend(loc='best')
         # plt.show()
         
         # Gene selection for mutation
@@ -199,6 +199,9 @@ def Function(dic, tolerance):
 
         # Sorting new list of individuals and discarding the worst individuals
         list_inds = sorted(list_inds, key=takeFirst)[:population]
+        print list_inds[0][0], type(list_inds[0][0])
+        print dic['error_log']
+
         dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
 
         # Increase scaling factor fs in 1% after each iteration, capping it around 15

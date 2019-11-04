@@ -49,8 +49,6 @@ def Function(dic, tolerance):
     else:
         op_real = dic['u'][:, [0, 3, 4]]
 
-    real = (3., 6.)
-
     p_best = []
 
     v = []
@@ -91,7 +89,10 @@ def Function(dic, tolerance):
     # Create global best
     g_best = copy.copy(sorted(particles)[0])
 
-    while dic['PSO']['counter'] < dic['PSO']['max_iteration'] and g_best[0] > tolerance:
+    # Add error from first particles to log
+    dic['error_log'] = np.hstack((dic['error_log'], g_best[0]))
+
+    while dic['PSO']['counter'] < dic['PSO']['max_iteration'] and dic['error_log'][-1] > tolerance:
 
         plt.pause(.001)
 
@@ -132,6 +133,8 @@ def Function(dic, tolerance):
 
         if g_best[0] > min(particles)[0]:
             g_best = copy.copy(sorted(particles)[0])
+
+        dic['error_log'] = np.hstack((dic['error_log'], g_best[0]))
 
     print dic['PSO']['counter']
 

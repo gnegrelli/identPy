@@ -74,6 +74,7 @@ def Function(dic, tolerance):
     evolution = copy.copy(p)
 
     # Error for initial values of p
+    print dic['error_log']
     dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:, 1:], op[:, 1:])))
 
     # Iteration Process
