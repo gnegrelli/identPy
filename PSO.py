@@ -12,7 +12,6 @@ def Function(dic, tolerance):
     import numpy as np
 
     import matplotlib.pyplot as plt
-    from matplotlib import style
 
     import datetime
     import copy
@@ -32,12 +31,6 @@ def Function(dic, tolerance):
     up_bound = dic['PSO']['p_max']
     low_bound = dic['PSO']['p_min']
 
-    xmax = 10.
-    xmin = 0.
-
-    ymax = 10.
-    ymin = 0.
-
     # Speed constants
     vp = dic['PSO']['p_speed']
     vg = dic['PSO']['g_speed']
@@ -53,20 +46,6 @@ def Function(dic, tolerance):
 
     v = []
 
-    # Plot configuration
-    style.use('ggplot')
-
-    # Create figure
-    fig = plt.figure()
-    ax1 = fig.add_subplot(1, 1, 1)
-    ax1.axis([xmin, xmax, ymin, ymax])
-
-    # Plotting real values
-    ax1.plot(dic['real'][0], dic['real'][1], 'gx')
-
-    color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
-    marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
-
     # Create random swarm
     for i in range(swarm_size):
         particles.append([0, (np.random.random(), np.random.random())])
@@ -81,11 +60,6 @@ def Function(dic, tolerance):
         # Initialize speed of particles
         v.append((0., 0.))
 
-        # Plot new population
-        ax1.plot((particles[i][1]*(up_bound - low_bound) + low_bound)[0],
-                 (particles[i][1]*(up_bound - low_bound) + low_bound)[1],
-                 color[i % len(color)] + '*')
-
     # Create global best
     g_best = copy.copy(sorted(particles)[0])
 
@@ -93,12 +67,6 @@ def Function(dic, tolerance):
     dic['error_log'] = np.hstack((dic['error_log'], g_best[0]))
 
     while dic['PSO']['counter'] < dic['PSO']['max_iteration'] and dic['error_log'][-1] > tolerance:
-
-        plt.pause(.001)
-
-        # Redraw graph
-        ax1.clear()
-        ax1.axis([xmin, xmax, ymin, ymax])
 
         dic['PSO']['counter'] += 1
 
@@ -123,13 +91,6 @@ def Function(dic, tolerance):
             # Update personal best vector
             if p_best[i][0] > particles[i][0]:
                 p_best[i] = copy.copy(particles[i])
-
-            # Plot swarm
-            ax1.plot(particles[i][1][0]*(xmax - xmin) + xmin, particles[i][1][1]*(ymax - ymin) + ymin,
-                     color[i % len(color)] + marker[i % len(marker)])
-
-        # Plotting real values
-        ax1.plot(dic['real'][0], dic['real'][1], 'gx')
 
         if g_best[0] > min(particles)[0]:
             g_best = copy.copy(sorted(particles)[0])

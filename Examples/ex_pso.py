@@ -26,7 +26,7 @@ gen = 0
 
 list_ind = []
 
-real = (10., 10.)
+real = (3., 5.)
 
 p_best = []
 
