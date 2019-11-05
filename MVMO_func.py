@@ -6,6 +6,7 @@ University of Sao Paulo
 @author: Gabriel
 """
 
+
 # H Function: Mapping function of mutation
 def hFunc(m, s1, s2, u):
 
@@ -13,6 +14,7 @@ def hFunc(m, s1, s2, u):
     
     h = m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1-u)*s2))
     return h
+
 
 # Sorting method: Sorts individuals by lowest error (first element on the list of individuals)
 def takeFirst(elem):
@@ -37,7 +39,10 @@ def Function(dic, tolerance):
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
 
+    # Size of population
     population = dic['MVMO']['population']
+
+    # Number of offsprings
     new_generation = dic['MVMO']['new_gen']
     
     selected_genes = []
@@ -153,14 +158,14 @@ def Function(dic, tolerance):
                     sf[0][counts] = d[0][counts]
                 counts += 1
 
-        h = []
-        for i in np.linspace(0, 1, 101):
-            h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
-        plt.plot(np.linspace(0, 1, 101), h)
-        plt.ylabel("Mutated gene")
-        plt.xlabel("Random gene")
-        plt.legend(loc='best')
-        plt.show()
+        # h = []
+        # for i in np.linspace(0, 1, 101):
+        #     h.append(hFunc(mean[0][0], sf[0][0], sf[1][0], i) + i*(1 - hFunc(mean[0][0], sf[0][0], sf[1][0], 1) + hFunc(mean[0][0], sf[0][0], sf[1][0], 0)) - hFunc(mean[0][0], sf[0][0], sf[1][0], 0))
+        # plt.plot(np.linspace(0, 1, 101), h)
+        # plt.ylabel("Mutated gene")
+        # plt.xlabel("Random gene")
+        # plt.legend(loc='best')
+        # plt.show()
         
         # Gene selection for mutation
         if rndm:
@@ -194,6 +199,9 @@ def Function(dic, tolerance):
 
         # Sorting new list of individuals and discarding the worst individuals
         list_inds = sorted(list_inds, key=takeFirst)[:population]
+        print list_inds[0][0], type(list_inds[0][0])
+        print dic['error_log']
+
         dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
 
         # Increase scaling factor fs in 1% after each iteration, capping it around 15
@@ -215,7 +223,8 @@ def Function(dic, tolerance):
     # Plot y1 real and from MVMO
     plt.figure(1)
     plt.plot(op_real[:, 0], op_real[:, 1], linewidth=2.5, color="y", label="Real System")
-    plt.plot(SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 0], SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 1], "--", label="MVMO")
+    plt.plot(SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 0],
+             SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 1], "--", label="MVMO")
     plt.title("Active Power")
     plt.xlabel("Time (s)")
     plt.ylabel(r'$\Delta$P')
@@ -223,7 +232,8 @@ def Function(dic, tolerance):
     # Plot y2 real and from MVMO
     plt.figure(2)
     plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
-    plt.plot(SIM.rk4(dic, (list_inds[0][1]*(lim_max-lim_min) + lim_min))[:, 0], SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 2], "--", label="MVMO")
+    plt.plot(SIM.rk4(dic, (list_inds[0][1]*(lim_max-lim_min) + lim_min))[:, 0],
+             SIM.rk4(dic, (list_inds[0][1]*(lim_max - lim_min) + lim_min))[:, 2], "--", label="MVMO")
     plt.title("Reactive Power")
     plt.xlabel("Time (s)")
     plt.ylabel(r'$\Delta$Q')
@@ -231,9 +241,13 @@ def Function(dic, tolerance):
     # Plot error evolution
     plt.figure(3)
     if (dic['error_log'].size - dic['MVMO']['counter'] - 1) == 0:
-        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
+        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 1, dic['error_log'].size),
+                 dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size],
+                 label="MVMO")
     else:
-        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size], label="MVMO")
+        plt.plot(range(dic['error_log'].size - dic['MVMO']['counter'] - 2, dic['error_log'].size - 1),
+                 dic['error_log'][dic['error_log'].size - dic['MVMO']['counter'] - 1:dic['error_log'].size],
+                 label="MVMO")
     plt.title("Error evolution")
     plt.xlabel("Generation")
     plt.ylabel("Error")
@@ -241,4 +255,5 @@ def Function(dic, tolerance):
     print "MVMO elapsed time: ", datetime.datetime.now() - start_time
 
     # Return best individual
+    print list_inds[0][1]*(lim_max-lim_min) + lim_min
     return list_inds[0][1]*(lim_max-lim_min) + lim_min

@@ -52,17 +52,17 @@ def Function(dic, tolerance):
     # Output for initial values of p
     op = SIM.rk4(dic, p)
 
-    plt.figure(1)
-    plt.plot(op_real[:, 0], op_real[:, 1], linewidth=2.5, color="y", label="Real System")
+    # plt.figure(1)
+    # plt.plot(op_real[:, 0], op_real[:, 1], linewidth=2.5, color="y", label="Real System")
     
-    plt.figure(2)
-    plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
+    # plt.figure(2)
+    # plt.plot(op_real[:, 0], op_real[:, 2], linewidth=2.5, color="y", label="Real System")
     
-    plt.figure(1)
-    plt.plot(op[:, 0], op[:, 1], linewidth=2.5, color="b", label="TS start")
+    # plt.figure(1)
+    # plt.plot(op[:, 0], op[:, 1], linewidth=2.5, color="b", label="TS start")
 
-    plt.figure(2)
-    plt.plot(op[:, 0], op[:, 2], linewidth=2.5, color="b", label="TS start")
+    # plt.figure(2)
+    # plt.plot(op[:, 0], op[:, 2], linewidth=2.5, color="b", label="TS start")
 
     # Auxiliary variable for Sensitivity Calculation
     aux = np.zeros(num_param)
@@ -74,6 +74,7 @@ def Function(dic, tolerance):
     evolution = copy.copy(p)
 
     # Error for initial values of p
+    print dic['error_log']
     dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:, 1:], op[:, 1:])))
 
     # Iteration Process

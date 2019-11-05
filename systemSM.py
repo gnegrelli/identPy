@@ -12,8 +12,8 @@ def Matrix(p, x0, u0):
     import numpy as np
 
     """
-    p[0] = k
-    p[1] = m
+    p[0] = m
+    p[1] = k
 
     u = [F]
 
