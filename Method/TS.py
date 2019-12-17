@@ -17,6 +17,8 @@ class TS(Method):
 
     def __call__(self, p_active=None, active_iter=0):
 
+        start_time = time.process_time()
+
         # Parameters to be estimated
         if isinstance(p_active, list):
             self.p_active = np.zeros_like(self.p)
@@ -29,6 +31,8 @@ class TS(Method):
             self.p_active = np.ones_like(self.p)
 
         print(self.p_active)
+
+        print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
 
 
