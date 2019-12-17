@@ -34,7 +34,7 @@ def Function(dic, tolerance):
     # Timestamp for MVMO Method
     start_time = datetime.datetime.now()
     
-    print "------------------MVMO------------------"
+    print("------------------MVMO------------------")
         
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
@@ -84,7 +84,7 @@ def Function(dic, tolerance):
             selected_genes.sort()
     else:
         selected_genes = sorted(random.sample(range(0, len(lim_min)), wndw_size))
-    print "Genes selected at the beginning: ", selected_genes
+    print("Genes selected at the beginning: ", selected_genes)
 
     indiv = np.zeros(len(lim_min))
     list_inds = []
@@ -100,7 +100,7 @@ def Function(dic, tolerance):
     list_inds.sort(key=takeFirst)
     dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
     
-    print "error :", dic['error_log'][-1]
+    print("error :", dic['error_log'][-1])
         
     nonzero_var = None
     mean = None
@@ -110,7 +110,7 @@ def Function(dic, tolerance):
     while dic['error_log'][-1] > tolerance and dic['MVMO']['counter'] < dic['MVMO']['max_gen']:
 
         for i in range(population):
-            print "Gen. %d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1])
+            print("Gen. %d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1]))
         dic['MVMO']['counter'] += 1
 
         mean = np.zeros((1, len(lim_min)))
@@ -129,16 +129,16 @@ def Function(dic, tolerance):
         # Repeat last non-null variance in case the new one is null
         if 0 in var:
             for i in np.where(var == 0)[1]:
-                print var
+                print(var)
                 var[0][i] = nonzero_var[0][i]
-                print var
+                print(var)
         nonzero_var = copy.copy(var)
         
-        print "----------------------------"
-        print "Mean: ", mean
-        print "Variance: ", var
-        print "Error: ", dic['error_log'][-1]
-        print "----------------------------\n\n"
+        print("----------------------------")
+        print("Mean: ", mean)
+        print("Variance: ", var)
+        print("Error: ", dic['error_log'][-1])
+        print("----------------------------\n\n")
         
         # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
         if dic['MVMO']["counter"] % 97. == 0.:
@@ -182,7 +182,7 @@ def Function(dic, tolerance):
                 selected_genes[-1] -= len(lim_min)
                 selected_genes.sort()
 
-        print "Genes selected for mutation: ", selected_genes
+        print("Genes selected for mutation: ", selected_genes)
         
         # Creating a new generation
         for i in range(new_generation):
@@ -199,8 +199,8 @@ def Function(dic, tolerance):
 
         # Sorting new list of individuals and discarding the worst individuals
         list_inds = sorted(list_inds, key=takeFirst)[:population]
-        print list_inds[0][0], type(list_inds[0][0])
-        print dic['error_log']
+        print(list_inds[0][0], type(list_inds[0][0]))
+        print(dic['error_log'])
 
         dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
 
@@ -209,16 +209,16 @@ def Function(dic, tolerance):
             fs *= 1.01
 
     # At the end of iteration process, mean, variance and final error value are presented
-    print "----------------------------"
-    print "Mean: ", mean
-    print "Variance: ", var
-    print "Error: ", dic['error_log'][-1]
-    print "----------------------------"
+    print("----------------------------")
+    print("Mean: ", mean)
+    print("Variance: ", var)
+    print("Error: ", dic['error_log'][-1])
+    print("----------------------------")
 
     # Final generation with fittest individuals
     for i in range(population):
-        print "Final Generation #%d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1])
-    print "Final Error: %f" % dic['error_log'][-1]
+        print("Final Generation #%d - Specimen #%d: %s" % (dic['MVMO']['counter'], i, list_inds[i][1]))
+    print("Final Error: %f" % dic['error_log'][-1])
 
     # Plot y1 real and from MVMO
     plt.figure(1)
@@ -252,8 +252,8 @@ def Function(dic, tolerance):
     plt.xlabel("Generation")
     plt.ylabel("Error")
 
-    print "MVMO elapsed time: ", datetime.datetime.now() - start_time
+    print("MVMO elapsed time: ", datetime.datetime.now() - start_time)
 
     # Return best individual
-    print list_inds[0][1]*(lim_max-lim_min) + lim_min
+    print(list_inds[0][1]*(lim_max-lim_min) + lim_min)
     return list_inds[0][1]*(lim_max-lim_min) + lim_min
