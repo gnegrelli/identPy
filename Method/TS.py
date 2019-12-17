@@ -1,5 +1,8 @@
 from Method.method import Method
 
+import numpy as np
+import time
+
 
 class TS(Method):
 
@@ -11,6 +14,23 @@ class TS(Method):
         self.tol = tol
 
         super().__init__()
+
+    def __call__(self, p_active=None, active_iter=0):
+
+        # Parameters to be estimated
+        if isinstance(p_active, list):
+            self.p_active = np.zeros_like(self.p)
+            try:
+                for i in p_active:
+                    self.p_active[i] = 1
+            except IndexError:
+                raise IndexError("While setting active parameters: Invalid index of parameter")
+        else:
+            self.p_active = np.ones_like(self.p)
+
+        print(self.p_active)
+
+
 
 
 # Gamma function and dJ/dp
