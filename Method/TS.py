@@ -1,9 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Oct 04 15:04:38 2018
-Trajectory Sensitivity Function
-@author: gabriel
-"""
+from Method.method import Method
+
+
+class TS(Method):
+
+    def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005):
+        self.p = p0
+        self.delta_p = delta_p
+        self.step = step
+        self.max_it = max_it
+        self.tol = tol
+
+        super().__init__()
 
 
 # Gamma function and dJ/dp
