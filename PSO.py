@@ -19,7 +19,7 @@ def Function(dic, tolerance):
     # Timestamp for PSO Method
     start_time = datetime.datetime.now()
 
-    print "------------------PSO-------------------"
+    print("------------------PSO-------------------")
 
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
@@ -97,9 +97,9 @@ def Function(dic, tolerance):
 
         dic['error_log'] = np.hstack((dic['error_log'], g_best[0]))
 
-    print dic['PSO']['counter']
+    print(dic['PSO']['counter'])
 
-    print g_best, np.array(g_best[1]*(up_bound - low_bound) + low_bound)
+    print(g_best, np.array(g_best[1]*(up_bound - low_bound) + low_bound))
 
     plt.show()
 
@@ -135,7 +135,7 @@ def Function(dic, tolerance):
     # plt.xlabel("Generation")
     # plt.ylabel("Error")
 
-    print "PSO elapsed time: ", datetime.datetime.now() - start_time
+    print("PSO elapsed time: ", datetime.datetime.now() - start_time)
 
     # Return best particle
     return np.array(g_best[1]*(up_bound - low_bound) + low_bound)

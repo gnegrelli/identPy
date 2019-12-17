@@ -34,7 +34,7 @@ def Function(dic, tolerance):
     # Timestamp for Traj. Sens. Method
     start_time = datetime.datetime.now()
     
-    print "---------Trajectory Sensitivity---------"
+    print("---------Trajectory Sensitivity---------")
     
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
@@ -74,7 +74,7 @@ def Function(dic, tolerance):
     evolution = copy.copy(p)
 
     # Error for initial values of p
-    print dic['error_log']
+    print(dic['error_log'])
     dic['error_log'] = np.hstack((dic['error_log'], .5*dic['TS']['step']*ERROR.Error(op_real[:, 1:], op[:, 1:])))
 
     # Iteration Process
@@ -100,7 +100,7 @@ def Function(dic, tolerance):
         try:
             DP = -np.linalg.solve(gamma, dJdp)
         except Exception:
-            print "DEU XABU!!"
+            print("TS: DEU XABU!!")
             break
 
         p += p_active.reshape(num_param,) * DP.reshape(num_param,)
@@ -115,15 +115,15 @@ def Function(dic, tolerance):
         # Number of iterations is increased
         dic['TS']['counter'] += 1
 
-        print "\nIteration #%d: %s" % (dic['TS']['counter'], p)
-        print "Error: ", dic['error_log'][-1]
+        print("\nIteration #%d: %s" % (dic['TS']['counter'], p))
+        print("Error: ", dic['error_log'][-1])
         evolution = np.vstack((evolution, p))
         # x0[0,0], x0[0,1] = p[6], p[7]  # IS THIS RIGHT??????
 
     # At the end of iteration process, values of p and final error value are presented
-    print "\n\n----------------------------"
-    print "Final result: %s" % p
-    print "Final Error: ", dic['error_log'][-1]
+    print("\n\n----------------------------")
+    print("Final result: %s" % p)
+    print("Final Error: ", dic['error_log'][-1])
 
     # Plot y1 from TS
     plt.figure(1)
@@ -143,7 +143,7 @@ def Function(dic, tolerance):
         plt.plot(range(dic['error_log'].size - dic['TS']['counter'] - 2, dic['error_log'].size - 1), dic['error_log'][dic['error_log'].size - dic['TS']['counter'] - 1:dic['error_log'].size], label="Traj. Sens.")
     plt.legend()
 
-    print "Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time
+    print("Trajectory Sensitivity elapsed time: ", datetime.datetime.now() - start_time)
 
     # Return optimal set of parameters
     return p

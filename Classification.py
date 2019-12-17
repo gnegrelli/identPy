@@ -34,7 +34,7 @@ def Classification(A):
             Up = np.hstack((Up, U[:, np.where(Vnorm == j)].reshape((U.shape[0], -1))))
             # print j, np.where(Vnorm==j)
 
-    print "\nParameters Classification:\n"
-    print QRS(Up.T, pivoting=True)[2] + 1
-    print "\n"
+    print("\nParameters Classification:\n")
+    print(QRS(Up.T, pivoting=True)[2] + 1)
+    print("\n")
 

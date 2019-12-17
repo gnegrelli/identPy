@@ -132,7 +132,7 @@ Trajectory Sensitivity configuration
 """
 dic['TS'] = {}
 
-dic['TS']['p0'] = np.array([.8, 9.])  # Spring-Mass
+dic['TS']['p0'] = np.array([5, 7], dtype=float)  # Spring-Mass
 # dic['TS']['p0'] = np.array([.1, .8, 10, 1.])  # Pendulum
 # dic['TS']['p0'] = np.array([.32620312, .0453461, .165223186, .01357852, 3.536177, 5.8111137, .976726836, -0.38856365])  # Z-IM
 # dic['TS']['p0'] = np.array([2., 10., 0.04, 0.4, 0.4, 2.])  # DFIG
@@ -177,11 +177,11 @@ estMTHD = __import__(dic['chsn_est1'])
 
 dic['TS']['p0'] = estMTHD.Function(dic, tol1)
 
-print '\007'  # Warning Sound
+# print('\007')  # Warning Sound
 
 estMTHD = __import__(dic['chsn_est2'])
 
-print estMTHD.Function(dic, tol2)
+print(estMTHD.Function(dic, tol2))
 
 os.system('spd-say "Your estimation has finished"')
 
