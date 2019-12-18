@@ -7,6 +7,9 @@ import time
 class TS(Method):
 
     def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005):
+
+        assert isinstance(p0, np.ndarray), "Parameters must be a numpy array"
+
         self.p = p0
         self.delta_p = delta_p
         self.step = step
