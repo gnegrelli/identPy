@@ -75,8 +75,8 @@ class MVMO(Method):
         print("Error :", self.error_log[-1])
 
         nonzero_var = None
-        mean = np.zeros((1, num_genes))
-        var = np.zeros((1, num_genes))
+        mean = np.zeros(num_genes)
+        var = np.zeros(num_genes)
 
         # Iteration process
         while self.error_log[-1] > self.tol and self.counter < self.max_gen:
@@ -111,6 +111,7 @@ class MVMO(Method):
             if self.counter % 97 != 0:
                 s = -self.fs*np.log(var)
                 sf = np.array([s[0], s[0]])
+                print(s)
 
                 # TODO: Vary shape factor using d and Delta_d
                 # counts = 0
@@ -147,17 +148,44 @@ class MVMO(Method):
 
             print("Genes selected for mutation: ", selected_genes)
 
+            print(list_inds)
+
+            # Creating a new generation
+            for i in range(self.offsp_sz):
+                indiv = np.zeros(num_genes)
+                for j in range(num_genes):
+                    # Mutation
+                    if j in selected_genes:
+                        x_rnd = random.random()
+                        h_1 = self.h_function(mean[j], s[j], s[j], 1)
+                        h_0 = self.h_function(mean[j], s[j], s[j], 0)
+                        h_x = self.h_function(mean[j], s[j], s[j], x_rnd)
+                        indiv[j] = h_x + (1 - h_1 + h_0)*x_rnd - h_0
+                    # Crossover
+                    else:
+                        indiv[j] = list_inds[0][1][j]
+
+                # TODO: append error calculation instead of i
+                list_inds.append([i, indiv])
+
+            print(list_inds)
+
             if self.counter >= 2:
                 break
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
+
+    # Mapping function h
+    def h_function(self, m, s1, s2, u):
+
+        return m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1 - u)*s2))
 
 
 # H Function: Mapping function of mutation
 def hFunc(m, s1, s2, u):
 
     import numpy as np
-    
+
     h = m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1-u)*s2))
     return h
 
@@ -170,7 +198,7 @@ def takeFirst(elem):
 
 # MVMO Estimation Process
 def Function(dic, tolerance):
-        
+
     import numpy as np
     import random
     import copy
@@ -179,9 +207,9 @@ def Function(dic, tolerance):
 
     # Timestamp for MVMO Method
     start_time = datetime.datetime.now()
-    
+
     print("------------------MVMO------------------")
-        
+
     SIM = __import__(dic['chsn_sim'])
     ERROR = __import__(dic['chsn_err'])
 
@@ -190,14 +218,14 @@ def Function(dic, tolerance):
 
     # Number of offsprings
     new_generation = dic['MVMO']['new_gen']
-    
+
     selected_genes = []
-    
+
     if not dic['import_data']:
         op_real = SIM.rk4(dic, dic['real'])
     else:
         op_real = dic['u'][:, [0, 3, 4]]
-    
+
     # plt.figure(1)
     # plt.plot(op_real[:, 1], label = str(real))
     # plt.legend()
@@ -205,7 +233,7 @@ def Function(dic, tolerance):
     # plt.figure(2)
     # plt.plot(op_real[:, 2], label = str(real))
     # plt.legend()
-    
+
     lim_min = dic['MVMO']['p_min']
     lim_max = dic['MVMO']['p_max']
 
@@ -239,15 +267,15 @@ def Function(dic, tolerance):
     for i in range(population):
         for j in range(len(lim_min)):
             indiv[j] = random.random()
-    
+
         list_inds.append((.5*dic['TS']['step']*ERROR.Error(op_real, SIM.rk4(dic, (indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
 
     # Sorting and error calculation of first individuals
     list_inds.sort(key=takeFirst)
     dic['error_log'] = np.hstack((dic['error_log'], list_inds[0][0]))
-    
+
     print("error :", dic['error_log'][-1])
-        
+
     nonzero_var = None
     mean = None
     var = None
@@ -266,7 +294,7 @@ def Function(dic, tolerance):
         for i in range(population):
             mean += list_inds[i][1]
         mean /= population
-        
+
         # Variance calculation
         for i in range(population):
             var += np.power(list_inds[i][1] - mean, 2)
@@ -279,13 +307,13 @@ def Function(dic, tolerance):
                 var[0][i] = nonzero_var[0][i]
                 print(var)
         nonzero_var = copy.copy(var)
-        
+
         print("----------------------------")
         print("Mean: ", mean)
         print("Variance: ", var)
         print("Error: ", dic['error_log'][-1])
         print("----------------------------\n\n")
-        
+
         # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
         if dic['MVMO']["counter"] % 97. == 0.:
             sf = 0*np.ones(sf.shape)
@@ -312,7 +340,7 @@ def Function(dic, tolerance):
         # plt.xlabel("Random gene")
         # plt.legend(loc='best')
         # plt.show()
-        
+
         # Gene selection for mutation
         if rndm:
             if not seq_rndm:
@@ -320,7 +348,7 @@ def Function(dic, tolerance):
             else:
                 selected_genes[0] += wndw_step
                 while selected_genes[0] >= len(lim_min):
-                    selected_genes[0] -= len(lim_min)                             
+                    selected_genes[0] -= len(lim_min)
                 selected_genes[1:] = sorted(random.sample(range(0, selected_genes[0])+range(selected_genes[0]+1, len(lim_min)), wndw_size-1))
         elif moving_wndw:
             selected_genes += wndw_step*np.ones(len(selected_genes))
@@ -329,7 +357,7 @@ def Function(dic, tolerance):
                 selected_genes.sort()
 
         print("Genes selected for mutation: ", selected_genes)
-        
+
         # Creating a new generation
         for i in range(new_generation):
             for j in range(len(lim_min)):
@@ -340,7 +368,7 @@ def Function(dic, tolerance):
                 else:
                     # Crossover
                     indiv[j] = copy.copy(list_inds[0][1][j])
-            
+
             list_inds.append((.5*dic['TS']['step']*ERROR.Error(op_real, SIM.rk4(dic, (indiv*(lim_max-lim_min)+lim_min))), copy.copy(indiv)))
 
         # Sorting new list of individuals and discarding the worst individuals
