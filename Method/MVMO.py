@@ -107,6 +107,24 @@ class MVMO(Method):
             print("Error: ", self.error_log[-1])
             print("----------------------------\n\n")
 
+            # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
+            if self.counter % 97 != 0:
+                s = -self.fs*np.log(var)
+                sf = np.array([s[0], s[0]])
+
+                # TODO: Vary shape factor using d and Delta_d
+                # counts = 0
+                # for v in np.greater(s, self.d):
+                #     if v:
+                #         self.d[0][counts] *= self.delta_d[0][counts]
+                #         sf[1][counts] = self.d[0][counts]
+                #     else:
+                #         self.d[0][counts] /= self.delta_d[0][counts]
+                #         sf[0][counts] = self.d[0][counts]
+                #     counts += 1
+            else:
+                sf = 0*np.ones(sf.shape)
+
             break
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
