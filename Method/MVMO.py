@@ -1,10 +1,36 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Sep 05 11:24:59 2018
-MVMO Estimation Method
-University of Sao Paulo
-@author: Gabriel
-"""
+from Method.method import Method
+
+import numpy as np
+import time
+
+import random
+
+
+class MVMO(Method):
+    def __init__(self, lo_p, hi_p, pop_sz=5, offsp_sz=1, max_gen=5000, d=5, delta_d=1.5, fs=1, rnd=False, seq_rnd=False,
+                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1):
+
+        assert isinstance(lo_p, np.ndarray), "Parameters must be a numpy array"
+        assert isinstance(hi_p, np.ndarray), "Parameters must be a numpy array"
+
+        self.lo_p = lo_p
+        self.hi_p = hi_p
+        self.pop_sz = pop_sz
+        self.offsp_sz = offsp_sz
+        self.max_gen = max_gen
+        self.d = d
+        self.delta_d = delta_d
+        self.fs = fs
+
+        self.rnd = rnd
+        self.seq_rnd = seq_rnd
+        self.mv_wndw = mv_wndw
+        self.block = block
+
+        self.wndw_sz = wndw_sz
+        self.wndw_step = wndw_step
+
+        super().__init__()
 
 
 # H Function: Mapping function of mutation
