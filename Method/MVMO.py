@@ -65,11 +65,49 @@ class MVMO(Method):
             for j in range(num_genes):
                 indiv[j] = random.random()
 
+            # TODO: append error calculation instead of i
             list_inds.append([i, indiv])
 
         # Sorting individuals and storing error
         list_inds.sort(reverse=True)
         self.error_log.append(list_inds[0][0])
+
+        print("Error :", self.error_log[-1])
+
+        nonzero_var = None
+        mean = np.zeros((1, num_genes))
+        var = np.zeros((1, num_genes))
+
+        # Iteration process
+        while self.error_log[-1] > self.tol and self.counter < self.max_gen:
+
+            for i in range(self.pop_sz):
+                print("Gen. %d - Specimen #%d: %s" % (self.counter, i, list_inds[i][1]))
+            self.counter += 1
+
+            # Mean calculation
+            for ind in list_inds:
+                mean += ind[1]
+            mean /= self.pop_sz
+
+            # Variance calculation
+            for ind in list_inds:
+                var += np.power(ind[1] - mean, 2)
+            var /= self.pop_sz
+
+            # Repeat last non-null variance in case the new one is null
+            if 0 in var:
+                for i in np.where(var == 0)[1]:
+                    var[0][i] = nonzero_var[0][i]
+            nonzero_var = var
+
+            print("----------------------------")
+            print("Mean: ", mean)
+            print("Variance: ", var)
+            print("Error: ", self.error_log[-1])
+            print("----------------------------\n\n")
+
+            break
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
 
