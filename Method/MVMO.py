@@ -13,6 +13,7 @@ class MVMO(Method):
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
         assert len(hi_p) == len(lo_p), "Upper and lower boundaries must have the same size"
+        assert wndw_sz <= len(lo_p), "Gene selection window can't be bigger than actual number of parameters"
 
         self.lo_p = lo_p
         self.hi_p = hi_p
@@ -38,6 +39,20 @@ class MVMO(Method):
         start_time = time.process_time()
 
         selected_genes = []
+
+        num_genes = len(self.lo_p)
+
+        if self.block:
+            selected_genes.append(random.randint(0, num_genes))
+            for i in range(self.wndw_sz - 1):
+                selected_genes.append(selected_genes[-1] + 1)
+            while selected_genes[-1] >= num_genes:
+                selected_genes[-1] -= num_genes
+                selected_genes.sort()
+        else:
+            selected_genes = sorted(random.sample(range(0, num_genes), self.wndw_sz))
+
+        print("Genes selected at the beginning: ", selected_genes)
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
 
