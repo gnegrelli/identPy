@@ -78,7 +78,7 @@ class MVMO(Method):
         print("Error :", self.error_log[-1])
 
         nonzero_var = None
-        mean = np.zeros(num_genes)
+        self.mean = np.zeros(num_genes)
         var = np.zeros(num_genes)
 
         # Iteration process
@@ -90,12 +90,12 @@ class MVMO(Method):
 
             # Mean calculation
             for ind in list_inds:
-                mean += ind[1]
-            mean /= self.pop_sz
+                self.mean += ind[1]
+            self.mean /= self.pop_sz
 
             # Variance calculation
             for ind in list_inds:
-                var += np.power(ind[1] - mean, 2)
+                var += np.power(ind[1] - self.mean, 2)
             var /= self.pop_sz
 
             # Repeat last non-null variance in case the new one is null
@@ -105,16 +105,15 @@ class MVMO(Method):
             nonzero_var = var
 
             print("----------------------------")
-            print("Mean: ", mean)
+            print("Mean: ", self.mean)
             print("Variance: ", var)
             print("Error: ", self.error_log[-1])
             print("----------------------------\n\n")
 
             # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
             if self.counter % 97 != 0:
-                s = -self.fs*np.log(var)
-                sf = np.array([s[0], s[0]])
-                print(s)
+                self.s = -self.fs*np.log(var)
+                self.sf = np.array([self.s, self.s])
 
                 # TODO: Vary shape factor using d and Delta_d
                 # counts = 0
@@ -127,7 +126,7 @@ class MVMO(Method):
                 #         sf[0][counts] = self.d[0][counts]
                 #     counts += 1
             else:
-                sf = 0*np.ones(sf.shape)
+                self.sf = 0*np.ones(self.sf.shape)
 
             # Gene selection for mutation
             # Random selection
@@ -158,9 +157,9 @@ class MVMO(Method):
                     # Mutation
                     if j in selected_genes:
                         x_rnd = random.random()
-                        h_1 = self.h_function(mean[j], s[j], s[j], 1)
-                        h_0 = self.h_function(mean[j], s[j], s[j], 0)
-                        h_x = self.h_function(mean[j], s[j], s[j], x_rnd)
+                        h_1 = self.h_function(1, j)
+                        h_0 = self.h_function(0, j)
+                        h_x = self.h_function(x_rnd, j)
                         indiv[j] = h_x + (1 - h_1 + h_0)*x_rnd - h_0
                     # Crossover
                     else:
@@ -184,7 +183,7 @@ class MVMO(Method):
 
         # At the end of iteration process, mean, variance and final error value are presented
         print("----------------------------")
-        print("Mean: ", mean)
+        print("Mean: ", self.mean)
         print("Variance: ", var)
         print("Error: ", self.error_log[-1])
         print("----------------------------")
@@ -200,6 +199,10 @@ class MVMO(Method):
         return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p
 
     # Mapping function h
-    def h_function(self, m, s1, s2, u):
+    def h_function(self, u, i):
+
+        m = self.mean[i]
+        s1 = self.sf[0][i]
+        s2 = self.sf[1][i]
 
         return m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1 - u)*s2))
