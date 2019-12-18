@@ -19,8 +19,8 @@ class MVMO(Method):
         self.pop_sz = pop_sz
         self.offsp_sz = offsp_sz
         self.max_gen = max_gen
-        self.d = d
-        self.delta_d = delta_d
+        self.d = d*np.ones_like(self.lo_p)
+        self.delta_d = delta_d*np.ones_like(self.lo_p)
         self.fs = fs
 
         self.rnd = rnd
@@ -32,6 +32,14 @@ class MVMO(Method):
         self.wndw_step = wndw_step
 
         super().__init__()
+
+    def __call__(self, *args, **kwargs):
+
+        start_time = time.process_time()
+
+        selected_genes = []
+
+        print("MVMO elapsed time: ", time.process_time() - start_time)
 
 
 # H Function: Mapping function of mutation
