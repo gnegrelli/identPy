@@ -40,6 +40,8 @@ class MVMO(Method):
 
         start_time = time.process_time()
 
+        print("------------------MVMO------------------")
+
         selected_genes = []
 
         num_genes = len(self.lo_p)
@@ -171,15 +173,31 @@ class MVMO(Method):
             # TODO: Remove reverse from sorted method
             list_inds = sorted(list_inds, reverse=True)[:self.pop_sz]
             self.error_log.append(list_inds[0][0])
-            
+
             # Increase scaling factor fs in 1% after each iteration, capping it around 15
             if self.fs < 15:
                 self.fs *= 1.01
 
+            # TODO: Remove this break statement when methdo is running ok
             if self.counter >= 2:
                 break
 
+        # At the end of iteration process, mean, variance and final error value are presented
+        print("----------------------------")
+        print("Mean: ", mean)
+        print("Variance: ", var)
+        print("Error: ", self.error_log[-1])
+        print("----------------------------")
+
+        # Final generation with fittest individuals
+        for i in range(self.pop_sz):
+            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, list_inds[i][1]))
+        print("Final Error: %f" % self.error_log[-1])
+
         print("MVMO elapsed time: ", time.process_time() - start_time)
+
+        # Return best individual
+        return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p
 
     # Mapping function h
     def h_function(self, m, s1, s2, u):
