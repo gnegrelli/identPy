@@ -42,6 +42,7 @@ class MVMO(Method):
 
         num_genes = len(self.lo_p)
 
+        # Setting gene selection window
         if self.block:
             selected_genes.append(random.randint(0, num_genes))
             for i in range(self.wndw_sz - 1):
@@ -53,6 +54,20 @@ class MVMO(Method):
             selected_genes = sorted(random.sample(range(0, num_genes), self.wndw_sz))
 
         print("Genes selected at the beginning: ", selected_genes)
+
+        list_inds = []
+
+        # First generation of random individuals
+        for i in range(self.pop_sz):
+            indiv = np.zeros(num_genes)
+            for j in range(num_genes):
+                indiv[j] = random.random()
+
+            list_inds.append([i, indiv])
+
+        # Sorting individuals and storing error
+        list_inds.sort(reverse=True)
+        self.error_log.append(list_inds[0][0])
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
 
