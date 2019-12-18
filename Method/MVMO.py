@@ -171,6 +171,10 @@ class MVMO(Method):
             # TODO: Remove reverse from sorted method
             list_inds = sorted(list_inds, reverse=True)[:self.pop_sz]
             self.error_log.append(list_inds[0][0])
+            
+            # Increase scaling factor fs in 1% after each iteration, capping it around 15
+            if self.fs < 15:
+                self.fs *= 1.01
 
             if self.counter >= 2:
                 break
