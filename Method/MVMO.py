@@ -125,7 +125,30 @@ class MVMO(Method):
             else:
                 sf = 0*np.ones(sf.shape)
 
-            break
+            # Gene selection for mutation
+            # Random selection
+            if self.rnd:
+                # First gene sequential and remaining random
+                if self.seq_rnd:
+                    selected_genes[0] += self.wndw_step
+                    while selected_genes[0] >= num_genes:
+                        selected_genes[0] -= num_genes
+                    other_genes = [i for i in range(num_genes) if i != selected_genes[0]]
+                    selected_genes[1:] = sorted(random.sample(other_genes, self.wndw_sz - 1))
+                # All genes random
+                else:
+                    selected_genes = sorted(random.sample(range(0, num_genes), self.wndw_sz))
+            # Moving window selection
+            elif self.mv_wndw:
+                selected_genes += self.wndw_step*np.ones(len(selected_genes))
+                while selected_genes[-1] >= num_genes:
+                    selected_genes[-1] -= num_genes
+                    selected_genes.sort()
+
+            print("Genes selected for mutation: ", selected_genes)
+
+            if self.counter >= 2:
+                break
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
 
