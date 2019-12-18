@@ -69,6 +69,7 @@ class MVMO(Method):
             list_inds.append([i, indiv])
 
         # Sorting individuals and storing error
+        # TODO: Remove reverse from sorted method
         list_inds.sort(reverse=True)
         self.error_log.append(list_inds[0][0])
 
@@ -148,8 +149,6 @@ class MVMO(Method):
 
             print("Genes selected for mutation: ", selected_genes)
 
-            print(list_inds)
-
             # Creating a new generation
             for i in range(self.offsp_sz):
                 indiv = np.zeros(num_genes)
@@ -165,10 +164,13 @@ class MVMO(Method):
                     else:
                         indiv[j] = list_inds[0][1][j]
 
-                # TODO: append error calculation instead of i
-                list_inds.append([i, indiv])
+                # TODO: append error calculation instead of `10 + self.counter`
+                list_inds.append([10 + self.counter, indiv])
 
-            print(list_inds)
+            # Sorting new list of individuals and discarding the worst individuals
+            # TODO: Remove reverse from sorted method
+            list_inds = sorted(list_inds, reverse=True)[:self.pop_sz]
+            self.error_log.append(list_inds[0][0])
 
             if self.counter >= 2:
                 break
