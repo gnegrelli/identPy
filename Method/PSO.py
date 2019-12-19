@@ -7,6 +7,7 @@ import random
 
 
 class PSO(Method):
+
     def __init__(self, lo_p, hi_p, swarm_sz=5, max_gen=5000, p_speed=5, g_speed=1.5, tol=1.5):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
@@ -22,6 +23,16 @@ class PSO(Method):
         self.tol = tol
 
         super().__init__()
+
+    def __call__(self, *args, **kwargs):
+
+        start_time = time.process_time()
+
+        print("------------------PSO-------------------")
+
+        print("PSO elapsed time: ", time.process_time() - start_time)
+
+        pass
 
 
 def Function(dic, tolerance):

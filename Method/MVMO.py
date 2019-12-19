@@ -7,6 +7,7 @@ import random
 
 
 class MVMO(Method):
+
     def __init__(self, lo_p, hi_p, pop_sz=5, offsp_sz=1, max_gen=5000, d=5, delta_d=1.5, fs=1, rnd=False, seq_rnd=False,
                  mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=1.5):
 
