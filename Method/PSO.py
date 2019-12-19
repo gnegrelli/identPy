@@ -8,7 +8,7 @@ import random
 
 class PSO(Method):
 
-    def __init__(self, lo_p, hi_p, swarm_sz=5, max_gen=5000, p_speed=5, g_speed=1.5, tol=1.5):
+    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=5000, p_speed=5, g_speed=1.5, tol=1.5):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -17,7 +17,7 @@ class PSO(Method):
         self.lo_p = lo_p
         self.hi_p = hi_p
         self.swarm_sz = swarm_sz
-        self.max_gen = max_gen
+        self.max_it = max_it
         self.p_speed = p_speed
         self.g_speed = g_speed
         self.tol = tol
