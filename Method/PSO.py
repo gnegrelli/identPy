@@ -108,7 +108,8 @@ class PSO(Method):
 
         print("PSO elapsed time: ", time.process_time() - start_time)
 
-        pass
+        # Return best particle
+        return np.array(g_best[1]*(self.hi_p - self.lo_p) + self.lo_p)
 
 
 def Function(dic, tolerance):
