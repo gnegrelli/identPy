@@ -56,6 +56,40 @@ class PSO(Method):
         # Add error from first particles to log
         self.error_log.append(g_best[0])
 
+        print(particles)
+
+        while self.counter < self.max_it and self.error_log[-1] > self.tol:
+
+            self.counter += 1
+
+            # Update coordinates of particles
+            for i in range(self.swarm_sz):
+
+                # Calculate acceleration of particles
+                a = (self.p_speed*(p_best[i][1][0] - particles[i][1][0]) +
+                     self.g_speed*(g_best[1][0] - particles[i][1][0]),
+                     self.p_speed*(p_best[i][1][1] - particles[i][1][1]) +
+                     self.g_speed*(g_best[1][1] - particles[i][1][1]))
+
+                # Update position of particles
+                particles[i][1] = (min(max(particles[i][1][0] + v[i][0] + a[0], 0), 1),
+                                   min(max(particles[i][1][1] + v[i][1] + a[1], 0), 1))
+
+                # Update speed of particles
+                v[i] = (v[i][0] + a[0], v[i][1] + a[1])
+
+                # TODO: pass error calculation instead of `10 + i`
+                # Update fitness value
+                particles[i][0] = 10 + i
+
+            print(particles)
+
+            # TODO: Remove this break statement when method is running ok
+            if self.counter >= 1:
+                break
+
+
+
         print("PSO elapsed time: ", time.process_time() - start_time)
 
         pass
