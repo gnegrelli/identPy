@@ -49,6 +49,13 @@ class PSO(Method):
             # Initialize speed of particles
             v.append((0., 0.))
 
+        # TODO: Remove reverse from sorted method
+        # Create global best
+        g_best = sorted(particles, reverse=True)[0]
+
+        # Add error from first particles to log
+        self.error_log.append(g_best[0])
+
         print("PSO elapsed time: ", time.process_time() - start_time)
 
         pass
