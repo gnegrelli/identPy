@@ -177,7 +177,7 @@ class MVMO(Method):
             if self.fs < 15:
                 self.fs *= 1.01
 
-            # TODO: Remove this break statement when methdo is running ok
+            # TODO: Remove this break statement when method is running ok
             if self.counter >= 2:
                 break
 

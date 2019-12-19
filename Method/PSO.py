@@ -1,10 +1,23 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu May 16 18:05:59 2019
-PSO Estimation Method
-University of Sao Paulo
-@author: Gabriel
-"""
+from Method.method import Method
+
+import numpy as np
+import time
+
+import random
+
+
+class PSO(Method):
+    def __init__(self, lo_p, hi_p, swarm_sz=5, max_gen=5000, p_speed=5, g_speed=1.5, tol=1.5):
+
+        self.lo_p = lo_p
+        self.hi_p = hi_p
+        self.swarm_sz = swarm_sz
+        self.max_gen = max_gen
+        self.p_speed = p_speed
+        self.g_speed = g_speed
+        self.tol = tol
+
+        super().__init__()
 
 
 def Function(dic, tolerance):
