@@ -9,6 +9,10 @@ import random
 class PSO(Method):
     def __init__(self, lo_p, hi_p, swarm_sz=5, max_gen=5000, p_speed=5, g_speed=1.5, tol=1.5):
 
+        assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
+        assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
+        assert len(hi_p) == len(lo_p), "Upper and lower boundaries must have the same size"
+
         self.lo_p = lo_p
         self.hi_p = hi_p
         self.swarm_sz = swarm_sz
