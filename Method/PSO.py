@@ -30,6 +30,25 @@ class PSO(Method):
 
         print("------------------PSO-------------------")
 
+        particles = []
+
+        p_best = []
+        v = []
+
+        # Create random swarm
+        for i in range(self.swarm_sz):
+            particles.append([0, (np.random.random(), np.random.random())])
+
+            # TODO: pass error calculation instead of i
+            # Evaluate fitness of particle
+            particles[i][0] = i
+
+            # Create personal best vector
+            p_best.append(particles[i])
+
+            # Initialize speed of particles
+            v.append((0., 0.))
+
         print("PSO elapsed time: ", time.process_time() - start_time)
 
         pass
