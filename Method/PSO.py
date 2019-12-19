@@ -3,7 +3,7 @@ from Method.method import Method
 import numpy as np
 import time
 
-import random
+from copy import copy
 
 
 class PSO(Method):
@@ -44,14 +44,14 @@ class PSO(Method):
             particles[i][0] = i
 
             # Create personal best vector
-            p_best.append(particles[i])
+            p_best.append(copy(particles[i]))
 
             # Initialize speed of particles
             v.append((0., 0.))
 
         # TODO: Remove reverse from sorted method
         # Create global best
-        g_best = sorted(particles, reverse=True)[0]
+        g_best = copy(sorted(particles, reverse=True)[0])
 
         # Add error from first particles to log
         self.error_log.append(g_best[0])
@@ -86,7 +86,7 @@ class PSO(Method):
                 # TODO: Change condition to `p_best[i][0] > particles[i][0]`
                 # Update personal best vector
                 if p_best[i][0] < particles[i][0]:
-                    p_best[i] = particles[i]
+                    p_best[i] = copy(particles[i])
 
             print(50*'→')
             print(particles)
@@ -95,8 +95,6 @@ class PSO(Method):
             # TODO: Remove this break statement when method is running ok
             if self.counter >= 1:
                 break
-
-
 
         print("PSO elapsed time: ", time.process_time() - start_time)
 
