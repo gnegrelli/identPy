@@ -57,6 +57,7 @@ class PSO(Method):
         self.error_log.append(g_best[0])
 
         print(particles)
+        print(p_best)
 
         while self.counter < self.max_it and self.error_log[-1] > self.tol:
 
@@ -82,7 +83,14 @@ class PSO(Method):
                 # Update fitness value
                 particles[i][0] = 10 + i
 
+                # TODO: Change condition to `p_best[i][0] > particles[i][0]`
+                # Update personal best vector
+                if p_best[i][0] < particles[i][0]:
+                    p_best[i] = particles[i]
+
+            print(50*'→')
             print(particles)
+            print(p_best)
 
             # TODO: Remove this break statement when method is running ok
             if self.counter >= 1:
