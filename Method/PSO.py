@@ -56,11 +56,6 @@ class PSO(Method):
         # Add error from first particles to log
         self.error_log.append(g_best[0])
 
-        print(particles)
-        print(p_best)
-        print(g_best)
-        print(self.error_log)
-
         while self.counter < self.max_it and self.error_log[-1] > self.tol:
 
             self.counter += 1
@@ -96,11 +91,6 @@ class PSO(Method):
                 g_best = copy(sorted(particles, reverse=True)[0])
 
             self.error_log.append(g_best[0])
-
-            print(50*'→')
-            print(particles)
-            print(g_best)
-            print(self.error_log)
 
             # TODO: Remove this break statement when method is running ok
             if self.counter >= 1:
