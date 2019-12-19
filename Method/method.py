@@ -1,8 +1,5 @@
 from abc import ABC
 
-import numpy as np
-import time
-
 
 class Method(ABC):
 
