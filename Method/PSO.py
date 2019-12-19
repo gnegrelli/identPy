@@ -58,6 +58,7 @@ class PSO(Method):
 
         print(particles)
         print(p_best)
+        print(g_best)
 
         while self.counter < self.max_it and self.error_log[-1] > self.tol:
 
@@ -88,9 +89,14 @@ class PSO(Method):
                 if p_best[i][0] < particles[i][0]:
                     p_best[i] = copy(particles[i])
 
+            # TODO: Change condition to `g_best[0] > min(particles)[0]`
+            # Update global best
+            if g_best[0] < max(particles)[0]:
+                g_best = copy(sorted(particles, reverse=True)[0])
+
             print(50*'→')
             print(particles)
-            print(p_best)
+            print(g_best)
 
             # TODO: Remove this break statement when method is running ok
             if self.counter >= 1:
