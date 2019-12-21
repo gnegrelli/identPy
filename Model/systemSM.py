@@ -1,10 +1,15 @@
- # -*- coding: utf-8 -*-
-"""
-Created on Thu Apr 25 23:36:44 2017
-Spring-Mass System Matrices
-University of Sao Paulo
-@author: Gabriel
-"""
+from Model.model import Model
+
+
+class SpringMass(Model):
+
+    def __init__(self):
+
+        super().__init__()
+        self.param = {
+            'k': 'Stiffness coefficient',
+            'm': 'Mass'
+        }
 
 
 def Matrix(p, x0, u0):
