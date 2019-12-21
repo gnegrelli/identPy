@@ -4,7 +4,10 @@ from abc import ABC
 class Model(ABC):
 
     def __init__(self):
+        self.param = dict()
+
+    def f(self):
         pass
 
-    def __call__(self, *args, **kwargs):
+    def g(self):
         pass
