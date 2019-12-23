@@ -11,3 +11,9 @@ class Model(ABC):
 
     def g(self):
         pass
+
+    def update_parameters(self):
+        pass
+
+    def update_output(self):
+        pass
