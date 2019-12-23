@@ -14,8 +14,8 @@ class Model(ABC):
     def g(self):
         pass
 
-    def update_parameters(self):
-        pass
+    def update_parameters(self, p):
+        self.p = p
 
     def update_output(self):
         pass
