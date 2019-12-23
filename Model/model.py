@@ -18,7 +18,7 @@ class Model(ABC):
 
     def update_parameters(self, p):
         assert isinstance(p, np.ndarray), "Parameters must be given in a numpy array"
-        
+
         self.p = p
 
     def update_output(self):

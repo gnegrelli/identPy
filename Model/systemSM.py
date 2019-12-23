@@ -11,6 +11,11 @@ class SpringMass(Model):
             'm': 'Mass'
         }
 
+    def update_parameters(self, p):
+        assert len(p) == len(self.param), "Parameter vector must be of length %d" % len(self.param)
+
+        super().update_parameters(p)
+
 
 def Matrix(p, x0, u0):
     
