@@ -1,5 +1,7 @@
 from abc import ABC
 
+import numpy as np
+
 
 class Model(ABC):
 
@@ -15,6 +17,8 @@ class Model(ABC):
         pass
 
     def update_parameters(self, p):
+        assert isinstance(p, np.ndarray), "Parameters must be given in a numpy array"
+        
         self.p = p
 
     def update_output(self):
