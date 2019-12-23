@@ -5,6 +5,8 @@ class Model(ABC):
 
     def __init__(self):
         self.param = dict()
+        self.p = 0
+        self.output = 0
 
     def f(self):
         pass
