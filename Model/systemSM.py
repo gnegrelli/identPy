@@ -6,13 +6,23 @@ class SpringMass(Model):
     def __init__(self):
 
         super().__init__()
+
         self.parameters = {
             'k': 'Stiffness coefficient',
-            'm': 'Mass'
+            'm': 'Mass',
+        }
+
+        self.inputs = {
+            'F': 'External force',
+        }
+
+        self.outputs = {
+            'x': 'Mass position',
+            'v': 'Mass speed',
         }
 
     def update_parameters(self, p):
-        assert len(p) == len(self.param), "Parameter vector must be of length %d" % len(self.param)
+        assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
 
         super().update_parameters(p)
 
