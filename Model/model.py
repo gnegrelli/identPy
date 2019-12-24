@@ -8,6 +8,8 @@ class Model(ABC):
     def __init__(self):
         self.param = dict()
         self.p = 0
+        self.u = 0
+        self.x_0 = 0
         self.output = 0
 
     def f(self):
