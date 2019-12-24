@@ -5,15 +5,19 @@ import numpy as np
 
 class Model(ABC):
 
-    def __init__(self):
+    def __init__(self, x_0=0, u=0):
+
+        assert isinstance(x_0, np.ndarray), "Initial states must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input must be given in a numpy array"
 
         self.parameters = dict()
         self.inputs = dict()
         self.outputs = dict()
 
         self.p = 0
-        self.u = 0
-        self.x_0 = 0
+
+        self.x_0 = x_0
+        self.u = u
         self.y = 0
 
     def f(self, x=None, u=None):
