@@ -1,5 +1,7 @@
 from Model.model import Model
 
+import numpy as np
+
 
 class SpringMass(Model):
 
@@ -25,6 +27,13 @@ class SpringMass(Model):
         assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
 
         super().update_parameters(p)
+
+    def f(self, x=None, u=None):
+
+        if not x:
+            x = self.x_0
+        if not u:
+            u = self.u
 
 
 def Matrix(p, x0, u0):
