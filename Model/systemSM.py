@@ -6,7 +6,7 @@ class SpringMass(Model):
     def __init__(self):
 
         super().__init__()
-        self.param = {
+        self.parameters = {
             'k': 'Stiffness coefficient',
             'm': 'Mass'
         }
