@@ -16,10 +16,10 @@ class Model(ABC):
         self.x_0 = 0
         self.y = 0
 
-    def f(self):
+    def f(self, x=None, u=None):
         pass
 
-    def g(self):
+    def g(self, x=None, u=None):
         pass
 
     def update_parameters(self, p):
