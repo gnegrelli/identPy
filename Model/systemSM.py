@@ -5,9 +5,9 @@ import numpy as np
 
 class SpringMass(Model):
 
-    def __init__(self):
+    def __init__(self, x_0=0, u=0):
 
-        super().__init__()
+        super().__init__(x_0, u)
 
         self.parameters = {
             'k': 'Stiffness coefficient',
@@ -34,6 +34,11 @@ class SpringMass(Model):
             x = self.x_0
         if not u:
             u = self.u
+
+        f1 = x[1]
+        f2 = -self.p[1]/self.p[0]*x[0] + 1/self.p[0]*u[0]
+
+        return np.array([[f1], [f2]])
 
 
 def Matrix(p, x0, u0):
