@@ -35,6 +35,9 @@ class SpringMass(Model):
         if not u:
             u = self.u
 
+        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
+
         f1 = x[1]
         f2 = -self.p[1]/self.p[0]*x[0] + 1/self.p[0]*u[0]
 
@@ -46,6 +49,9 @@ class SpringMass(Model):
             x = self.x_0
         if not u:
             u = self.u
+
+        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
 
         g1 = x[0]
         g2 = x[1]
