@@ -40,6 +40,19 @@ class SpringMass(Model):
 
         return np.array([[f1], [f2]])
 
+    def g(self, x=None, u=None):
+
+        if not x:
+            x = self.x_0
+        if not u:
+            u = self.u
+
+        g1 = x[0]
+        g2 = x[1]
+
+        return np.array([[g1], [g2]])
+
+
 
 def Matrix(p, x0, u0):
     
