@@ -1,10 +1,11 @@
 import numpy as np
 
 from copy import copy
+from Model.Implicit_Methods.i_method import IMethod as IM
 from Model.model import Model as MD
 
 
-class RK4:
+class RK4(IM):
 
     def __init__(self, model, initial_time=0, final_time=1, step=0.001):
         assert isinstance(initial_time, float) or isinstance(initial_time, int), "Initial time must be a number"
