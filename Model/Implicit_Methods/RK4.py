@@ -1,4 +1,6 @@
 import numpy as np
+
+from copy import copy
 from Model.model import Model as MD
 
 
@@ -19,4 +21,19 @@ class RK4:
 
     def __call__(self, *args, **kwargs):
 
-        pass
+        x = copy(self.model.x_0)
+        t = self.t0
+
+        self.model.y = np.append(t, self.model.g())
+
+        while t < self.tf:
+            k1 = self.h*(self.model.f(x))
+            k2 = self.h*(self.model.f(x + k1))
+            k3 = self.h*(self.model.f(x + k2))
+            k4 = self.h*(self.model.f(x + k3))
+
+            t = round(t + self.h, 5)
+
+            x = x + (k1 + 2*k2 + 2*k3 + k4)/6
+
+            self.model.y = np.vstack((self.model.y, np.append(t, self.model.g(x))))
