@@ -30,9 +30,9 @@ class SpringMass(Model):
 
     def f(self, x=None, u=None):
 
-        if not x:
+        if x is None:
             x = self.x_0
-        if not u:
+        if u is None:
             u = self.u
 
         assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
@@ -41,13 +41,13 @@ class SpringMass(Model):
         f1 = x[1]
         f2 = -self.p[1]/self.p[0]*x[0] + 1/self.p[0]*u[0]
 
-        return np.array([[f1], [f2]])
+        return np.array([f1, f2])
 
     def g(self, x=None, u=None):
 
-        if not x:
+        if x is None:
             x = self.x_0
-        if not u:
+        if u is None:
             u = self.u
 
         assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
@@ -56,4 +56,4 @@ class SpringMass(Model):
         g1 = x[0]
         g2 = x[1]
 
-        return np.array([[g1], [g2]])
+        return np.array([g1, g2])
