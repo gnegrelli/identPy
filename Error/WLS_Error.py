@@ -1,4 +1,15 @@
 def wls_error(y, x, w=None):
+    """
+    Method to evaluate error using weighted least squares method (WLS)
+    :param y: Array to evaluate error
+    :type y: numpy array (np.ndarray)
+    :param x: Array to evaluate error
+    :type x: numpy array (np.ndarray)
+    :param w: Weight array. If no argument is passed, weights are considered to be 1 (LS method)
+    :type w: numpy array (np.ndarray)
+    :return: WLS error
+    :rtype: float
+    """
 
     assert (y.shape == x.shape), "Arrays must have the same shape"
     
