@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def wls_error(y, x, w=None):
     """
     Method to evaluate error using weighted least squares method (WLS)
@@ -24,13 +27,3 @@ def wls_error(y, x, w=None):
         for j in i:
             err += j
     return err
-
-
-import numpy as np
-
-
-if __name__ == '__main__':
-    w = np.array([[1], [2], [1]])
-    a = np.array([[1, 2], [3, 4], [10, 11]])
-    b = np.array([[5, 6], [7, 8], [13, 49]])
-    print(wls_error(a, b, w))
