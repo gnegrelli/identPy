@@ -1,17 +1,16 @@
 def wls_error(y, x, w=None):
+
+    assert (y.shape == x.shape), "Arrays must have the same shape"
     
     if w is None:
         w = np.ones((y.shape[0], 1))
 
     err = 0
 
-    if y.shape == x.shape:
-        for i in w*(y - x)**2:
-            for j in i:
-                err += j
-        return err
-    else:
-        print("Error: Arrays must have the same shapes")
+    for i in w*(y - x)**2:
+        for j in i:
+            err += j
+    return err
 
 
 import numpy as np
