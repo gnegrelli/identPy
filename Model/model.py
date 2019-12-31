@@ -36,5 +36,8 @@ class Model(ABC):
 
         self.p = p
 
-    def update_output(self):
-        pass
+    def update_output(self, p=None):
+        if p is not None:
+            self.update_parameters(p)
+        
+        self.method(self)

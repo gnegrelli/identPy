@@ -57,6 +57,3 @@ class SpringMass(Model):
         assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
 
         super().update_parameters(p)
-
-    def update_output(self):
-        pass
