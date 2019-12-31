@@ -5,9 +5,9 @@ import numpy as np
 
 class SpringMass(Model):
 
-    def __init__(self, x_0=0, u=0):
+    def __init__(self, x_0=0, u=0, method=None):
 
-        super().__init__(x_0, u)
+        super().__init__(x_0, u, method)
 
         self.parameters = {
             'k': 'Stiffness coefficient',
@@ -22,11 +22,6 @@ class SpringMass(Model):
             'x': 'Mass position',
             'v': 'Mass speed',
         }
-
-    def update_parameters(self, p):
-        assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
-
-        super().update_parameters(p)
 
     def f(self, x=None, u=None):
 
@@ -57,3 +52,11 @@ class SpringMass(Model):
         g2 = x[1]
 
         return np.array([g1, g2])
+
+    def update_parameters(self, p):
+        assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
+
+        super().update_parameters(p)
+
+    def update_output(self):
+        pass
