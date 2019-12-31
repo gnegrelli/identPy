@@ -1,13 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar 24 00:11:20 2017
-Least squares error
-University of Sao Paulo
-@author: Gabriel
-"""
-
-
-def Error(y, x):
+def ls_error(y, x):
     
     err = 0
     
