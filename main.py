@@ -5,6 +5,7 @@ from Model.systemSM import SpringMass as mod
 from Model.Implicit_Methods.RK4 import RK4
 
 from Method.MVMO import MVMO
+from Method.PSO import PSO
 
 from estimator import Estimator
 
@@ -37,7 +38,8 @@ plt.plot(y_meas[:, 0], y_meas[:, 2])
 a = mod(np.array([0, 0]), np.array([4]), RK4(final_time=2*np.pi))
 a.update_output(p=np.array([3.5, 6]))
 
-m = MVMO(np.array([2, 4]), np.array([4, 8]))
+m = MVMO(np.array([0, 0]), np.array([10, 10]))
+m = PSO(np.array([0, 0]), np.array([10, 10]))
 
 est = Estimator(y_meas, a, m)
 
