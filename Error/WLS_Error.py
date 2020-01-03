@@ -21,9 +21,15 @@ def _eval(y, x, w=None):
 
     assert w.shape[0] == y.shape[0], "Weight array must have the same number of rows as y and x"
 
+    # Calculate step between each row of y
+    steps = []
+    for i in range(len(y) - 1):
+        steps.append(round(y[i + 1, 0] - y[i, 0], 5))
+    steps.append(steps[-1])
+
     err = 0
 
-    for i in w*(y - x)**2:
-        for j in i:
-            err += j
+    for i, row in enumerate(w*(y - x)**2):
+        for diff in row:
+            err += steps[i]*diff
     return err
