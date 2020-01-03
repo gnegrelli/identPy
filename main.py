@@ -1,6 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from Model.systemSM import SpringMass as mod
+from Model.Implicit_Methods.RK4 import RK4
+
+from Method.MVMO import MVMO
+
+from estimator import Estimator
+
+from Error.WLS_Error import _eval
+
 
 filepath = 'SM_data.csv'
 
@@ -23,4 +32,14 @@ plt.plot(y_meas[:, 0], y_meas[:, 1])
 plt.figure(2)
 plt.plot(y_meas[:, 0], y_meas[:, 2])
 
-plt.show()
+# plt.show()
+
+a = mod(np.array([0, 0]), np.array([4]), RK4(final_time=2*np.pi))
+a.update_output(p=np.array([3.5, 6]))
+
+m = MVMO(np.array([2, 4]), np.array([4, 8]))
+
+est = Estimator(y_meas, a, m)
+
+est()
+
