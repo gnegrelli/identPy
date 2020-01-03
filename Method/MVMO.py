@@ -5,6 +5,8 @@ import time
 
 import random
 
+from Error.WLS_Error import _eval
+
 
 class MVMO(Method):
 
@@ -68,8 +70,9 @@ class MVMO(Method):
             for j in range(num_genes):
                 indiv[j] = random.random()
 
-            # TODO: append error calculation instead of i
-            list_inds.append([i, indiv])
+            # Evaluate individual
+            parent.model.update_output(indiv*(self.hi_p - self.lo_p) + self.lo_p)
+            list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
 
         # Sorting individuals and storing error
         # TODO: Remove reverse from sorted method
@@ -166,8 +169,9 @@ class MVMO(Method):
                     else:
                         indiv[j] = list_inds[0][1][j]
 
-                # TODO: append error calculation instead of `10 + self.counter`
-                list_inds.append([10 + self.counter, indiv])
+                # Evaluate individual   
+                parent.model.update_output(indiv * (self.hi_p - self.lo_p) + self.lo_p)
+                list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
 
             # Sorting new list of individuals and discarding the worst individuals
             # TODO: Remove reverse from sorted method
