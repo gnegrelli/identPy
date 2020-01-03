@@ -4,6 +4,8 @@ from Error.WLS_Error import _eval
 import numpy as np
 import time
 
+from copy import copy
+
 
 class TS(Method):
 
@@ -16,6 +18,7 @@ class TS(Method):
         self.step = step
         self.max_it = max_it
         self.tol = tol
+        self.num_param = len(self.p)
 
         super().__init__()
 
@@ -41,6 +44,17 @@ class TS(Method):
         # Evaluate error for p_0
         parent.model.update_output(self.p)
         self.error_log.append(_eval(parent.model.y, parent.y_meas))
+
+        # Iteration Process
+        while self.error_log[-1] > self.tol and self.counter < self.max_it:
+
+            self.counter += 1
+
+            y = copy(parent.model.y)
+
+            # TODO: Remove this if clause when method is working fine
+            if self.counter >= 2:
+                break
 
         print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
