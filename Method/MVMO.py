@@ -180,10 +180,6 @@ class MVMO(Method):
             if self.fs < 15:
                 self.fs *= 1.01
 
-            # TODO: Remove this break statement when method is running ok
-            if self.counter >= 2:
-                break
-
         # At the end of iteration process, mean, variance and final error value are presented
         print("----------------------------")
         print("Mean: ", self.mean)
