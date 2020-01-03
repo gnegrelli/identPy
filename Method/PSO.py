@@ -1,4 +1,5 @@
 from Method.method import Method
+from Error.WLS_Error import _eval
 
 import numpy as np
 import time
@@ -8,7 +9,7 @@ from copy import copy
 
 class PSO(Method):
 
-    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=5000, p_speed=5, g_speed=1.5, tol=1.5):
+    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=5000, p_speed=5, g_speed=1.5, tol=0.05):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -24,7 +25,7 @@ class PSO(Method):
 
         super().__init__()
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, parent):
 
         start_time = time.process_time()
 
@@ -39,9 +40,9 @@ class PSO(Method):
         for i in range(self.swarm_sz):
             particles.append([0, (np.random.random(), np.random.random())])
 
-            # TODO: pass error calculation instead of i
             # Evaluate fitness of particle
-            particles[i][0] = i
+            parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
+            particles[i][0] = _eval(parent.model.y, parent.y_meas)
 
             # Create personal best vector
             p_best.append(copy(particles[i]))
@@ -49,9 +50,8 @@ class PSO(Method):
             # Initialize speed of particles
             v.append((0., 0.))
 
-        # TODO: Remove reverse from sorted method
         # Create global best
-        g_best = copy(sorted(particles, reverse=True)[0])
+        g_best = copy(sorted(particles)[0])
 
         # Add error from first particles to log
         self.error_log.append(g_best[0])
@@ -76,25 +76,19 @@ class PSO(Method):
                 # Update speed of particles
                 v[i] = (v[i][0] + a[0], v[i][1] + a[1])
 
-                # TODO: pass error calculation instead of `10 + i`
                 # Update fitness value
-                particles[i][0] = 10 + i
+                parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
+                particles[i][0] = _eval(parent.model.y, parent.y_meas)
 
-                # TODO: Change condition to `p_best[i][0] > particles[i][0]`
                 # Update personal best vector
-                if p_best[i][0] < particles[i][0]:
+                if p_best[i][0] > particles[i][0]:
                     p_best[i] = copy(particles[i])
 
-            # TODO: Change condition to `g_best[0] > min(particles)[0]`
             # Update global best
-            if g_best[0] < max(particles)[0]:
-                g_best = copy(sorted(particles, reverse=True)[0])
+            if g_best[0] > min(particles)[0]:
+                g_best = copy(sorted(particles)[0])
 
             self.error_log.append(g_best[0])
-
-            # TODO: Remove this break statement when method is running ok
-            if self.counter >= 1:
-                break
 
         print("PSO elapsed time: ", time.process_time() - start_time)
 

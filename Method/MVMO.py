@@ -1,11 +1,10 @@
 from Method.method import Method
+from Error.WLS_Error import _eval
 
 import numpy as np
 import time
 
 import random
-
-from Error.WLS_Error import _eval
 
 
 class MVMO(Method):
