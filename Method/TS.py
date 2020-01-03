@@ -1,4 +1,5 @@
 from Method.method import Method
+from Error.WLS_Error import _eval
 
 import numpy as np
 import time
@@ -36,6 +37,10 @@ class TS(Method):
                 raise IndexError("While setting active parameters: Invalid index of parameter")
         else:
             self.p_active = np.ones_like(self.p)
+
+        # Evaluate error for p_0
+        parent.model.update_output(self.p)
+        self.error_log.append(_eval(parent.model.y, parent.y_meas))
 
         print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
