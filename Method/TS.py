@@ -22,6 +22,10 @@ class TS(Method):
 
         start_time = time.process_time()
 
+        print("---------Trajectory Sensitivity---------")
+
+        assert isinstance(p_active, list) or p_active is None, "Active parameters must be given as a list"
+
         # Parameters to be estimated
         if isinstance(p_active, list):
             self.p_active = np.zeros_like(self.p)
