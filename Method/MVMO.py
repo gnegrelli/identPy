@@ -75,8 +75,7 @@ class MVMO(Method):
             list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
 
         # Sorting individuals and storing error
-        # TODO: Remove reverse from sorted method
-        list_inds.sort(reverse=True)
+        list_inds.sort()
         self.error_log.append(list_inds[0][0])
 
         print("Error :", self.error_log[-1])
@@ -169,13 +168,12 @@ class MVMO(Method):
                     else:
                         indiv[j] = list_inds[0][1][j]
 
-                # Evaluate individual   
+                # Evaluate individual
                 parent.model.update_output(indiv * (self.hi_p - self.lo_p) + self.lo_p)
                 list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
 
             # Sorting new list of individuals and discarding the worst individuals
-            # TODO: Remove reverse from sorted method
-            list_inds = sorted(list_inds, reverse=True)[:self.pop_sz]
+            list_inds = sorted(list_inds)[:self.pop_sz]
             self.error_log.append(list_inds[0][0])
 
             # Increase scaling factor fs in 1% after each iteration, capping it around 15
