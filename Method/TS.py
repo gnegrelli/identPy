@@ -18,7 +18,7 @@ class TS(Method):
 
         super().__init__()
 
-    def __call__(self, p_active=None, active_iter=0):
+    def __call__(self, parent, p_active=None, active_iter=0):
 
         start_time = time.process_time()
 
@@ -36,8 +36,6 @@ class TS(Method):
                 raise IndexError("While setting active parameters: Invalid index of parameter")
         else:
             self.p_active = np.ones_like(self.p)
-
-        print(self.p_active)
 
         print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
