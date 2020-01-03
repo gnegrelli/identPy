@@ -37,7 +37,7 @@ class MVMO(Method):
 
         super().__init__()
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, parent):
 
         start_time = time.process_time()
 
