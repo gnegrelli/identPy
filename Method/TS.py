@@ -6,6 +6,8 @@ import time
 
 from copy import copy
 
+import matplotlib.pyplot as plt
+
 
 class TS(Method):
 
@@ -51,6 +53,14 @@ class TS(Method):
             self.counter += 1
 
             y = copy(parent.model.y)
+
+            # Auxiliary vector for Sensitivity Calculation
+            aux = np.ones_like(self.p, dtype=float)
+            aux[0] += self.delta_p
+
+            # Sensitivities calculation
+            for i in range(self.num_param):
+                parent.model.update_output(self.p*np.roll(aux, i))
 
             # TODO: Remove this if clause when method is working fine
             if self.counter >= 2:
