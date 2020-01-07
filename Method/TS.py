@@ -62,6 +62,11 @@ class TS(Method):
             for i in range(self.num_param):
                 parent.model.update_output(self.p*np.roll(aux, i))
 
+                if i == 0:
+                    dy_dp = (parent.model.y - y) / (self.p[i] * self.delta_p)
+                else:
+                    dy_dp = np.dstack((dy_dp, (parent.model.y - y) / (self.p[i] * self.delta_p)))
+
             # TODO: Remove this if clause when method is working fine
             if self.counter >= 2:
                 break
