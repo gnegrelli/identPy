@@ -63,9 +63,13 @@ class TS(Method):
                 parent.model.update_output(self.p*np.roll(aux, i))
 
                 if i == 0:
-                    dy_dp = (parent.model.y - y) / (self.p[i] * self.delta_p)
+                    dy_dp = (parent.model.y - y) / (self.p[i]*self.delta_p)
                 else:
-                    dy_dp = np.dstack((dy_dp, (parent.model.y - y) / (self.p[i] * self.delta_p)))
+                    dy_dp = np.dstack((dy_dp, (parent.model.y - y) / (self.p[i]*self.delta_p)))
+
+            # Γ and dJ/dp calculation
+            dj_dp, gamma = self.gamma_function(dy_dp, parent.y_meas - y)
+            print(dj_dp, gamma)
 
             # TODO: Remove this if clause when method is working fine
             if self.counter >= 2:
@@ -73,7 +77,17 @@ class TS(Method):
 
         print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
+    @staticmethod
+    def gamma_function(sens, diff):
+        
+        gamma = np.zeros((sens.shape[2], sens.shape[2]))
+        djdp = 0
 
+        for i, m in enumerate(sens):
+            gamma += np.dot(m.T[:, 1:], m[1:, :])
+            djdp += np.dot(m.T[:, 1:], np.array([diff[i, 1:]]).T)
+
+        return djdp, gamma
 
 
 # Gamma function and dJ/dp
