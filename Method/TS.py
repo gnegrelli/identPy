@@ -68,7 +68,7 @@ class TS(Method):
                     dy_dp = np.dstack((dy_dp, (parent.model.y - y) / (self.p[i]*self.delta_p)))
 
             # Γ and dJ/dp calculation
-            dj_dp, gamma = self.gamma_function(dy_dp, parent.y_meas - y)
+            dj_dp, gamma = self.gamma_function(dy_dp, y - parent.y_meas)
 
             # TODO: Create classification method and call it
             # Parameters area classified due to its conditioning
