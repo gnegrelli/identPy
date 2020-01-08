@@ -81,10 +81,7 @@ class TS(Method):
             except np.linalg.LinAlgError:
                 raise Exception("Singular matrix")
 
-            print(delta_p)
-
-            # p += p_active.reshape(num_param, ) * DP.reshape(num_param, )
-
+            self.p += self.p_active*delta_p.reshape(self.num_param, )
 
             # TODO: Remove this if clause when method is working fine
             if self.counter >= 2:
