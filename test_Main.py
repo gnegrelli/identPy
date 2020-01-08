@@ -26,7 +26,7 @@ chosen_classification = "QR Decomposition"
 estimation_methods = {"-": "", "Kalman Filter": "KF", "MVMO": "MVMO_func", "Trajectory Sensitivity": "TS", "PSO": "PSO"}
 systems = {"Spring-Mass": "systemSM", "Simple Pendulum": "systemPend", "Linearized Load Model Z-IM": "systemZIM", "Type-3 Wind Turbine": "systemDFIG"}
 simulations = {"Runge-Kutta Method": "rk4", "Runge-Kutta Method1": "rk4_function"}
-error_methods = {"Least-Square Method": "Error"}
+error_methods = {"Least-Square Method": "error"}
 classification_methods = {"-": "", "QR Decomposition": "Classification"}
 
 
