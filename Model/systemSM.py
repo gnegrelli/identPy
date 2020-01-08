@@ -52,8 +52,3 @@ class SpringMass(Model):
         g2 = x[1]
 
         return np.array([g1, g2])
-
-    def update_parameters(self, p):
-        assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
-
-        super().update_parameters(p)

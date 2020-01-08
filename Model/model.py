@@ -33,6 +33,7 @@ class Model(ABC):
 
     def update_parameters(self, p):
         assert isinstance(p, np.ndarray), "Parameters must be given in a numpy array"
+        assert len(p) == len(self.parameters), "Parameter vector must be of length %d" % len(self.parameters)
 
         self.p = p
 
