@@ -69,7 +69,22 @@ class TS(Method):
 
             # Γ and dJ/dp calculation
             dj_dp, gamma = self.gamma_function(dy_dp, parent.y_meas - y)
-            print(dj_dp, gamma)
+
+            # TODO: Create classification method and call it
+            # Parameters area classified due to its conditioning
+            # if dic['TS']['counter'] == 0:
+            #     CLASS.Classification(gamma)
+
+            # Parameters are modified (added DP) and stored
+            try:
+                delta_p = -np.linalg.solve(gamma, dj_dp)
+            except np.linalg.LinAlgError:
+                raise Exception("Singular matrix")
+
+            print(delta_p)
+
+            # p += p_active.reshape(num_param, ) * DP.reshape(num_param, )
+
 
             # TODO: Remove this if clause when method is working fine
             if self.counter >= 2:
