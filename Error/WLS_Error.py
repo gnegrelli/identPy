@@ -32,4 +32,4 @@ def _eval(y, x, w=None):
     for i, row in enumerate(w*(y - x)**2):
         for diff in row:
             err += steps[i]*diff
-    return err
+    return 0.5*err
