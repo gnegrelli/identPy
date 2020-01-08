@@ -81,7 +81,11 @@ class TS(Method):
             except np.linalg.LinAlgError:
                 raise Exception("Singular matrix")
 
+            # Update parameters and model output
             self.p += self.p_active*delta_p.reshape(self.num_param, )
+            parent.model.update_output(self.p)
+
+            
 
             # TODO: Remove this if clause when method is working fine
             if self.counter >= 2:
