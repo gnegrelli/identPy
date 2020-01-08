@@ -91,10 +91,6 @@ class TS(Method):
             print("\nIteration #%d: %s" % (self.counter, self.p))
             print("Error: ", self.error_log[-1])
 
-            # TODO: Remove this if clause when method is working fine
-            if self.counter >= 2:
-                break
-
         print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
     @staticmethod
