@@ -1,29 +1,56 @@
- # -*- coding: utf-8 -*-
-"""
-Created on Thu Apr 25 23:36:44 2017
-Pendulum System Matrices
-University of Sao Paulo
-@author: Gabriel
-"""
+from Model.model import Model
 
-def Matrix(p, x0, u0):
-    
-    import numpy as np
-    
-    """
-    p[0] = b
-    p[1] = l
-    p[2] = g
-    p[3] = m
-        
-    u = [F]
-    
-    x = [theta, omega]
-    """
+import numpy as np
 
-    A = np.array([[0., 1.], [-p[2]*np.cos(x0[0, 0])/p[1], -p[0]/p[3]]])
-    B = np.array([[0.], [1./(p[1]*p[3])]])
-    C = np.array([[1., 0.], [0., 1.]])
-    D = 0
-    
-    return A, B, C, D
+
+class Pendulum(Model):
+
+    def __init__(self, x_0=0, u=0, method=None):
+
+        super().__init__(x_0, u, method)
+
+        self.parameters = {
+            'b': 'Air friction',
+            'l': 'Wire length',
+            'g': 'Gravity acceleration',
+            'm': 'Mass',
+        }
+
+        self.inputs = {
+            'F': 'External force',
+        }
+
+        self.outputs = {
+            'θ': 'Angle from vertical',
+            'ω': 'Angular velocity',
+        }
+
+    def f(self, x=None, u=None):
+
+        if x is None:
+            x = self.x_0
+        if u is None:
+            u = self.u
+
+        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
+
+        f1 = x[1]
+        f2 = -self.p[2]*np.cos(self.x_0[0])/self.p[1]*x[0] - self.p[0]/self.p[3] * x[1] + 1/(self.p[1]*self.p[3])*u[0]
+
+        return np.array([f1, f2])
+
+    def g(self, x=None, u=None):
+
+        if x is None:
+            x = self.x_0
+        if u is None:
+            u = self.u
+
+        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
+
+        g1 = x[0]
+        g2 = x[1]
+
+        return np.array([g1, g2])
