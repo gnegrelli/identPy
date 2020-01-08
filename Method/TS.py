@@ -15,7 +15,7 @@ class TS(Method):
 
         assert isinstance(p0, np.ndarray), "Parameters must be a numpy array"
 
-        self.p = p0
+        self.p = p0.astype(float)
         self.delta_p = delta_p
         self.step = step
         self.max_it = max_it
