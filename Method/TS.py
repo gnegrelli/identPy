@@ -79,7 +79,13 @@ class TS(Method):
 
     @staticmethod
     def gamma_function(sens, diff):
-        
+        """
+        Calculation of G(p) and Hessian Matrix Γ(p)
+        :param sens: Sensibility Matrix dy(p)/dp
+        :param diff: Matrix containing the difference between modeled and real systems
+        :return: G(p) and Γ(p)
+        """
+
         gamma = np.zeros((sens.shape[2], sens.shape[2]))
         djdp = 0
 
