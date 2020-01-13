@@ -35,6 +35,8 @@ class Model(ABC):
         assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
         assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
 
+        return x, u
+
     def g(self, x=None, u=None):
 
         if x is None:
@@ -44,6 +46,8 @@ class Model(ABC):
 
         assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
         assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
+
+        return x, u
 
     def update_parameters(self, p):
         assert isinstance(p, np.ndarray), "Parameters must be given in a numpy array"

@@ -32,6 +32,8 @@ class ZIM(Model):
 
     def f(self, x=None, u=None):
 
+        x, u = super().f(x, u)
+
         f1 = - self.p[0]/(self.p[1] * self.p[2])*x[0] \
              - (self.p[0] - self.p[1])*self.u[0]*np.sin(self.p[7])/(self.p[1]*self.p[2])*x[1] \
              + (self.p[0] - self.p[1])*np.cos(self.p[7])/(self.p[1]*self.p[2])*u[0]
@@ -48,6 +50,8 @@ class ZIM(Model):
         return np.array([f1, f2, f3])
 
     def g(self, x=None, u=None):
+
+        x, u = super().g(x, u)
 
         g1 = - self.u[0]*np.sin(self.p[7])/self.p[1]*x[0] \
              - self.u[0]*self.p[6]*np.cos(self.p[7])/self.p[1]*x[1] \

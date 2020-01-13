@@ -27,7 +27,7 @@ class Pendulum(Model):
 
     def f(self, x=None, u=None):
 
-        super().f(x, u)
+        x, u = super().f(x, u)
 
         f1 = x[1]
         f2 = -self.p[2]*np.cos(self.x_0[0])/self.p[1]*x[0] - self.p[0]/self.p[3] * x[1] + 1/(self.p[1]*self.p[3])*u[0]
@@ -36,7 +36,7 @@ class Pendulum(Model):
 
     def g(self, x=None, u=None):
 
-        super().g(x, u)
+        x, u = super().g(x, u)
 
         g1 = x[0]
         g2 = x[1]
