@@ -26,10 +26,24 @@ class Model(ABC):
         self.method = method
 
     def f(self, x=None, u=None):
-        pass
+
+        if x is None:
+            x = self.x_0
+        if u is None:
+            u = self.u
+
+        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
 
     def g(self, x=None, u=None):
-        pass
+
+        if x is None:
+            x = self.x_0
+        if u is None:
+            u = self.u
+
+        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
+        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
 
     def update_parameters(self, p):
         assert isinstance(p, np.ndarray), "Parameters must be given in a numpy array"

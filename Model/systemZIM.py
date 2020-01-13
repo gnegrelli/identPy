@@ -32,16 +32,6 @@ class ZIM(Model):
 
     def f(self, x=None, u=None):
 
-        # TODO: Move asserts and x and u designation to super
-
-        if x is None:
-            x = self.x_0
-        if u is None:
-            u = self.u
-
-        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
-        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
-
         f1 = - self.p[0]/(self.p[1] * self.p[2])*x[0] \
              - (self.p[0] - self.p[1])*self.u[0]*np.sin(self.p[7])/(self.p[1]*self.p[2])*x[1] \
              + (self.p[0] - self.p[1])*np.cos(self.p[7])/(self.p[1]*self.p[2])*u[0]
@@ -58,16 +48,6 @@ class ZIM(Model):
         return np.array([f1, f2, f3])
 
     def g(self, x=None, u=None):
-
-        # TODO: Move asserts and x and u designation to super
-
-        if x is None:
-            x = self.x_0
-        if u is None:
-            u = self.u
-
-        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
-        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
 
         g1 = - self.u[0]*np.sin(self.p[7])/self.p[1]*x[0] \
              - self.u[0]*self.p[6]*np.cos(self.p[7])/self.p[1]*x[1] \

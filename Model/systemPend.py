@@ -27,13 +27,7 @@ class Pendulum(Model):
 
     def f(self, x=None, u=None):
 
-        if x is None:
-            x = self.x_0
-        if u is None:
-            u = self.u
-
-        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
-        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
+        super().f(x, u)
 
         f1 = x[1]
         f2 = -self.p[2]*np.cos(self.x_0[0])/self.p[1]*x[0] - self.p[0]/self.p[3] * x[1] + 1/(self.p[1]*self.p[3])*u[0]
@@ -42,13 +36,7 @@ class Pendulum(Model):
 
     def g(self, x=None, u=None):
 
-        if x is None:
-            x = self.x_0
-        if u is None:
-            u = self.u
-
-        assert isinstance(x, np.ndarray), "States vector must be given in a numpy array"
-        assert isinstance(u, np.ndarray), "Input vector must be given in a numpy array"
+        super().g(x, u)
 
         g1 = x[0]
         g2 = x[1]
