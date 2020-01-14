@@ -18,7 +18,7 @@ filepath = 'SM_data.csv'
 with open(filepath, 'r') as f:
     for line in f.read().split('\n'):
         if line and line[0] is not '%':
-            t, x, v = line.split(',')
+            t, x, v, u = line.split(',')
             t = eval(t)
             x = eval(x)
             v = eval(v)
@@ -27,6 +27,11 @@ with open(filepath, 'r') as f:
                 y_meas = np.vstack((y_meas, np.array([t, x, v])))
             except NameError:
                 y_meas = np.array([t, x, v])
+
+            try:
+                u_meas = np.vstack((u_meas, np.array([t, u])))
+            except NameError:
+                u_meas = np.array([t, u])
 
 plt.figure(1)
 plt.plot(y_meas[:, 0], y_meas[:, 1])
