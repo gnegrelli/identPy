@@ -60,3 +60,9 @@ class Model(ABC):
             self.update_parameters(p)
         
         self.method(self)
+
+    def save_output(self, filename='example.csv'):
+
+        assert isinstance(self.y, np.ndarray), "Output must be a numpy array in order to save"
+
+        np.savetxt('Sample_Data/' + filename, self.y, delimiter=',')
