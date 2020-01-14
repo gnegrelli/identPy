@@ -13,7 +13,7 @@ from estimator import Estimator
 from Error.WLS_Error import _eval
 
 
-filepath = 'SM_data.csv'
+filepath = 'Sample_Data/Sample_SpringMass.csv'
 
 with open(filepath, 'r') as f:
     for line in f.read().split('\n'):
@@ -22,6 +22,7 @@ with open(filepath, 'r') as f:
             t = eval(t)
             x = eval(x)
             v = eval(v)
+            u = eval(u)
 
             try:
                 y_meas = np.vstack((y_meas, np.array([t, x, v])))
@@ -41,7 +42,7 @@ plt.plot(y_meas[:, 0], y_meas[:, 2])
 
 # plt.show()
 
-a = mod(np.array([0, 0]), np.array([4]), RK4(final_time=2*np.pi))
+a = mod(np.array([0, 0]), u_meas[:, 1], RK4(final_time=2*np.pi))
 a.update_output(p=np.array([3.5, 6]))
 
 m = MVMO(np.array([0, 0]), np.array([10, 10]))
