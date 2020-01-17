@@ -42,8 +42,13 @@ plt.plot(y_meas[:, 0], y_meas[:, 2])
 
 # plt.show()
 
-a = mod(np.array([0, 0]), u_meas[:, 1], RK4(final_time=2*np.pi))
-a.update_output(p=np.array([3.5, 6]))
+# TODO: Read input vector u_meas on the model side
+a = mod(np.array([0, 0]), u_meas, RK4(final_time=2*np.pi))
+a.update_output(p=np.array([3, 6]))
+
+plt.figure(3)
+plt.plot(a.y[:, 0], a.y[:, 1])
+plt.show()
 
 m = MVMO(np.array([0, 0]), np.array([10, 10]))
 m = PSO(np.array([0, 0]), np.array([10, 10]))
@@ -52,4 +57,5 @@ m = TS(np.array([3, 5]))
 est = Estimator(y_meas, a, m)
 
 est()
+print(est.method.error_log)
 

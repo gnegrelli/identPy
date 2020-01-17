@@ -28,7 +28,7 @@ class SpringMass(Model):
         x, u = super().f(x, u)
 
         f1 = x[1]
-        f2 = -self.p[1]/self.p[0]*x[0] + 1/self.p[0]*u[0]
+        f2 = -self.p[1]/self.p[0]*x[0] + 1/self.p[0]*u[1]
 
         return np.array([f1, f2])
 

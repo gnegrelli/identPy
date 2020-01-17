@@ -20,24 +20,24 @@ class RK4(IM):
 
         x = copy(model.x_0)
         t = self.t0
+        u = iter(model.u)
 
-        model.y = np.append(t, model.g())
+        u_t = next(u)
+
+        model.y = np.append(t, model.g(x, u_t))
 
         while t < self.tf:
 
             # TODO: Modify the usage of u on f and g. Maybe read it from a file would be better
-            if t == self.t0:
-                u = None
-            else:
-                u = np.array([0])
-
-            k1 = self.h*(model.f(x, u))
-            k2 = self.h*(model.f(x + k1, u))
-            k3 = self.h*(model.f(x + k2, u))
-            k4 = self.h*(model.f(x + k3, u))
+            k1 = self.h*(model.f(x, u_t))
+            k2 = self.h*(model.f(x + k1, u_t))
+            k3 = self.h*(model.f(x + k2, u_t))
+            k4 = self.h*(model.f(x + k3, u_t))
 
             t = round(t + self.h, 5)
 
             x = x + (k1 + 2*k2 + 2*k3 + k4)/6
 
-            model.y = np.vstack((model.y, np.append(t, model.g(x, u))))
+            model.y = np.vstack((model.y, np.append(t, model.g(x, u_t))))
+
+            u_t = next(u)
