@@ -43,7 +43,7 @@ plt.plot(y_meas[:, 0], y_meas[:, 2])
 # plt.show()
 
 # TODO: Read input vector u_meas on the model side
-a = mod(np.array([0, 0]), u_meas, RK4(final_time=2*np.pi))
+a = mod(np.array([0, 0]), np.array([0]), u_meas, RK4(final_time=2*np.pi))
 a.update_output(p=np.array([3, 6]))
 
 plt.figure(3)

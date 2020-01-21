@@ -6,9 +6,9 @@ import numpy as np
 # TODO: Test class and confirm equations
 class ZIM(Model):
 
-    def __init__(self, x_0=0, u_0=0, method=None):
+    def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
-        super().__init__(x_0, u_0, method)
+        super().__init__(x_0, u_0, u, method)
 
         self.parameters = {
             'X': 'Reactance',
@@ -59,6 +59,6 @@ class ZIM(Model):
 
         g2 = - self.u_0[0]*np.cos(self.p[7])/self.p[1]*x[0] \
              + self.u_0[0]*self.p[6]*np.sin(self.p[7])/self.p[1]*x[1] \
-             + 2*self.p[5]*self.u_0[0] + (2*self.u[0] - self.p[6]*np.cos(self.p[7]))/self.p[1]*u[1]
+             + 2*self.p[5]*self.u_0[0] + (2*self.u_0[0] - self.p[6]*np.cos(self.p[7]))/self.p[1]*u[1]
 
         return np.array([g1, g2])
