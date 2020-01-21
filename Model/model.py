@@ -6,10 +6,10 @@ import numpy as np
 
 class Model(ABC):
 
-    def __init__(self, x_0=0, u=0, method=None):
+    def __init__(self, x_0=0, u_0=0, method=None):
 
         assert isinstance(x_0, np.ndarray), "Initial states must be given in a numpy array"
-        assert isinstance(u, np.ndarray), "Input must be given in a numpy array"
+        assert isinstance(u_0, np.ndarray), "Input must be given in a numpy array"
 
         assert isinstance(method, IM), "Method must be of class IM"
 
@@ -20,7 +20,7 @@ class Model(ABC):
         self.p = 0
 
         self.x_0 = x_0
-        self.u = u
+        self.u_0 = u_0
         self.y = 0
 
         self.method = method

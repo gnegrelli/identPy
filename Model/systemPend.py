@@ -5,9 +5,9 @@ import numpy as np
 
 class Pendulum(Model):
 
-    def __init__(self, x_0=0, u=0, method=None):
+    def __init__(self, x_0=0, u_0=0, method=None):
 
-        super().__init__(x_0, u, method)
+        super().__init__(x_0, u_0, method)
 
         self.parameters = {
             'b': 'Air friction',
