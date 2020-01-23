@@ -97,10 +97,6 @@ class MVMO(Method):
         # Iteration process
         while self.error_log[-1] > self.tol and self.counter < self.max_gen:
 
-            for i in range(self.pop_sz):
-                print("Gen. %d - Specimen #%d: %s" % (self.counter, i, list_inds[i][1]))
-            self.counter += 1
-
             # Redraw graph
             if self.plot:
                 plt.pause(.1)
@@ -108,11 +104,14 @@ class MVMO(Method):
                 ax1.axis(axis_lst)
 
             for i, indiv in enumerate(list_inds):
+                # Print generation
+                print("Gen. %d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
 
                 # Plot individuals
                 if self.plot:
                     plot_indiv = indiv[1]*(self.hi_p - self.lo_p) + self.lo_p
-                    ax1.plot(plot_indiv[0], plot_indiv[1], MVMO.color[i % len(MVMO.color)] + MVMO.marker[i % len(MVMO.marker)])
+                    ax1.plot(plot_indiv[0], plot_indiv[1],
+                             MVMO.color[i % len(MVMO.color)] + MVMO.marker[i % len(MVMO.marker)])
 
                 self.mean += indiv[1]
 
@@ -135,6 +134,8 @@ class MVMO(Method):
             print("Variance: ", var)
             print("Error: ", self.error_log[-1])
             print("----------------------------\n\n")
+
+            self.counter += 1
 
             # Shape factor calculation - At every 100 iterations fs is set to zero in order to provide a broad search
             if self.counter % 97 != 0:
