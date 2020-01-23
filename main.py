@@ -13,7 +13,7 @@ from estimator import Estimator
 from Error.WLS_Error import _eval
 
 
-filepath = 'Sample_Data/Sample_SpringMass.csv'
+filepath = 'Sample_Data/Sample_SpringMass2.csv'
 
 with open(filepath, 'r') as f:
     for line in f.read().split('\n'):
@@ -34,11 +34,11 @@ with open(filepath, 'r') as f:
             except NameError:
                 u_meas = np.array([t, u])
 
-plt.figure(1)
-plt.plot(y_meas[:, 0], y_meas[:, 1])
+# plt.figure(1)
+# plt.plot(y_meas[:, 0], y_meas[:, 1])
 
-plt.figure(2)
-plt.plot(y_meas[:, 0], y_meas[:, 2])
+# plt.figure(2)
+# plt.plot(y_meas[:, 0], y_meas[:, 2])
 
 # plt.show()
 
@@ -46,13 +46,13 @@ plt.plot(y_meas[:, 0], y_meas[:, 2])
 a = mod(np.array([0, 0]), np.array([0]), u_meas, RK4(final_time=2*np.pi))
 a.update_output(p=np.array([3, 6]))
 
-plt.figure(3)
-plt.plot(a.y[:, 0], a.y[:, 1])
-plt.show()
+# plt.figure(3)
+# plt.plot(a.y[:, 0], a.y[:, 1])
+# plt.show()
 
 m = MVMO(np.array([0, 0]), np.array([10, 10]))
 m = PSO(np.array([0, 0]), np.array([10, 10]))
-m = TS(np.array([3, 5]))
+# m = TS(np.array([3, 5]))
 
 est = Estimator(y_meas, a, m)
 

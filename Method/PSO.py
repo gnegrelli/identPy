@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 class PSO(Method):
 
-    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=5000, p_speed=0.5, g_speed=0.15, tol=0.05):
+    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=5000, p_speed=0.5, g_speed=0.15, tol=0.05, plot=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -25,6 +25,8 @@ class PSO(Method):
         self.g_speed = g_speed
         self.tol = tol
 
+        self.plot = plot
+
         super().__init__()
 
     def __call__(self, parent):
@@ -34,9 +36,13 @@ class PSO(Method):
         print("------------------PSO-------------------")
 
         # Create figure
-        fig = plt.figure()
-        ax1 = fig.add_subplot(1, 1, 1)
-        ax1.axis([0, 10, 0, 10])
+        if self.plot:
+            fig = plt.figure()
+            ax1 = fig.add_subplot(1, 1, 1)
+            axis_lst = []
+            for limits in list(zip(self.lo_p, self.hi_p)):
+                axis_lst.extend(limits)
+            ax1.axis(axis_lst)
 
         particles = []
 
@@ -57,24 +63,25 @@ class PSO(Method):
             # Initialize speed of particles
             v.append((0., 0.))
 
+            if self.plot:
+                plot_particle = particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p
+                ax1.plot(plot_particle[0], plot_particle[1], PSO.color[i % len(PSO.color)] + '*')
+
         # Create global best
         g_best = copy(sorted(particles)[0])
 
         # Add error from first particles to log
         self.error_log.append(g_best[0])
 
-        for i, particle in enumerate(particles):
-            ax1.plot(particle[1][0]*(10 - 0) + 0, particle[1][1]*(10 - 0) + 0, PSO.color[i % len(PSO.color)] + '*')
-
         while self.counter < self.max_it and self.error_log[-1] > self.tol:
 
-            plt.pause(.1)
+            self.counter += 1
 
             # Redraw graph
-            ax1.clear()
-            ax1.axis([0, 10, 0, 10])
-
-            self.counter += 1
+            if self.plot:
+                plt.pause(.1)
+                ax1.clear()
+                ax1.axis(axis_lst)
 
             # Update coordinates of particles
             for i in range(self.swarm_sz):
@@ -100,20 +107,15 @@ class PSO(Method):
                 if p_best[i][0] > particles[i][0]:
                     p_best[i] = copy(particles[i])
 
+                if self.plot:
+                    # Plot new population
+                    plot_particle = particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p
+                    ax1.plot(plot_particle[0], plot_particle[1],
+                             PSO.color[i % len(PSO.color)] + PSO.marker[i % len(PSO.marker)])
+
             # Update global best
-            print(min(particles))
-            print(g_best[0])
             if g_best[0] > min(particles)[0]:
-                print(sorted(particles))
                 g_best = copy(sorted(particles)[0])
-            print(50*'~')
-
-            for i, particle in enumerate(particles):
-                # Plot new population
-                ax1.plot(particle[1][0] * (10 - 0) + 0, particle[1][1] * (10 - 0) + 0,
-                         PSO.color[i % len(PSO.color)] + PSO.marker[i % len(PSO.marker)])
-
-            # plt.show()
 
             self.error_log.append(g_best[0])
 
