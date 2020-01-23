@@ -2,15 +2,15 @@ from Method.method import Method
 from Error.WLS_Error import _eval
 
 import numpy as np
+import matplotlib.pyplot as plt
 import time
-
 import random
 
 
 class MVMO(Method):
 
     def __init__(self, lo_p, hi_p, pop_sz=5, offsp_sz=1, max_gen=5000, d=5, delta_d=1.5, fs=1, rnd=False, seq_rnd=False,
-                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=1.5):
+                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=0.5, plot=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -36,6 +36,8 @@ class MVMO(Method):
 
         self.tol = tol
 
+        self.plot = plot
+
         super().__init__()
 
     def __call__(self, parent):
@@ -43,6 +45,15 @@ class MVMO(Method):
         start_time = time.process_time()
 
         print("------------------MVMO------------------")
+
+        # Create figure
+        if self.plot:
+            fig = plt.figure()
+            ax1 = fig.add_subplot(1, 1, 1)
+            axis_lst = []
+            for limits in list(zip(self.lo_p, self.hi_p)):
+                axis_lst.extend(limits)
+            ax1.axis(axis_lst)
 
         selected_genes = []
 
@@ -90,14 +101,27 @@ class MVMO(Method):
                 print("Gen. %d - Specimen #%d: %s" % (self.counter, i, list_inds[i][1]))
             self.counter += 1
 
+            # Redraw graph
+            if self.plot:
+                plt.pause(.1)
+                ax1.clear()
+                ax1.axis(axis_lst)
+
+            for i, indiv in enumerate(list_inds):
+
+                # Plot individuals
+                if self.plot:
+                    plot_indiv = indiv[1]*(self.hi_p - self.lo_p) + self.lo_p
+                    ax1.plot(plot_indiv[0], plot_indiv[1], MVMO.color[i % len(MVMO.color)] + MVMO.marker[i % len(MVMO.marker)])
+
+                self.mean += indiv[1]
+
             # Mean calculation
-            for ind in list_inds:
-                self.mean += ind[1]
             self.mean /= self.pop_sz
 
             # Variance calculation
-            for ind in list_inds:
-                var += np.power(ind[1] - self.mean, 2)
+            for indiv in list_inds:
+                var += np.power(indiv[1] - self.mean, 2)
             var /= self.pop_sz
 
             # Repeat last non-null variance in case the new one is null
@@ -204,3 +228,6 @@ class MVMO(Method):
         s2 = self.sf[1][i]
 
         return m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1 - u)*s2))
+
+    color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+    marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']

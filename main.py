@@ -50,8 +50,8 @@ a.update_output(p=np.array([3, 6]))
 # plt.plot(a.y[:, 0], a.y[:, 1])
 # plt.show()
 
-m = MVMO(np.array([0, 0]), np.array([10, 10]))
-m = PSO(np.array([0, 0]), np.array([10, 10]))
+m = MVMO(np.array([0, 0]), np.array([10, 10]), plot=True)
+# m = PSO(np.array([0, 0]), np.array([10, 10]))
 # m = TS(np.array([3, 5]))
 
 est = Estimator(y_meas, a, m)

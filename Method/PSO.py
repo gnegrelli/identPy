@@ -2,11 +2,10 @@ from Method.method import Method
 from Error.WLS_Error import _eval
 
 import numpy as np
+import matplotlib.pyplot as plt
 import time
 
 from copy import copy
-
-import matplotlib.pyplot as plt
 
 
 class PSO(Method):
