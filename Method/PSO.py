@@ -24,6 +24,8 @@ class PSO(Method):
         self.g_speed = g_speed
         self.tol = tol
 
+        self.num_parameters = len(self.lo_p)
+
         self.plot = plot
 
         super().__init__()
@@ -50,7 +52,7 @@ class PSO(Method):
 
         # Create random swarm
         for i in range(self.swarm_sz):
-            particles.append([0, (np.random.random(), np.random.random())])
+            particles.append([0, tuple(np.random.random(self.num_parameters))])
 
             # Evaluate fitness of particle
             parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
@@ -85,6 +87,7 @@ class PSO(Method):
             # Update coordinates of particles
             for i in range(self.swarm_sz):
 
+                # TODO: make these updates automatic concerning the size of parameters vector
                 # Calculate acceleration of particles
                 a = (self.p_speed*(p_best[i][1][0] - particles[i][1][0]) +
                      self.g_speed*(g_best[1][0] - particles[i][1][0]),
