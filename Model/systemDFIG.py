@@ -13,6 +13,9 @@ class DFIG(Model):
         self.p_tref = p_tref
         self.v_tmin = v_tmin
 
+        self.v_pa_adj = 0
+        self.v_qa_adj = 0
+
         self.parameters = {
             'R': 'Equivalent Resistance',
             'X': 'Equivalent Reactance',
@@ -60,6 +63,16 @@ class DFIG(Model):
         print('i_pref:', i_pref)
         print('i_qref:', i_qref)
         print(30 * '-')
+
+        # PI Block
+        v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj
+        v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[3]/u[1] - i_qref) + self.v_qa_adj
+
+        self.v_pa_adj = v_pa - self.p[2]*(i_pref - u[3]/u[1])
+        self.v_qa_adj = v_qa - self.p[2]*(u[3]/u[1] - i_qref)
+
+        print('v_pa:', v_pa)
+        print('v_qa:', v_qa)
 
         pass
 
