@@ -38,6 +38,12 @@ class DFIG(Model):
 
         x, u = super().f(x, u)
 
+        i_ac = self.p_tref/self.v_tref
+        i_re = self.p[5]*(self.v_tref - u[1])
+
+        print('i_ac:', i_ac)
+        print('i_re:', i_re)
+
         pass
 
     def g(self, x=None, u=None):
