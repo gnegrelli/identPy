@@ -68,3 +68,6 @@ class Model(ABC):
         assert isinstance(self.y, np.ndarray), "Output must be a numpy array in order to save"
 
         np.savetxt('Sample_Data/' + filename, self.y, delimiter=',')
+
+    def reset_adjustments(self):
+        pass
