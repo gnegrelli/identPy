@@ -44,7 +44,14 @@ class DFIG(Model):
 
         x, u = super().g(x, u)
 
-        pass
+        # TODO: Check calculation of vtd and vtq. Which angle should I use.
+        vtd = u[1]*np.cos(u[2])
+        vtq = u[1]*np.sin(u[2])
+
+        g1 = (self.p[0]*(vtd*x[0] + vtq*x[1] - u[1]**2) + self.p[1]*(vtq*x[0] - vtd*x[1]))/(self.p[0]**2 + self.p[1]**2)
+        g2 = (self.p[1]*(vtd*x[0] + vtq*x[1] - u[1]**2) - self.p[0]*(vtq*x[0] - vtd*x[1]))/(self.p[0]**2 + self.p[1]**2)
+
+        return np.array([g1, g2])
 
 
 # -*- coding: utf-8 -*-
