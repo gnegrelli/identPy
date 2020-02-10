@@ -13,8 +13,7 @@ class DFIG(Model):
         self.p_tref = p_tref
         self.v_tmin = v_tmin
 
-        self.v_pa_adj = 0
-        self.v_qa_adj = 0
+        self.reset_adjustments()
 
         self.parameters = {
             'R': 'Equivalent Resistance',
@@ -75,7 +74,7 @@ class DFIG(Model):
 
         print('v_pa:', v_pa)
         print('v_qa:', v_qa)
-        
+
         f1 = (x[0] - v_pa)/self.p[4]
         f2 = (x[0] - v_qa)/self.p[4]
 
@@ -93,6 +92,11 @@ class DFIG(Model):
         g2 = (self.p[1]*(vtd*x[0] + vtq*x[1] - u[1]**2) - self.p[0]*(vtq*x[0] - vtd*x[1]))/(self.p[0]**2 + self.p[1]**2)
 
         return np.array([g1, g2])
+
+    def reset_adjustments(self):
+        self.v_pa_adj = 0
+        self.v_qa_adj = 0
+
 
 
 # -*- coding: utf-8 -*-
