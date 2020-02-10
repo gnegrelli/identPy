@@ -1,3 +1,35 @@
+from Model.model import Model
+
+import numpy as np
+
+
+class DFIG(Model):
+
+    def __init__(self, x_0=0, u_0=0, u=0, method=None):
+        super().__init__(x_0, u_0, u, method)
+
+        self.parameters = {
+            'R': 'Equivalent Resistance',
+            'X': 'Equivalent Reactance',
+            'k_I': 'PI Gain',
+            'T_I': 'PI Time Constant',
+            'T_V': 'Delay Time Constant',
+            'k_VC': 'Voltage Controller Gain',
+            'i_max': 'Maximum Current',
+        }
+
+        self.inputs = {
+            'v_T': 'Terminal Voltage Magnitude',
+            'i_P': 'Current Active Component',
+            'i_Q': 'Current Reactive Component',
+        }
+
+        self.outputs = {
+            'P_e': 'Active Power',
+            'Q_e': 'Reactive Power',
+        }
+
+
 # -*- coding: utf-8 -*-
 """
 Created on Thu Apr 25 23:36:44 2017
