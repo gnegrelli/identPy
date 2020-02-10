@@ -41,6 +41,8 @@ class DFIG(Model):
 
         x, u = super().f(x, u)
 
+        # TODO: Check calculation of f
+
         i_ac = self.p_tref/self.v_tref
         i_re = self.p[5]*(self.v_tref - u[1])
 
@@ -73,8 +75,11 @@ class DFIG(Model):
 
         print('v_pa:', v_pa)
         print('v_qa:', v_qa)
+        
+        f1 = (x[0] - v_pa)/self.p[4]
+        f2 = (x[0] - v_qa)/self.p[4]
 
-        pass
+        return np.array([f1, f2])
 
     def g(self, x=None, u=None):
 
