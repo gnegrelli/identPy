@@ -5,8 +5,13 @@ import numpy as np
 
 class DFIG(Model):
 
-    def __init__(self, x_0=0, u_0=0, u=0, method=None):
+    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.1, v_tref=1.0105, p_tref=0.982, v_tmin=0.9):
         super().__init__(x_0, u_0, u, method)
+
+        self.step_int = step_int
+        self.v_tref = v_tref
+        self.p_tref = p_tref
+        self.v_tmin = v_tmin
 
         self.parameters = {
             'R': 'Equivalent Resistance',
@@ -28,6 +33,18 @@ class DFIG(Model):
             'P_e': 'Active Power',
             'Q_e': 'Reactive Power',
         }
+
+    def f(self, x=None, u=None):
+
+        x, u = super().f(x, u)
+
+        pass
+
+    def g(self, x=None, u=None):
+
+        x, u = super().g(x, u)
+
+        pass
 
 
 # -*- coding: utf-8 -*-
