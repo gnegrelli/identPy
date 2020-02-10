@@ -5,12 +5,13 @@ import numpy as np
 
 class DFIG(Model):
 
-    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.1, v_tref=1.0105, p_tref=0.982, v_tmin=0.9):
+    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.1, v_tref=1.0105, p_tref=0.982, q_tref=0.057595, v_tmin=0.9):
         super().__init__(x_0, u_0, u, method)
 
         self.step_int = step_int
         self.v_tref = v_tref
         self.p_tref = p_tref
+        self.q_tref = q_tref
         self.v_tmin = v_tmin
 
         self.reset_adjustments()
@@ -42,8 +43,8 @@ class DFIG(Model):
 
         # TODO: Check calculation of f
 
-        i_ac = self.p_tref/self.v_tref
-        i_re = self.p[5]*(self.v_tref - u[1])
+        i_ac = self.p_tref/u[1]
+        i_re = self.p[5]*(self.v_tref - u[1]) + self.q_tref/self.v_tref
 
         print('i_ac:', i_ac)
         print('i_re:', i_re)
