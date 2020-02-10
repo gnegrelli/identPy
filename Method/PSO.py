@@ -10,7 +10,7 @@ from copy import copy
 
 class PSO(Method):
 
-    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=5000, p_speed=0.5, g_speed=0.15, tol=0.05, plot=False):
+    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=50000, p_speed=0.5, g_speed=0.15, tol=1., plot=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -62,7 +62,7 @@ class PSO(Method):
             p_best.append(copy(particles[i]))
 
             # Initialize speed of particles
-            v.append((0., 0.))
+            v.append(tuple(np.zeros(self.num_parameters,)))
 
             if self.plot:
                 plot_particle = particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p
@@ -89,17 +89,17 @@ class PSO(Method):
 
                 # TODO: make these updates automatic concerning the size of parameters vector
                 # Calculate acceleration of particles
-                a = (self.p_speed*(p_best[i][1][0] - particles[i][1][0]) +
-                     self.g_speed*(g_best[1][0] - particles[i][1][0]),
-                     self.p_speed*(p_best[i][1][1] - particles[i][1][1]) +
-                     self.g_speed*(g_best[1][1] - particles[i][1][1]))
-
-                # Update position of particles
-                particles[i][1] = (min(max(particles[i][1][0] + v[i][0] + a[0], 0), 1),
-                                   min(max(particles[i][1][1] + v[i][1] + a[1], 0), 1))
+                a = []
+                position = []
+                for j in range(self.num_parameters):
+                    a.append(self.p_speed*(p_best[i][1][j] - particles[i][1][j]) +
+                             self.g_speed*(g_best[1][j] - particles[i][1][j]))
+                    position.append(min(max(particles[i][1][j] + v[i][j] + a[j], 0), 1))
+                a = tuple(a)
+                particles[i][1] = tuple(position)
 
                 # Update speed of particles
-                v[i] = (v[i][0] + a[0], v[i][1] + a[1])
+                v[i] = tuple(map(sum, zip(v[i], a)))
 
                 # Update fitness value
                 parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
