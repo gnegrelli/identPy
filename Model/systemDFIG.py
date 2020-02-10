@@ -75,8 +75,17 @@ class DFIG(Model):
         print('v_pa:', v_pa)
         print('v_qa:', v_qa)
 
+        v_pas = -np.cos(u[2])*v_pa - np.sin(u[2])*v_qa
+        v_qas = np.sin(u[2])*v_pa - np.cos(u[2])*v_qa
+
+        print('v_pas:', v_pas)
+        print('v_qas:', v_qas)
+
         f1 = (x[0] - v_pa)/self.p[4]
         f2 = (x[0] - v_qa)/self.p[4]
+
+        print('v_d:', f1)
+        print('v_q:', f2)
 
         return np.array([f1, f2])
 
