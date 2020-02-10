@@ -43,6 +43,23 @@ class DFIG(Model):
 
         print('i_ac:', i_ac)
         print('i_re:', i_re)
+        print(30*'-')
+
+        # Current Priority Block
+        if np.sqrt(i_ac**2 + i_re**2) < self.p[6]:
+            i_pref = i_ac
+            i_qref = i_re
+        else:
+            if u[1] < self.v_tmin:
+                i_qref = min(np.abs(i_re), self.p[6])*i_re/np.abs(i_re)
+                i_pref = np.sqrt(self.p[6]**2 - i_qref**2)
+            else:
+                i_pref = min(np.abs(i_ac), self.p[6])*i_ac/np.abs(i_ac)
+                i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
+
+        print('i_pref:', i_pref)
+        print('i_qref:', i_qref)
+        print(30 * '-')
 
         pass
 
