@@ -70,11 +70,11 @@ class DFIG(Model):
         # print(30 * '-')
 
         # PI Block
-        v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj
-        v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[3]/u[1] - i_qref) + self.v_qa_adj
+        v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj.pop(-4)
+        v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[4]/u[1] - i_qref) + self.v_qa_adj.pop(-4)
 
-        self.v_pa_adj = v_pa - self.p[2]*(i_pref - u[3]/u[1])
-        self.v_qa_adj = v_qa - self.p[2]*(u[3]/u[1] - i_qref)
+        self.v_pa_adj.append(v_pa - self.p[2]*(i_pref - u[3]/u[1]))
+        self.v_qa_adj.append(v_qa - self.p[2]*(u[4]/u[1] - i_qref))
 
         # print('v_pa:', v_pa)
         # print('v_qa:', v_qa)
@@ -88,7 +88,7 @@ class DFIG(Model):
         f1 = (x[0] - v_pa)/self.p[4]
         f2 = (x[0] - v_qa)/self.p[4]
 
-        # print('v_d:', f1)
+        print('v_d:', f1)
         # print('v_q:', f2)
 
         return np.array([f1, f2])
@@ -118,8 +118,8 @@ class DFIG(Model):
 
         va = np.linalg.solve(ej, np.array([[vd], [vq]]))
 
-        self.v_pa_adj = va[0][0]
-        self.v_qa_adj = va[1][0]
+        self.v_pa_adj = [va[0][0] for i in range(4)]
+        self.v_qa_adj = [va[1][0] for i in range(4)]
 
 
 
