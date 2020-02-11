@@ -5,16 +5,15 @@ import numpy as np
 
 class DFIG(Model):
 
-    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.1, v_tref=1.0105, p_tref=0.982, q_tref=0.057595, v_tmin=0.9):
-        super().__init__(x_0, u_0, u, method)
+    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.1, v_tref=1.0105, p_tref=0.982, q_tref=0.057595,
+                 v_tmin=0.9):
+        super(DFIG, self).__init__(x_0, u_0, u, method)
 
         self.step_int = step_int
         self.v_tref = v_tref
         self.p_tref = p_tref
         self.q_tref = q_tref
         self.v_tmin = v_tmin
-
-        self.reset_adjustments()
 
         self.parameters = {
             'R': 'Equivalent Resistance',
@@ -37,6 +36,10 @@ class DFIG(Model):
             'Q_e': 'Reactive Power',
         }
 
+    def update_parameters(self, p):
+        super(DFIG, self).update_parameters(p)
+        self.reset_adjustments()
+
     def f(self, x=None, u=None):
 
         x, u = super().f(x, u)
@@ -46,9 +49,9 @@ class DFIG(Model):
         i_ac = self.p_tref/u[1]
         i_re = self.p[5]*(self.v_tref - u[1]) + self.q_tref/self.v_tref
 
-        print('i_ac:', i_ac)
-        print('i_re:', i_re)
-        print(30*'-')
+        # print('i_ac:', i_ac)
+        # print('i_re:', i_re)
+        # print(30*'-')
 
         # Current Priority Block
         if np.sqrt(i_ac**2 + i_re**2) < self.p[6]:
@@ -62,9 +65,9 @@ class DFIG(Model):
                 i_pref = min(np.abs(i_ac), self.p[6])*i_ac/np.abs(i_ac)
                 i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
 
-        print('i_pref:', i_pref)
-        print('i_qref:', i_qref)
-        print(30 * '-')
+        # print('i_pref:', i_pref)
+        # print('i_qref:', i_qref)
+        # print(30 * '-')
 
         # PI Block
         v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj
@@ -73,20 +76,20 @@ class DFIG(Model):
         self.v_pa_adj = v_pa - self.p[2]*(i_pref - u[3]/u[1])
         self.v_qa_adj = v_qa - self.p[2]*(u[3]/u[1] - i_qref)
 
-        print('v_pa:', v_pa)
-        print('v_qa:', v_qa)
+        # print('v_pa:', v_pa)
+        # print('v_qa:', v_qa)
 
         v_pas = -np.cos(u[2])*v_pa - np.sin(u[2])*v_qa
         v_qas = np.sin(u[2])*v_pa - np.cos(u[2])*v_qa
 
-        print('v_pas:', v_pas)
-        print('v_qas:', v_qas)
+        # print('v_pas:', v_pas)
+        # print('v_qas:', v_qas)
 
         f1 = (x[0] - v_pa)/self.p[4]
         f2 = (x[0] - v_qa)/self.p[4]
 
-        print('v_d:', f1)
-        print('v_q:', f2)
+        # print('v_d:', f1)
+        # print('v_q:', f2)
 
         return np.array([f1, f2])
 
@@ -104,8 +107,19 @@ class DFIG(Model):
         return np.array([g1, g2])
 
     def reset_adjustments(self):
-        self.v_pa_adj = 0
-        self.v_qa_adj = 0
+        v = self.u_0[1]*np.cos(self.u_0[2]) + 1j*self.u_0[1]*np.sin(self.u_0[2])
+        i = np.conj(self.u_0[3] + 1j*self.u_0[4])/np.conj(v)
+
+        e = v + i*(self.p[0] + 1j*self.p[1])
+        vd = np.real(e)
+        vq = np.imag(e)
+
+        ej = np.array([[-np.cos(self.u_0[2]), -np.sin(self.u_0[2])], [np.sin(self.u_0[2]), -np.cos(self.u_0[2])]])
+
+        va = np.linalg.solve(ej, np.array([[vd], [vq]]))
+
+        self.v_pa_adj = va[0][0]
+        self.v_qa_adj = va[1][0]
 
 
 
