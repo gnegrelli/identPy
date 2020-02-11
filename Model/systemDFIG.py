@@ -5,7 +5,7 @@ import numpy as np
 
 class DFIG(Model):
 
-    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.1, v_tref=1.0105, p_tref=0.982, q_tref=0.057595,
+    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.0105, p_tref=0.982, q_tref=0.057595,
                  v_tmin=0.9):
         super(DFIG, self).__init__(x_0, u_0, u, method)
 
