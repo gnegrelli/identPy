@@ -85,8 +85,8 @@ class DFIG(Model):
 
         # TODO: Check calculation of v_d and v_q
 
-        f1 = (x[0] - v_pas)/self.p[4]
-        f2 = (x[1] - v_qas)/self.p[4]
+        f1 = (v_pas - x[0])/self.p[4]
+        f2 = (v_qas - x[1])/self.p[4]
 
         print('v_d:', f1)
         # print('v_q:', f2)
@@ -100,6 +100,8 @@ class DFIG(Model):
         # TODO: Check calculation of vtd and vtq. Which angle should I use.
         vtd = u[1]*np.cos(u[2])
         vtq = u[1]*np.sin(u[2])
+
+        # TODO: Limits of x should enter here (-1 <= x <= 1)
 
         g1 = (self.p[0]*(vtd*x[0] + vtq*x[1] - u[1]**2) + self.p[1]*(vtq*x[0] - vtd*x[1]))/(self.p[0]**2 + self.p[1]**2)
         g2 = (self.p[1]*(vtd*x[0] + vtq*x[1] - u[1]**2) - self.p[0]*(vtq*x[0] - vtd*x[1]))/(self.p[0]**2 + self.p[1]**2)
