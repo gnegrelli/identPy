@@ -15,7 +15,7 @@ from estimator import Estimator
 from Error.WLS_Error import _eval
 
 
-filepath = 'Sample_Data/Sample_DFIG_Erlich_pu2.csv'
+filepath = 'Sample_Data/Sample_DFIG_Erlich_pu_fault.csv'
 
 with open(filepath, 'r') as f:
     for line in f.read().split('\n'):
