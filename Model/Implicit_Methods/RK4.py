@@ -34,8 +34,8 @@ class RK4(IM):
                 u_t = next(u)
             except StopIteration:
                 break
-            k2 = self.h*(model.f(x + k1, u_t, factor=1/2))
-            k3 = self.h*(model.f(x + k2, u_t, factor=1/2))
+            k2 = self.h*(model.f(x + k1/2, u_t, factor=1/2))
+            k3 = self.h*(model.f(x + k2/2, u_t, factor=1/2))
             k4 = self.h*(model.f(x + k3, u_t, factor=1))
 
             t = round(t + self.h, 5)
