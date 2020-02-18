@@ -40,7 +40,7 @@ class DFIG(Model):
         super(DFIG, self).update_parameters(p)
         self.reset_adjustments()
 
-    def f(self, x=None, u=None):
+    def f(self, x=None, u=None, factor=0):
 
         x, u = super().f(x, u)
 
@@ -80,6 +80,13 @@ class DFIG(Model):
         v_pas = -np.cos(u[2])*v_pa - np.sin(u[2])*v_qa
         v_qas = np.sin(u[2])*v_pa - np.cos(u[2])*v_qa
 
+        if not factor:
+            self.last_v_pas = v_pas
+            self.last_v_qas = v_qas
+        else:
+            v_pas = factor*(v_pas - self.last_v_pas) + self.last_v_pas
+            v_qas = factor*(v_qas - self.last_v_qas) + self.last_v_qas
+
         # print('v_pas:', v_pas)
         # print('v_qas:', v_qas)
 
@@ -88,7 +95,7 @@ class DFIG(Model):
         f1 = (v_pas - x[0])/self.p[4]
         f2 = (v_qas - x[1])/self.p[4]
 
-        print('v_d:', f1)
+        # print('v_d:', f1)
         # print('v_q:', f2)
 
         return np.array([f1, f2])
