@@ -29,15 +29,17 @@ class RK4(IM):
         while t < self.tf:
 
             # TODO: Modify the usage of u on f and g. Maybe read it from a file would be better
-            k1 = self.h*(model.f(x, u_t))
-            k2 = self.h*(model.f(x + k1, u_t))
-            k3 = self.h*(model.f(x + k2, u_t))
-            k4 = self.h*(model.f(x + k3, u_t))
+            k1 = self.h*(model.f(x, u_t, factor=0))
+            try:
+                u_t = next(u)
+            except StopIteration:
+                break
+            k2 = self.h*(model.f(x + k1, u_t, factor=1/2))
+            k3 = self.h*(model.f(x + k2, u_t, factor=1/2))
+            k4 = self.h*(model.f(x + k3, u_t, factor=1))
 
             t = round(t + self.h, 5)
 
             x = x + (k1 + 2*k2 + 2*k3 + k4)/6
 
             model.y = np.vstack((model.y, np.append(t, model.g(x, u_t))))
-
-            u_t = next(u)
