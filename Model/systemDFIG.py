@@ -68,8 +68,12 @@ class DFIG(Model):
         # print(30 * '-')
 
         # PI Block
-        v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj.pop(-4)
-        v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[4]/u[1] - i_qref) + self.v_qa_adj.pop(-4)
+        if np.equal(u, self.u_0).all():
+            v_pa = self.v_pa_adj.pop(-4)
+            v_qa = self.v_qa_adj.pop(-4)
+        else:
+            v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj.pop(-4)
+            v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[4]/u[1] - i_qref) + self.v_qa_adj.pop(-4)
 
         self.v_pa_adj.append(v_pa - self.p[2]*(i_pref - u[3]/u[1]))
         self.v_qa_adj.append(v_qa - self.p[2]*(u[4]/u[1] - i_qref))
