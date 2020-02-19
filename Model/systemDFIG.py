@@ -15,6 +15,12 @@ class DFIG(Model):
         self.q_tref = q_tref
         self.v_tmin = v_tmin
 
+        self.v_pa_adj = 0
+        self.v_qa_adj = 0
+
+        self.last_v_pas = 0
+        self.last_v_qas = 0
+
         self.parameters = {
             'R': 'Equivalent Resistance',
             'X': 'Equivalent Reactance',
@@ -47,10 +53,6 @@ class DFIG(Model):
         i_ac = self.p_tref/u[1]
         i_re = self.p[5]*(self.v_tref - u[1]) + self.q_tref/self.v_tref
 
-        # print('i_ac:', i_ac)
-        # print('i_re:', i_re)
-        # print(30*'-')
-
         # Current Priority Block
         if np.sqrt(i_ac**2 + i_re**2) < self.p[6]:
             i_pref = i_ac
@@ -62,10 +64,6 @@ class DFIG(Model):
             else:
                 i_pref = min(np.abs(i_ac), self.p[6])*i_ac/np.abs(i_ac)
                 i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
-
-        # print('i_pref:', i_pref)
-        # print('i_qref:', i_qref)
-        # print(30 * '-')
 
         # PI Block
         if np.equal(u, self.u_0).all():
@@ -79,9 +77,6 @@ class DFIG(Model):
             self.v_pa_adj = v_pa - self.p[2] * (i_pref - u[3] / u[1])
             self.v_qa_adj = v_qa - self.p[2] * (u[4] / u[1] - i_qref)
 
-        # print('v_pa:', v_pa)
-        # print('v_qa:', v_qa)
-
         v_pas = -np.cos(u[2])*v_pa - np.sin(u[2])*v_qa
         v_qas = np.sin(u[2])*v_pa - np.cos(u[2])*v_qa
 
@@ -92,16 +87,8 @@ class DFIG(Model):
             v_pas = factor*(v_pas - self.last_v_pas) + self.last_v_pas
             v_qas = factor*(v_qas - self.last_v_qas) + self.last_v_qas
 
-        # print('v_pas:', v_pas)
-        # print('v_qas:', v_qas)
-
-        # TODO: Check calculation of v_d and v_q
-
         f1 = (v_pas - x[0])/self.p[4]
         f2 = (v_qas - x[1])/self.p[4]
-
-        # print('v_d:', f1)
-        # print('v_q:', f2)
 
         return np.array([f1, f2])
 
