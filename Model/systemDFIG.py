@@ -69,14 +69,15 @@ class DFIG(Model):
 
         # PI Block
         if np.equal(u, self.u_0).all():
-            v_pa = self.v_pa_adj.pop(-4)
-            v_qa = self.v_qa_adj.pop(-4)
+            v_pa = self.v_pa_adj
+            v_qa = self.v_qa_adj
         else:
-            v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj.pop(-4)
-            v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[4]/u[1] - i_qref) + self.v_qa_adj.pop(-4)
+            v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj
+            v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[4]/u[1] - i_qref) + self.v_qa_adj
 
-        self.v_pa_adj.append(v_pa - self.p[2]*(i_pref - u[3]/u[1]))
-        self.v_qa_adj.append(v_qa - self.p[2]*(u[4]/u[1] - i_qref))
+        if factor == 0:
+            self.v_pa_adj = v_pa - self.p[2] * (i_pref - u[3] / u[1])
+            self.v_qa_adj = v_qa - self.p[2] * (u[4] / u[1] - i_qref)
 
         # print('v_pa:', v_pa)
         # print('v_qa:', v_qa)
@@ -131,5 +132,5 @@ class DFIG(Model):
 
         va = np.linalg.solve(ej, np.array([[vd], [vq]]))
 
-        self.v_pa_adj = [va[0][0] for i in range(4)]
-        self.v_qa_adj = [va[1][0] for i in range(4)]
+        self.v_pa_adj = va[0][0]
+        self.v_qa_adj = va[1][0]
