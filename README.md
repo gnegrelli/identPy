@@ -1,20 +1,21 @@
-# PyMod
+# identPy
 
 This project focus on building a parameter estimation software for any type of non-linear model.
 
 ## Getting Started
 
-Run test_Main.py to estimate parameters of a non-linear model.
+Run main.py to estimate parameters of a non-linear model.
 
 Models implemented are:
 
 * Spring-Mass
 * Simple Pendulum
 * Z-IM Load Model
-* DFIG Model (in construction)
+* DFIG Model (under construction)
 
 Estimation process implemented are:
 
+* Particle Swarm Optimization (PSO)
 * Mean-Variance Mapping Optimization (MVMO)
 * Trajectory Sensitivity
 <!---
