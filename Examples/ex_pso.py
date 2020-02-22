@@ -43,7 +43,6 @@ ax1.axis([xmin, xmax, ymin, ymax])
 # Plotting real values
 ax1.plot(real[0], real[1], 'gx')
 
-
 color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
 
@@ -74,7 +73,7 @@ while gen < max_gen and g_best[0] > tol:
 
     # Redraw graph
     ax1.clear()
-    ax1.axis([xmin, xmax + 10, ymin, ymax + 10])
+    ax1.axis([xmin, xmax, ymin, ymax])
 
     gen += 1
 
