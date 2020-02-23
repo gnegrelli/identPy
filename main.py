@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import os
+
 from Model import SpringMass, Pendulum, ZIM, DFIG
 from Model import RK4
 
@@ -12,8 +14,16 @@ from Error.WLS_Error import _eval
 
 
 def input_read(file_path=None, u_indices=None, y_indices=None):
+
+    assert isinstance(u_indices, list), 'Input indices must be given in a list'
+    assert isinstance(y_indices, list), 'Output indices must be given in a list'
+    assert os.path.exists(file_path), 'Data file must exist'
+    assert file_path.split('.')[-1] in ['csv', 'txt', 'dat'], 'Only .csv, .txt and .dat file supported'
+
     pass
 
+
+input_read('Sample_Data/Sample_DFIG_Erlich_pu_fault.csv', u_indices=[1], y_indices=[2])
 
 filepath = 'Sample_Data/Sample_DFIG_Erlich_pu_fault.csv'
 
