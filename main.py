@@ -11,6 +11,10 @@ from estimator import Estimator
 from Error.WLS_Error import _eval
 
 
+def input_read(file_path=None, u_indices=None, y_indices=None):
+    pass
+
+
 filepath = 'Sample_Data/Sample_DFIG_Erlich_pu_fault.csv'
 
 with open(filepath, 'r') as f:
