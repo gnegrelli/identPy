@@ -1,14 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Model.systemSM import SpringMass as mod
-from Model.systemZIM import ZIM as mod
-from Model.systemDFIG import DFIG as mod
-from Model.Implicit_Methods.RK4 import RK4
+from Model import SpringMass, Pendulum, ZIM, DFIG
+from Model import RK4
 
-from Method.MVMO import MVMO
-from Method.PSO import PSO
-from Method.TS import TS
+from Method import MVMO, PSO, TS
 
 from estimator import Estimator
 
@@ -46,7 +42,7 @@ with open(filepath, 'r') as f:
 # plt.show()
 
 # TODO: Read input vector u_meas on the model side
-a = mod(np.array([0.995529958481552, 0.394837954500335]), u_meas[0], u_meas, RK4(final_time=1))
+a = DFIG(np.array([0.995529958481552, 0.394837954500335]), u_meas[0], u_meas, RK4(final_time=1))
 a.update_output(p=np.array([0.4022/(33**2/90), 2.3861/(33**2/90), 10.516, 0.038, 0.393, 2.0, 1.1]))
 
 plt.figure(3)
