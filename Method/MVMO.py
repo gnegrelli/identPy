@@ -1,5 +1,5 @@
-from Method.method import Method
-from Error.WLS_Error import _eval
+from Method import Method
+from Error import wls_error
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -83,7 +83,7 @@ class MVMO(Method):
 
             # Evaluate individual
             parent.model.update_output(indiv*(self.hi_p - self.lo_p) + self.lo_p)
-            list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
+            list_inds.append([wls_error(parent.model.y, parent.y_meas), indiv])
 
         # Sorting individuals and storing error
         list_inds.sort()
@@ -196,7 +196,7 @@ class MVMO(Method):
 
                 # Evaluate individual
                 parent.model.update_output(indiv * (self.hi_p - self.lo_p) + self.lo_p)
-                list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
+                list_inds.append([wls_error(parent.model.y, parent.y_meas), indiv])
 
             # Sorting new list of individuals and discarding the worst individuals
             list_inds = sorted(list_inds)[:self.pop_sz]
