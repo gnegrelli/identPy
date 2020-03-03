@@ -60,10 +60,16 @@ class DFIG(Model):
         else:
             if u[1] < self.v_tmin:
                 i_qref = min(np.abs(i_re), self.p[6])*i_re/np.abs(i_re)
-                i_pref = np.sqrt(self.p[6]**2 - i_qref**2)
+                try:
+                    i_pref = np.sqrt(self.p[6]**2 - i_qref**2)
+                except RuntimeWarning:
+                    i_pref = 0
             else:
                 i_pref = min(np.abs(i_ac), self.p[6])*i_ac/np.abs(i_ac)
-                i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
+                try:
+                    i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
+                except RuntimeWarning:
+                    i_qref = 0
 
         # PI Block
         if np.equal(u, self.u_0).all():

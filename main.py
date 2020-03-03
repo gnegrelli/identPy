@@ -48,28 +48,23 @@ def input_read(file_path=None, u_indices=None, y_indices=None):
 
 u_meas, y_meas = input_read('Sample_Data/Sample_DFIG_Erlich_pu_fault.csv', u_indices=[1, 2, 4, 5], y_indices=[4, 5])
 
-# plt.figure(1)
-# plt.plot(y_meas[:, 0], y_meas[:, 1])
-
-# plt.figure(2)
-# plt.plot(y_meas[:, 0], y_meas[:, 2])
-
-# plt.show()
-
 # TODO: Read input vector u_meas on the model side
 a = DFIG(np.array([0.995529958481552, 0.394837954500335]), u_meas[0], u_meas, RK4(final_time=1))
 a.update_output(p=np.array([0.4022/(33**2/90), 2.3861/(33**2/90), 10.516, 0.038, 0.393, 2.0, 1.1]))
 
-plt.figure(3)
-plt.plot(a.y[:, 0], a.y[:, 1])
-plt.show()
-
-m = MVMO(np.array([0., 0., 0., 0., 0., 0., 0.8, -0.5]), np.array([.5, .2, 1., 1., 7., 5., 1.2, 0.5]))
-m = PSO(np.array([0., 0., 0., 0., 0., 0., 0.8, -0.5]), np.array([.5, .2, 1., 1., 7., 5., 1.2, 0.5]))
-# m = TS(np.array([3, 5]))
+# m = MVMO(np.array([0., 0., 0., 0., 0., 0., 0.8, -0.5]), np.array([.5, .2, 1., 1., 7., 5., 1.2, 0.5]))
+# m = PSO(np.array([0., 0., 0., 0., 0., 0., 0.8, -0.5]), np.array([.5, .2, 1., 1., 7., 5., 1.2, 0.5]))
+# m = TS(np.array([0.4022/(33**2/90), 2.3861/(33**2/90), 10.516, 0.038, 0.393, 2.0, 1.1]))
+m = MVMO(np.array([0., 0., 5., 0., 0., 0.5, 1.]), np.array([2, 5, 15, .2, 1., 5, 1.25]))
 
 est = Estimator(y_meas, a, m)
 
 est()
-print(est.method.error_log)
+
+plt.figure(1)
+plt.plot(est.model.y[:, 0], est.model.y[:, 1], y_meas[:, 0], y_meas[:, 1])
+
+plt.figure(2)
+plt.plot(est.model.y[:, 0], est.model.y[:, 2], y_meas[:, 0], y_meas[:, 2])
+plt.show()
 
