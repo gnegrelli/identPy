@@ -8,9 +8,7 @@ from Model import RK4
 
 from Method import MVMO, PSO, TS
 
-from estimator import Estimator
-
-from Error.WLS_Error import _eval
+from Objects import Estimator
 
 
 def input_read(file_path=None, u_indices=None, y_indices=None):
