@@ -126,5 +126,7 @@ class DFIG(Model):
 
         va = np.linalg.solve(ej, np.array([[vd], [vq]]))
 
+        self.x_0 = np.array([vd, vq])
+
         self.v_pa_adj = va[0][0]
         self.v_qa_adj = va[1][0]
