@@ -1,7 +1,8 @@
 from abc import ABC
-from Model.Implicit_Methods.i_method import IMethod as IM
 
 import numpy as np
+
+from identpy.Model.Implicit_Methods.i_method import IMethod as IM
 
 
 class Model(ABC):

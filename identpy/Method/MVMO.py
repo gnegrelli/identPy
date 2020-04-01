@@ -1,10 +1,11 @@
-from Method.method import Method
-from Error.WLS_Error import _eval
+import time
+import random
 
 import numpy as np
 import matplotlib.pyplot as plt
-import time
-import random
+
+from identpy.Method import Method
+from identpy.Error.WLS_Error import wls_eval
 
 
 class MVMO(Method):
@@ -82,7 +83,7 @@ class MVMO(Method):
 
             # Evaluate individual
             parent.model.update_output(indiv*(self.hi_p - self.lo_p) + self.lo_p)
-            list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
+            list_inds.append([wls_eval(parent.model.y, parent.y_meas), indiv])
 
         # Sorting individuals and storing error
         list_inds.sort()
@@ -195,7 +196,7 @@ class MVMO(Method):
 
                 # Evaluate individual
                 parent.model.update_output(indiv * (self.hi_p - self.lo_p) + self.lo_p)
-                list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
+                list_inds.append([wls_eval(parent.model.y, parent.y_meas), indiv])
 
             # Sorting new list of individuals and discarding the worst individuals
             list_inds = sorted(list_inds)[:self.pop_sz]

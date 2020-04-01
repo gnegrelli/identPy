@@ -1,11 +1,12 @@
-from Method.method import Method
-from Error.WLS_Error import _eval
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
-import time
 
 from copy import copy
+
+from identpy.Method import Method
+from identpy.Error.WLS_Error import wls_eval
 
 
 class PSO(Method):
@@ -56,7 +57,7 @@ class PSO(Method):
 
             # Evaluate fitness of particle
             parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
-            particles[i][0] = _eval(parent.model.y, parent.y_meas)
+            particles[i][0] = wls_eval(parent.model.y, parent.y_meas)
 
             # Create personal best vector
             p_best.append(copy(particles[i]))
@@ -103,7 +104,7 @@ class PSO(Method):
 
                 # Update fitness value
                 parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
-                particles[i][0] = _eval(parent.model.y, parent.y_meas)
+                particles[i][0] = wls_eval(parent.model.y, parent.y_meas)
 
                 # Update personal best vector
                 if p_best[i][0] > particles[i][0]:

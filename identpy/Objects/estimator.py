@@ -1,6 +1,7 @@
 import numpy as np
-from Model.model import Model
-from Method.method import Method
+
+from identpy.Model import Model
+from identpy.Method import Method
 
 
 class Estimator:

@@ -1,6 +1,6 @@
-from Model.model import Model
-
 import numpy as np
+
+from identpy.Model import Model
 
 
 class SpringMass(Model):

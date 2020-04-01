@@ -1,12 +1,11 @@
-from Method.method import Method
-from Error.WLS_Error import _eval
+import time
 
 import numpy as np
-import time
 
 from copy import copy
 
-import matplotlib.pyplot as plt
+from identpy.Method import Method
+from identpy.Error.WLS_Error import wls_eval
 
 
 class TS(Method):
@@ -45,7 +44,7 @@ class TS(Method):
 
         # Evaluate error for p_0
         parent.model.update_output(self.p)
-        self.error_log.append(_eval(parent.model.y, parent.y_meas))
+        self.error_log.append(wls_eval(parent.model.y, parent.y_meas))
 
         # Iteration Process
         while self.error_log[-1] > self.tol and self.counter < self.max_it:
@@ -86,7 +85,7 @@ class TS(Method):
             parent.model.update_output(self.p)
 
             # Error is recalculated and stored
-            self.error_log.append(_eval(parent.model.y, parent.y_meas))
+            self.error_log.append(wls_eval(parent.model.y, parent.y_meas))
 
             print("\nIteration #%d: %s" % (self.counter, self.p))
             print("Error: ", self.error_log[-1])
