@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from identpy.Method import Method
-from identpy.Error.WLS_Error import wls_eval
+from identpy.Error import wls_eval
 
 
 class MVMO(Method):

@@ -5,7 +5,7 @@ import numpy as np
 from copy import copy
 
 from identpy.Method import Method
-from identpy.Error.WLS_Error import wls_eval
+from identpy.Error import wls_eval
 
 
 class TS(Method):
