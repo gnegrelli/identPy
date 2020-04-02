@@ -2,7 +2,7 @@ from abc import ABC
 
 import numpy as np
 
-from identpy.Model.Implicit_Methods.i_method import IMethod as IM
+from identpy.Model.Implicit_Methods import IMethod as IM
 
 
 class Model(ABC):

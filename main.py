@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 
 import os
 
-from identpy.Model import SpringMass, Pendulum, ZIM, DFIG, RK4
+from identpy.Model import SpringMass, Pendulum, ZIM, DFIG
+from identpy.Model.Implicit_Methods import RK4
 from identpy.Method import MVMO, PSO, TS
 from identpy.Objects import Estimator
 
