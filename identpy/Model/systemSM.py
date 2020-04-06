@@ -5,23 +5,23 @@ from identpy.Model import Model
 
 class SpringMass(Model):
 
+    parameters = {
+        'k': 'Stiffness coefficient',
+        'm': 'Mass',
+    }
+
+    inputs = {
+        'F': 'External force',
+    }
+
+    outputs = {
+        'x': 'Mass position',
+        'v': 'Mass speed',
+    }
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
         super().__init__(x_0, u_0, u, method)
-
-        self.parameters = {
-            'k': 'Stiffness coefficient',
-            'm': 'Mass',
-        }
-
-        self.inputs = {
-            'F': 'External force',
-        }
-
-        self.outputs = {
-            'x': 'Mass position',
-            'v': 'Mass speed',
-        }
 
     def f(self, x=None, u=None):
 
