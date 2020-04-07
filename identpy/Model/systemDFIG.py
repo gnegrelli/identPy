@@ -8,22 +8,22 @@ class DFIG(Model):
     parameters = {
         'R': 'Equivalent Resistance',
         'X': 'Equivalent Reactance',
-        'k_I': 'PI Gain',
-        'T_I': 'PI Time Constant',
-        'T_V': 'Delay Time Constant',
-        'k_VC': 'Voltage Controller Gain',
-        'i_max': 'Maximum Current',
+        'k<sub>I</sub>': 'PI Gain',
+        'T<sub>I</sub>': 'PI Time Constant',
+        'T<sub>V</sub>': 'Delay Time Constant',
+        'k<sub>VC</sub>': 'Voltage Controller Gain',
+        'i<sub>max</sub>': 'Maximum Current',
     }
 
     inputs = {
-        'v_T': 'Terminal Voltage Magnitude',
-        'i_P': 'Current Active Component',
-        'i_Q': 'Current Reactive Component',
+        'v<sub>T</sub>': 'Terminal Voltage Magnitude',
+        'i<sub>P</sub>': 'Current Active Component',
+        'i<sub>Q</sub>': 'Current Reactive Component',
     }
 
     outputs = {
-        'P_e': 'Active Power',
-        'Q_e': 'Reactive Power',
+        'P<sub>e</sub>': 'Active Power',
+        'Q<sub>e</sub>': 'Reactive Power',
     }
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.0105, p_tref=0.982, q_tref=0.057595,

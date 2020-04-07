@@ -9,12 +9,12 @@ class ZIM(Model):
     parameters = {
         'X': 'Reactance',
         "X'": 'Reactance',
-        'T_0': 'Time constant',
+        'T<sub>0</sub>': 'Time constant',
         'M': 'Inertia',
-        'G_s': 'Admittance',
-        'B_s': 'Susceptance',
-        'E_0': 'Initial voltage',
-        'δ_0': 'Initial angle',
+        'G<sub>s</sub>': 'Admittance',
+        'B<sub>s</sub>': 'Susceptance',
+        'E<sub>0</sub>': 'Initial voltage',
+        'δ<sub>0</sub>': 'Initial angle',
     }
 
     inputs = {
