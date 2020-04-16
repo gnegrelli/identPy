@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def _eval(y, x, w=None):
+def wls_error(y, x, w=None):
     """
     Method to evaluate error using weighted least squares method (WLS)
     :param y: Array to evaluate error

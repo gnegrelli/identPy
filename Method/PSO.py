@@ -1,5 +1,5 @@
-from Method.method import Method
-from Error.WLS_Error import _eval
+from Method import Method
+from Error import wls_error
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -56,7 +56,7 @@ class PSO(Method):
 
             # Evaluate fitness of particle
             parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
-            particles[i][0] = _eval(parent.model.y, parent.y_meas)
+            particles[i][0] = wls_error(parent.model.y, parent.y_meas)
 
             # Create personal best vector
             p_best.append(copy(particles[i]))
@@ -103,7 +103,7 @@ class PSO(Method):
 
                 # Update fitness value
                 parent.model.update_output(particles[i][1]*(self.hi_p - self.lo_p) + self.lo_p)
-                particles[i][0] = _eval(parent.model.y, parent.y_meas)
+                particles[i][0] = wls_error(parent.model.y, parent.y_meas)
 
                 # Update personal best vector
                 if p_best[i][0] > particles[i][0]:

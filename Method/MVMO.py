@@ -1,5 +1,5 @@
-from Method.method import Method
-from Error.WLS_Error import _eval
+from Method import Method
+from Error import wls_error
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,6 +9,7 @@ import random
 
 class MVMO(Method):
 
+    # TODO: include p_active on kwargs so user can choose which parameters to estimate
     def __init__(self, lo_p, hi_p, pop_sz=5, offsp_sz=1, max_gen=5000, d=5, delta_d=1.5, fs=1, rnd=False, seq_rnd=False,
                  mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=0.5, plot=False):
 
@@ -82,7 +83,7 @@ class MVMO(Method):
 
             # Evaluate individual
             parent.model.update_output(indiv*(self.hi_p - self.lo_p) + self.lo_p)
-            list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
+            list_inds.append([wls_error(parent.model.y, parent.y_meas), indiv])
 
         # Sorting individuals and storing error
         list_inds.sort()
@@ -195,7 +196,7 @@ class MVMO(Method):
 
                 # Evaluate individual
                 parent.model.update_output(indiv * (self.hi_p - self.lo_p) + self.lo_p)
-                list_inds.append([_eval(parent.model.y, parent.y_meas), indiv])
+                list_inds.append([wls_error(parent.model.y, parent.y_meas), indiv])
 
             # Sorting new list of individuals and discarding the worst individuals
             list_inds = sorted(list_inds)[:self.pop_sz]

@@ -5,8 +5,8 @@ import numpy as np
 
 class DFIG(Model):
 
-    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.0105, p_tref=0.982, q_tref=0.057595,
-                 v_tmin=0.9):
+    def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.010484848484848, p_tref=0.982,
+                 q_tref=0.057595555555556, v_tmin=0.9):
         super(DFIG, self).__init__(x_0, u_0, u, method)
 
         self.step_int = step_int
@@ -60,10 +60,16 @@ class DFIG(Model):
         else:
             if u[1] < self.v_tmin:
                 i_qref = min(np.abs(i_re), self.p[6])*i_re/np.abs(i_re)
-                i_pref = np.sqrt(self.p[6]**2 - i_qref**2)
+                try:
+                    i_pref = np.sqrt(self.p[6]**2 - i_qref**2)
+                except RuntimeWarning:
+                    i_pref = 0
             else:
                 i_pref = min(np.abs(i_ac), self.p[6])*i_ac/np.abs(i_ac)
-                i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
+                try:
+                    i_qref = np.sqrt(self.p[6]**2 - i_pref**2)
+                except RuntimeWarning:
+                    i_qref = 0
 
         # PI Block
         if np.equal(u, self.u_0).all():
@@ -100,7 +106,8 @@ class DFIG(Model):
         vtd = u[1]*np.cos(u[2])
         vtq = u[1]*np.sin(u[2])
 
-        # TODO: Limits of x should enter here (-1 <= x <= 1)
+        # Limits of x (-1 <= x <= 1)
+        x = np.clip(x, a_max=1, a_min=-1)
 
         g1 = (self.p[0]*(vtd*x[0] + vtq*x[1] - u[1]**2) + self.p[1]*(vtd*x[1] - vtq*x[0]))/(self.p[0]**2 + self.p[1]**2)
         g2 = (self.p[1]*(vtd*x[0] + vtq*x[1] - u[1]**2) - self.p[0]*(vtd*x[1] - vtq*x[0]))/(self.p[0]**2 + self.p[1]**2)
@@ -118,6 +125,8 @@ class DFIG(Model):
         ej = np.array([[-np.cos(self.u_0[2]), -np.sin(self.u_0[2])], [np.sin(self.u_0[2]), -np.cos(self.u_0[2])]])
 
         va = np.linalg.solve(ej, np.array([[vd], [vq]]))
+
+        self.x_0 = np.array([vd, vq])
 
         self.v_pa_adj = va[0][0]
         self.v_qa_adj = va[1][0]
