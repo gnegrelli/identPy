@@ -1,0 +1,1 @@
+from identpy.Objects.estimator import Estimator

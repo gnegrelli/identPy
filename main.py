@@ -1,16 +1,12 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-import os
-
-from Model import SpringMass, Pendulum, ZIM, DFIG
-from Model import RK4
-
-from Method import MVMO, PSO, TS
-
-from estimator import Estimator
-
-from Error import wls_error
+from identpy.Model import SpringMass, Pendulum, ZIM, DFIG
+from identpy.Model.Implicit_Methods import RK4
+from identpy.Method import MVMO, PSO, TS
+from identpy.Objects import Estimator
 
 
 def input_read(file_path=None, u_indices=None, y_indices=None):

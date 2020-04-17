@@ -1,34 +1,34 @@
-from Model.model import Model
-
 import numpy as np
+
+from identpy.Model import Model
 
 
 # TODO: Test class and confirm equations
 class ZIM(Model):
 
+    parameters = {
+        'X': 'Reactance',
+        "X'": 'Reactance',
+        'T<sub>0</sub>': 'Time constant',
+        'M': 'Inertia',
+        'G<sub>s</sub>': 'Admittance',
+        'B<sub>s</sub>': 'Susceptance',
+        'E<sub>0</sub>': 'Initial voltage',
+        'δ<sub>0</sub>': 'Initial angle',
+    }
+
+    inputs = {
+        'ΔV': 'Voltage variation',
+    }
+
+    outputs = {
+        'ΔP': 'Active power variation',
+        'ΔQ': 'Reactive power variation',
+    }
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
         super().__init__(x_0, u_0, u, method)
-
-        self.parameters = {
-            'X': 'Reactance',
-            "X'": 'Reactance',
-            'T_0': 'Time constant',
-            'M': 'Inertia',
-            'G_s': 'Admittance',
-            'B_s': 'Susceptance',
-            'E_0': 'Initial voltage',
-            'δ_0': 'Initial angle',
-        }
-
-        self.inputs = {
-            'ΔV': 'Voltage variation',
-        }
-
-        self.outputs = {
-            'ΔP': 'Active power variation',
-            'ΔQ': 'Reactive power variation',
-        }
 
     def f(self, x=None, u=None):
 

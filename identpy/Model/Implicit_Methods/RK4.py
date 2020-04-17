@@ -1,8 +1,8 @@
 import numpy as np
 
 from copy import copy
-from Model.Implicit_Methods.i_method import IMethod as IM
-from Model.model import Model as MD
+
+from identpy.Model.Implicit_Methods import IMethod as IM
 
 
 class RK4(IM):

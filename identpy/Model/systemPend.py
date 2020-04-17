@@ -1,29 +1,29 @@
-from Model.model import Model
-
 import numpy as np
+
+from identpy.Model import Model
 
 
 class Pendulum(Model):
 
+    parameters = {
+        'b': 'Air friction',
+        'l': 'Wire length',
+        'g': 'Gravity acceleration',
+        'm': 'Mass',
+    }
+
+    inputs = {
+        'F': 'External force',
+    }
+
+    outputs = {
+        'θ': 'Angle from vertical',
+        'ω': 'Angular velocity',
+    }
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
         super().__init__(x_0, u_0, u, method)
-
-        self.parameters = {
-            'b': 'Air friction',
-            'l': 'Wire length',
-            'g': 'Gravity acceleration',
-            'm': 'Mass',
-        }
-
-        self.inputs = {
-            'F': 'External force',
-        }
-
-        self.outputs = {
-            'θ': 'Angle from vertical',
-            'ω': 'Angular velocity',
-        }
 
     def f(self, x=None, u=None):
 

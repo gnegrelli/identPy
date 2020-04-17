@@ -1,9 +1,30 @@
-from Model.model import Model
-
 import numpy as np
+
+from identpy.Model import Model
 
 
 class DFIG(Model):
+
+    parameters = {
+        'R': 'Equivalent Resistance',
+        'X': 'Equivalent Reactance',
+        'k<sub>I</sub>': 'PI Gain',
+        'T<sub>I</sub>': 'PI Time Constant',
+        'T<sub>V</sub>': 'Delay Time Constant',
+        'k<sub>VC</sub>': 'Voltage Controller Gain',
+        'i<sub>max</sub>': 'Maximum Current',
+    }
+
+    inputs = {
+        'v<sub>T</sub>': 'Terminal Voltage Magnitude',
+        'i<sub>P</sub>': 'Current Active Component',
+        'i<sub>Q</sub>': 'Current Reactive Component',
+    }
+
+    outputs = {
+        'P<sub>e</sub>': 'Active Power',
+        'Q<sub>e</sub>': 'Reactive Power',
+    }
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.010484848484848, p_tref=0.982,
                  q_tref=0.057595555555556, v_tmin=0.9):
@@ -20,27 +41,6 @@ class DFIG(Model):
 
         self.last_v_pas = 0
         self.last_v_qas = 0
-
-        self.parameters = {
-            'R': 'Equivalent Resistance',
-            'X': 'Equivalent Reactance',
-            'k_I': 'PI Gain',
-            'T_I': 'PI Time Constant',
-            'T_V': 'Delay Time Constant',
-            'k_VC': 'Voltage Controller Gain',
-            'i_max': 'Maximum Current',
-        }
-
-        self.inputs = {
-            'v_T': 'Terminal Voltage Magnitude',
-            'i_P': 'Current Active Component',
-            'i_Q': 'Current Reactive Component',
-        }
-
-        self.outputs = {
-            'P_e': 'Active Power',
-            'Q_e': 'Reactive Power',
-        }
 
     def update_parameters(self, p):
         super(DFIG, self).update_parameters(p)
