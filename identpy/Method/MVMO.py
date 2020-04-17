@@ -115,16 +115,10 @@ class MVMO(Method):
                     ax1.plot(plot_indiv[0], plot_indiv[1],
                              MVMO.color[i % len(MVMO.color)] + MVMO.marker[i % len(MVMO.marker)])
 
-                # TODO: use numpy.mean instead of summing
-                self.mean += indiv[1]
-            # Mean calculation
-            self.mean /= self.pop_sz
-
-            # Variance calculation
-            # TODO: use numpy.var instead of this loop
-            for indiv in list_inds:
-                var += np.power(indiv[1] - self.mean, 2)
-            var /= self.pop_sz
+            # Obtain mean and variance values of parameters
+            individuals = [i for err, i in list_inds]
+            self.mean = np.mean(individuals, axis=0)
+            var = np.var(individuals, axis=0)
 
             # Repeat last non-null variance in case the new one is null
             if 0 in var:
