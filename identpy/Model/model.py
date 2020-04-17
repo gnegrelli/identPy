@@ -15,16 +15,12 @@ class Model(ABC):
 
         assert isinstance(method, IM), "Method must be of class IM"
 
-        self.parameters = dict()
-        self.inputs = dict()
-        self.outputs = dict()
-
-        self.p = 0
+        self.p = np.array([])
 
         self.x_0 = x_0
         self.u_0 = u_0
         self.u = u
-        self.y = 0
+        self.y = np.array([])
 
         self.method = method
 
