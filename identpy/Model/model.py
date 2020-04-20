@@ -7,6 +7,10 @@ from identpy.Model.Implicit_Methods import IMethod as IM
 
 class Model(ABC):
 
+    parameters = {}
+    inputs = {}
+    outputs = {}
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
         assert isinstance(x_0, np.ndarray), "Initial states must be given in a numpy array"
@@ -24,7 +28,7 @@ class Model(ABC):
 
         self.method = method
 
-    def f(self, x=None, u=None):
+    def f(self, x=None, u=None, factor=0):
 
         if x is None:
             x = self.x_0
