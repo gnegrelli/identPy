@@ -21,11 +21,15 @@ def input_read(file_path=None, u_indices=None, y_indices=None):
             if line and line[0] is not '%':
                 values = line.split(',')
 
+                # Add time column to input and output
                 input = np.array([eval(values[0])])
                 output = np.array([eval(values[0])])
 
+                # Add data from input columns
                 for i in u_indices:
                     input = np.hstack((input, np.array([eval(values[i])])))
+
+                # Add data from output columns
                 for i in y_indices:
                     output = np.hstack((output, np.array([eval(values[i])])))
 
@@ -47,23 +51,30 @@ u_meas, y_meas = input_read('Sample_Data/Sample_DFIG_Erlich_pu.csv', u_indices=[
 # TODO: Read input vector u_meas on the model side
 a = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
          RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
-a.update_output(p=np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350, 1.998406311405870, 1.099838352995214]))
+a.update_output(p=np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972,
+                            0.269505715408350, 1.998406311405870, 1.099838352995214]))
 
-plt.figure()
-plt.plot(a.y[:, 0], a.y[:, 1], label='model')
-plt.plot(y_meas[:, 0], y_meas[:, 1], label='real')
-plt.legend()
-
-plt.figure()
-plt.plot(a.y[:, 0], a.y[:, 2], label='model')
-plt.plot(y_meas[:, 0], y_meas[:, 2], label='real')
-plt.legend()
-
-m = MVMO(np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350, 1.998406311405870, 1.099838352995214])*.8,
-         np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350, 1.998406311405870, 1.099838352995214])*1.1)
+m = MVMO(np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
+                   1.998406311405870, 1.099838352995214])*.8,
+         np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
+                   1.998406311405870, 1.099838352995214])*1.1,
+         wndw_sz=3, tol=0.1)
 
 est = Estimator(y_meas, a, m)
 
 est()
 
-# plt.show()
+plt.figure()
+plt.plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
+plt.plot(y_meas[:, 0], y_meas[:, 1], label='real')
+plt.legend()
+
+plt.figure()
+plt.plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
+plt.plot(y_meas[:, 0], y_meas[:, 2], label='real')
+plt.legend()
+
+plt.figure()
+plt.plot(est.method.error_log)
+
+plt.show()
