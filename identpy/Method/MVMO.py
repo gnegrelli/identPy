@@ -122,8 +122,8 @@ class MVMO(Method):
 
             # Repeat last non-null variance in case the new one is null
             if 0 in var:
-                for i in np.where(var == 0)[1]:
-                    var[0][i] = nonzero_var[0][i]
+                for i in np.where(var == 0)[0]:
+                    var[i] = nonzero_var[i]
             nonzero_var = var
 
             print("----------------------------")
@@ -209,8 +209,8 @@ class MVMO(Method):
         print("----------------------------")
 
         # Final generation with fittest individuals
-        for i in range(self.pop_sz):
-            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, list_inds[i][1]))
+        for i, indiv in enumerate(list_inds):
+            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
         print("Final Error: %f" % self.error_log[-1])
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
