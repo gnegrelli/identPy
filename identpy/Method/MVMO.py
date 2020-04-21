@@ -87,7 +87,7 @@ class MVMO(Method):
             list_inds.append([wls_eval(parent.model.y, parent.y_meas), indiv])
 
         # Sorting individuals and storing error
-        list_inds.sort()
+        list_inds.sort(key=lambda x: x[0])
         self.error_log.append(list_inds[0][0])
 
         print("Error :", self.error_log[-1])
@@ -115,21 +115,15 @@ class MVMO(Method):
                     ax1.plot(plot_indiv[0], plot_indiv[1],
                              MVMO.color[i % len(MVMO.color)] + MVMO.marker[i % len(MVMO.marker)])
 
-                # TODO: use numpy.mean instead of summing
-                self.mean += indiv[1]
-            # Mean calculation
-            self.mean /= self.pop_sz
-
-            # Variance calculation
-            # TODO: use numpy.var instead of this loop
-            for indiv in list_inds:
-                var += np.power(indiv[1] - self.mean, 2)
-            var /= self.pop_sz
+            # Obtain mean and variance values of parameters
+            individuals = [i for err, i in list_inds]
+            self.mean = np.mean(individuals, axis=0)
+            var = np.var(individuals, axis=0)
 
             # Repeat last non-null variance in case the new one is null
             if 0 in var:
-                for i in np.where(var == 0)[1]:
-                    var[0][i] = nonzero_var[0][i]
+                for i in np.where(var == 0)[0]:
+                    var[i] = nonzero_var[i]
             nonzero_var = var
 
             print("----------------------------")
@@ -200,7 +194,7 @@ class MVMO(Method):
                 list_inds.append([wls_eval(parent.model.y, parent.y_meas), indiv])
 
             # Sorting new list of individuals and discarding the worst individuals
-            list_inds = sorted(list_inds)[:self.pop_sz]
+            list_inds = sorted(list_inds, key=lambda x: x[0])[:self.pop_sz]
             self.error_log.append(list_inds[0][0])
 
             # Increase scaling factor fs in 1% after each iteration, capping it around 15
@@ -215,8 +209,8 @@ class MVMO(Method):
         print("----------------------------")
 
         # Final generation with fittest individuals
-        for i in range(self.pop_sz):
-            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, list_inds[i][1]))
+        for i, indiv in enumerate(list_inds):
+            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
         print("Final Error: %f" % self.error_log[-1])
 
         print("MVMO elapsed time: ", time.process_time() - start_time)

@@ -25,7 +25,7 @@ class Pendulum(Model):
 
         super().__init__(x_0, u_0, u, method)
 
-    def f(self, x=None, u=None):
+    def f(self, x=None, u=None, factor=0):
 
         x, u = super().f(x, u)
 
