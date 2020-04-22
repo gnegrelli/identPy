@@ -1,4 +1,4 @@
-% List of Measurements
+% Measurements of a DFIG system - provided by Prof. Erlich
 % t,V_T(pu),angle(rad),angle(°),P_e(pu),Q_e(pu),IPA_r,IQA_r
 -0.099,1.01048484848485,0.19947,11.429,0.982,0.057595555555556,-0.89766,-0.5843
 -0.098,1.01048484848485,0.19947,11.429,0.982,0.057595555555556,-0.89766,-0.5843
