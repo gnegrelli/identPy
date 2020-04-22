@@ -8,7 +8,7 @@ from identpy.Objects import Estimator
 
 
 def estimate():
-    u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich_pu.csv', u_indices=[1, 2, 4, 5],
+    u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
 
     a = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
