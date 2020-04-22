@@ -31,6 +31,10 @@ class TS(Method):
 
         assert isinstance(p_active, list) or p_active is None, "Active parameters must be given as a list"
 
+        # If model already has a set of parameters, use it as initial values
+        if parent.model.p.any():
+            self.p = parent.model.p
+
         # Parameters to be estimated
         if isinstance(p_active, list):
             self.p_active = np.zeros_like(self.p)
