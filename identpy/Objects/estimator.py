@@ -8,25 +8,38 @@ from identpy.Method import Method
 
 class Estimator:
 
-    def __init__(self, real_output, model, method1, method2=None):
-        assert isinstance(real_output, np.ndarray), "Real output must be a numpy array"
-
-        assert isinstance(model, Model), "Model must be an instance of Model class"
-
-        assert isinstance(method1, Method), "First method must be an instance of Method class"
-        assert isinstance(method2, Method) or method2 is None, "Second method must be an instance of Method class"
-
-        self.y_meas = real_output
-
-        self.model = model
-        self.method1 = method1
-        self.method2 = method2
+    def __init__(self):
+        self.y_meas = None
+        self.model = None
+        self.method1 = None
+        self.method2 = None
 
     def __call__(self):
+        assert self.y_meas is not None, "Real output is missing"
+        assert self.model is not None, "Model is missing"
+        assert self.method1 is not None, "Method is missing"
 
         self.method1(self)
         if self.method2:
             self.method2(self)
+
+    def add_measures(self, real_output):
+        assert isinstance(real_output, np.ndarray), "Real output must be a numpy array"
+
+        self.y_meas = real_output
+
+    def add_model(self, model):
+        assert isinstance(model, Model), "Model must be an instance of Model class"
+
+        self.model = model
+
+    def add_method(self, method):
+        assert isinstance(method, Method), "Method must be an instance of Method class"
+
+        if self.method1 is None:
+            self.method1 = method
+        else:
+            self.method2 = method
 
     @staticmethod
     def input_read(file_path=None, u_indices=None, y_indices=None):

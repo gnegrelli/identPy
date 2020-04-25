@@ -24,7 +24,11 @@ def estimate():
 
     m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]))
 
-    est = Estimator(y_meas, a, m1, m2)
+    est = Estimator()
+    est.add_measures(y_meas)
+    est.add_model(a)
+    est.add_method(m1)
+    est.add_method(m2)
 
     est()
 
