@@ -21,6 +21,11 @@ class Pendulum(Model):
         'ω': 'Angular velocity',
     }
 
+    states = {
+        'θ': 'Angle from vertical',
+        'ω': 'Angular velocity',
+    }
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
         super().__init__(x_0, u_0, u, method)

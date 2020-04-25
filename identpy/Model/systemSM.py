@@ -19,6 +19,11 @@ class SpringMass(Model):
         'v': 'Mass speed',
     }
 
+    states = {
+        'x': 'Mass position',
+        'v': 'Mass speed',
+    }
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 
         super().__init__(x_0, u_0, u, method)

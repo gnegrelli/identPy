@@ -13,7 +13,7 @@ class ZIM(Model):
         'M': 'Inertia',
         'G<sub>s</sub>': 'Admittance',
         'B<sub>s</sub>': 'Susceptance',
-        'E<sub>0</sub>': 'Initial voltage',
+        "E'<sub>0</sub>": 'Initial voltage',
         'δ<sub>0</sub>': 'Initial angle',
     }
 
@@ -24,6 +24,12 @@ class ZIM(Model):
     outputs = {
         'ΔP': 'Active power variation',
         'ΔQ': 'Reactive power variation',
+    }
+
+    states = {
+        "ΔE": 'Induction machine voltage variation',
+        "Δδ": 'Induction machine angle variation',
+        "Δω": 'Rotor speed variation',
     }
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None):

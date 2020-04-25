@@ -10,6 +10,7 @@ class Model(ABC):
     parameters = {}
     inputs = {}
     outputs = {}
+    states = {}
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
 

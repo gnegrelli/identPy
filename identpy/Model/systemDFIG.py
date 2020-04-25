@@ -26,6 +26,11 @@ class DFIG(Model):
         'Q<sub>e</sub>': 'Reactive Power',
     }
 
+    states = {
+        'v<sub>d</sub>': 'Direct component',
+        'v<sub>q</sub>': 'Quadrature component',
+    }
+
     def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.010484848484848, p_tref=0.982,
                  q_tref=0.057595555555556, v_tmin=0.9):
         super(DFIG, self).__init__(x_0, u_0, u, method)
