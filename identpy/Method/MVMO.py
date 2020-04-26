@@ -12,7 +12,7 @@ class MVMO(Method):
 
     # TODO: include p_active on kwargs so user can choose which parameters to estimate
     def __init__(self, lo_p, hi_p, pop_sz=5, offsp_sz=1, max_gen=5000, d=5, delta_d=1.5, fs=1, rnd=False, seq_rnd=False,
-                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=0.5, plot=False):
+                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=0.5, plot=False, verbose=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -38,9 +38,7 @@ class MVMO(Method):
 
         self.tol = tol
 
-        self.plot = plot
-
-        super().__init__()
+        super().__init__(plot, verbose)
 
     def __call__(self, parent):
 

@@ -10,7 +10,7 @@ from identpy.Error import wls_eval
 
 class TS(Method):
 
-    def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005):
+    def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005, plot=False, verbose=False):
 
         assert isinstance(p0, np.ndarray), "Parameters must be a numpy array"
 
@@ -21,7 +21,7 @@ class TS(Method):
         self.tol = tol
         self.num_param = len(self.p)
 
-        super().__init__()
+        super().__init__(plot, verbose)
 
     def __call__(self, parent, p_active=None, active_iter=0):
 
