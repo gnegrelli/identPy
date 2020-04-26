@@ -91,8 +91,9 @@ class TS(Method):
             # Error is recalculated and stored
             self.error_log.append(wls_eval(parent.model.y, parent.y_meas))
 
-            print("\nIteration #%d: %s" % (self.counter, self.p))
-            print("Error: ", self.error_log[-1])
+            if self.verbose:
+                print("\nIteration #%d: %s" % (self.counter, self.p))
+                print("Error: ", self.error_log[-1])
 
         print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
 
