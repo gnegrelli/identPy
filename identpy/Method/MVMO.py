@@ -70,8 +70,6 @@ class MVMO(Method):
         else:
             selected_genes = sorted(random.sample(range(0, num_genes), self.wndw_sz))
 
-        print("Genes selected at the beginning: ", selected_genes)
-
         list_inds = []
 
         # First generation of random individuals
@@ -88,7 +86,9 @@ class MVMO(Method):
         list_inds.sort(key=lambda x: x[0])
         self.error_log.append(list_inds[0][0])
 
-        print("Error :", self.error_log[-1])
+        if self.verbose:
+            print("Genes selected at the beginning: ", selected_genes)
+            print("Error :", self.error_log[-1])
 
         nonzero_var = None
         self.mean = np.zeros(num_genes)
@@ -105,7 +105,8 @@ class MVMO(Method):
 
             for i, indiv in enumerate(list_inds):
                 # Print generation
-                print("Gen. %d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
+                if self.verbose:
+                    print("Gen. %d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
 
                 # Plot individuals
                 if self.plot:
@@ -124,11 +125,12 @@ class MVMO(Method):
                     var[i] = nonzero_var[i]
             nonzero_var = var
 
-            print("----------------------------")
-            print("Mean: ", self.mean)
-            print("Variance: ", var)
-            print("Error: ", self.error_log[-1])
-            print("----------------------------\n\n")
+            if self.verbose:
+                print("----------------------------")
+                print("Mean: ", self.mean)
+                print("Variance: ", var)
+                print("Error: ", self.error_log[-1])
+                print("----------------------------\n\n")
 
             self.counter += 1
 
@@ -170,7 +172,8 @@ class MVMO(Method):
                     selected_genes[-1] -= num_genes
                     selected_genes.sort()
 
-            print("Genes selected for mutation: ", selected_genes)
+            if self.verbose:
+                print("Genes selected for mutation: ", selected_genes)
 
             # Creating a new generation
             for i in range(self.offsp_sz):
@@ -200,16 +203,17 @@ class MVMO(Method):
                 self.fs *= 1.01
 
         # At the end of iteration process, mean, variance and final error value are presented
-        print("----------------------------")
-        print("Mean: ", self.mean)
-        print("Variance: ", var)
-        print("Error: ", self.error_log[-1])
-        print("----------------------------")
+        if self.verbose:
+            print("----------------------------")
+            print("Mean: ", self.mean)
+            print("Variance: ", var)
+            print("Error: ", self.error_log[-1])
+            print("----------------------------")
 
-        # Final generation with fittest individuals
-        for i, indiv in enumerate(list_inds):
-            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
-        print("Final Error: %f" % self.error_log[-1])
+            # Final generation with fittest individuals
+            for i, indiv in enumerate(list_inds):
+                print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
+            print("Final Error: %f" % self.error_log[-1])
 
         print("MVMO elapsed time: ", time.process_time() - start_time)
 
