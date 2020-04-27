@@ -10,7 +10,7 @@ from identpy.Error import wls_eval
 
 class TS(Method):
 
-    def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005):
+    def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005, plot=False, verbose=False):
 
         assert isinstance(p0, np.ndarray), "Parameters must be a numpy array"
 
@@ -21,11 +21,11 @@ class TS(Method):
         self.tol = tol
         self.num_param = len(self.p)
 
-        super().__init__()
+        super().__init__(plot, verbose)
 
     def __call__(self, parent, p_active=None, active_iter=0):
 
-        start_time = time.process_time()
+        self.elapsed_time = time.process_time()
 
         print("---------Trajectory Sensitivity---------")
 
@@ -91,10 +91,12 @@ class TS(Method):
             # Error is recalculated and stored
             self.error_log.append(wls_eval(parent.model.y, parent.y_meas))
 
-            print("\nIteration #%d: %s" % (self.counter, self.p))
-            print("Error: ", self.error_log[-1])
+            if self.verbose:
+                print("\nIteration #%d: %s" % (self.counter, self.p))
+                print("Error: ", self.error_log[-1])
 
-        print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
+        self.elapsed_time = time.process_time() - self.elapsed_time
+        print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
 
     @staticmethod
     def gamma_function(sens, diff):

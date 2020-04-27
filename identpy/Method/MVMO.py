@@ -12,7 +12,7 @@ class MVMO(Method):
 
     # TODO: include p_active on kwargs so user can choose which parameters to estimate
     def __init__(self, lo_p, hi_p, pop_sz=5, offsp_sz=1, max_gen=5000, d=5, delta_d=1.5, fs=1, rnd=False, seq_rnd=False,
-                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=0.5, plot=False):
+                 mv_wndw=True, block=True, wndw_sz=1, wndw_step=1, tol=0.5, plot=False, verbose=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -38,13 +38,11 @@ class MVMO(Method):
 
         self.tol = tol
 
-        self.plot = plot
-
-        super().__init__()
+        super().__init__(plot, verbose)
 
     def __call__(self, parent):
 
-        start_time = time.process_time()
+        self.elapsed_time = time.process_time()
 
         print("------------------MVMO------------------")
 
@@ -72,8 +70,6 @@ class MVMO(Method):
         else:
             selected_genes = sorted(random.sample(range(0, num_genes), self.wndw_sz))
 
-        print("Genes selected at the beginning: ", selected_genes)
-
         list_inds = []
 
         # First generation of random individuals
@@ -90,7 +86,9 @@ class MVMO(Method):
         list_inds.sort(key=lambda x: x[0])
         self.error_log.append(list_inds[0][0])
 
-        print("Error :", self.error_log[-1])
+        if self.verbose:
+            print("Genes selected at the beginning: ", selected_genes)
+            print("Error :", self.error_log[-1])
 
         nonzero_var = None
         self.mean = np.zeros(num_genes)
@@ -107,7 +105,8 @@ class MVMO(Method):
 
             for i, indiv in enumerate(list_inds):
                 # Print generation
-                print("Gen. %d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
+                if self.verbose:
+                    print("Gen. %d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
 
                 # Plot individuals
                 if self.plot:
@@ -126,11 +125,12 @@ class MVMO(Method):
                     var[i] = nonzero_var[i]
             nonzero_var = var
 
-            print("----------------------------")
-            print("Mean: ", self.mean)
-            print("Variance: ", var)
-            print("Error: ", self.error_log[-1])
-            print("----------------------------\n\n")
+            if self.verbose:
+                print("----------------------------")
+                print("Mean: ", self.mean)
+                print("Variance: ", var)
+                print("Error: ", self.error_log[-1])
+                print("----------------------------\n\n")
 
             self.counter += 1
 
@@ -172,7 +172,8 @@ class MVMO(Method):
                     selected_genes[-1] -= num_genes
                     selected_genes.sort()
 
-            print("Genes selected for mutation: ", selected_genes)
+            if self.verbose:
+                print("Genes selected for mutation: ", selected_genes)
 
             # Creating a new generation
             for i in range(self.offsp_sz):
@@ -202,18 +203,20 @@ class MVMO(Method):
                 self.fs *= 1.01
 
         # At the end of iteration process, mean, variance and final error value are presented
-        print("----------------------------")
-        print("Mean: ", self.mean)
-        print("Variance: ", var)
-        print("Error: ", self.error_log[-1])
-        print("----------------------------")
+        if self.verbose:
+            print("----------------------------")
+            print("Mean: ", self.mean)
+            print("Variance: ", var)
+            print("Error: ", self.error_log[-1])
+            print("----------------------------")
 
-        # Final generation with fittest individuals
-        for i, indiv in enumerate(list_inds):
-            print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
-        print("Final Error: %f" % self.error_log[-1])
+            # Final generation with fittest individuals
+            for i, indiv in enumerate(list_inds):
+                print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
+            print("Final Error: %f" % self.error_log[-1])
 
-        print("MVMO elapsed time: ", time.process_time() - start_time)
+        self.elapsed_time = time.process_time() - self.elapsed_time
+        print("MVMO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
         # Return best individual
         return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p

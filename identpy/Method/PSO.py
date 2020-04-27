@@ -11,7 +11,7 @@ from identpy.Error import wls_eval
 
 class PSO(Method):
 
-    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=50000, p_speed=0.5, g_speed=0.15, tol=1., plot=False):
+    def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=50000, p_speed=0.5, g_speed=0.15, tol=1., plot=False, verbose=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
         assert isinstance(hi_p, np.ndarray), "Upper boundary of parameters must be a numpy array"
@@ -27,13 +27,11 @@ class PSO(Method):
 
         self.num_parameters = len(self.lo_p)
 
-        self.plot = plot
-
-        super().__init__()
+        super().__init__(plot, verbose)
 
     def __call__(self, parent):
 
-        start_time = time.process_time()
+        self.elapsed_time = time.process_time()
 
         print("------------------PSO-------------------")
 
@@ -122,7 +120,8 @@ class PSO(Method):
 
             self.error_log.append(g_best[0])
 
-        print("PSO elapsed time: ", time.process_time() - start_time)
+        self.elapsed_time = time.process_time() - self.elapsed_time
+        print("PSO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
         # Return best particle
         return np.array(g_best[1]*(self.hi_p - self.lo_p) + self.lo_p)
