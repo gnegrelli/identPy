@@ -10,5 +10,7 @@ class Method(ABC):
         self.plot = plot
         self.verbose = verbose
 
+        self.elapsed_time = 0
+
     def __call__(self, *args, **kwargs):
         pass
