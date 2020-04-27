@@ -31,7 +31,7 @@ class PSO(Method):
 
     def __call__(self, parent):
 
-        start_time = time.process_time()
+        self.elapsed_time = time.process_time()
 
         print("------------------PSO-------------------")
 
@@ -120,7 +120,8 @@ class PSO(Method):
 
             self.error_log.append(g_best[0])
 
-        print("PSO elapsed time: ", time.process_time() - start_time)
+        self.elapsed_time = time.process_time() - self.elapsed_time
+        print("PSO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
         # Return best particle
         return np.array(g_best[1]*(self.hi_p - self.lo_p) + self.lo_p)

@@ -42,7 +42,7 @@ class MVMO(Method):
 
     def __call__(self, parent):
 
-        start_time = time.process_time()
+        self.elapsed_time = time.process_time()
 
         print("------------------MVMO------------------")
 
@@ -215,7 +215,8 @@ class MVMO(Method):
                 print("Final Generation #%d - Specimen #%d: %s" % (self.counter, i, indiv[1]))
             print("Final Error: %f" % self.error_log[-1])
 
-        print("MVMO elapsed time: ", time.process_time() - start_time)
+        self.elapsed_time = time.process_time() - self.elapsed_time
+        print("MVMO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
         # Return best individual
         return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p

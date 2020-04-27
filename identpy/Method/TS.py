@@ -25,7 +25,7 @@ class TS(Method):
 
     def __call__(self, parent, p_active=None, active_iter=0):
 
-        start_time = time.process_time()
+        self.elapsed_time = time.process_time()
 
         print("---------Trajectory Sensitivity---------")
 
@@ -95,7 +95,8 @@ class TS(Method):
                 print("\nIteration #%d: %s" % (self.counter, self.p))
                 print("Error: ", self.error_log[-1])
 
-        print("Trajectory Sensitivity elapsed time: ", time.process_time() - start_time)
+        self.elapsed_time = time.process_time() - self.elapsed_time
+        print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
 
     @staticmethod
     def gamma_function(sens, diff):
