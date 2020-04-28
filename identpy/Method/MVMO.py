@@ -44,7 +44,8 @@ class MVMO(Method):
 
         self.elapsed_time = time.process_time()
 
-        print("------------------MVMO------------------")
+        if self.verbose:
+            print("------------------MVMO------------------")
 
         # Create figure
         if self.plot:
@@ -216,7 +217,8 @@ class MVMO(Method):
             print("Final Error: %f" % self.error_log[-1])
 
         self.elapsed_time = time.process_time() - self.elapsed_time
-        print("MVMO elapsed time: {0:.2f} s".format(self.elapsed_time))
+        if self.verbose:
+            print("MVMO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
         # Return best individual
         return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p

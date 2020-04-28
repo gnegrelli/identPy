@@ -27,7 +27,8 @@ class TS(Method):
 
         self.elapsed_time = time.process_time()
 
-        print("---------Trajectory Sensitivity---------")
+        if self.verbose:
+            print("---------Trajectory Sensitivity---------")
 
         assert isinstance(p_active, list) or p_active is None, "Active parameters must be given as a list"
 
@@ -82,6 +83,7 @@ class TS(Method):
             try:
                 delta_p = -np.linalg.solve(gamma, dj_dp)
             except np.linalg.LinAlgError:
+                return
                 raise Exception("Singular matrix")
 
             # Update parameters and model output
@@ -96,7 +98,8 @@ class TS(Method):
                 print("Error: ", self.error_log[-1])
 
         self.elapsed_time = time.process_time() - self.elapsed_time
-        print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
+        if self.verbose:
+            print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
 
     @staticmethod
     def gamma_function(sens, diff):
