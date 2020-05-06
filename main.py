@@ -7,7 +7,7 @@ from identpy.Method import MVMO, PSO, TS
 from identpy.Objects import Estimator
 
 
-def estimate(n, file):
+def estimate(n=5, file=None):
     u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
 
@@ -30,33 +30,35 @@ def estimate(n, file):
 
     est()
 
-    string = ''
-    with open(file, 'a+') as f:
-        string += str(est.method1.elapsed_time + est.method2.elapsed_time) + ','
-        string += str(est.method1.elapsed_time) + ','
-        string += str(est.method2.elapsed_time) + ','
-        string += str(est.model.p) + ','
-        string += str(est.method1.error_log + est.method2.error_log[1:])
-        f.write(string)
+    if file is not None:
+        string = ''
+        with open(file, 'a+') as f:
+            string += str(est.method1.elapsed_time + est.method2.elapsed_time) + ','
+            string += str(est.method1.elapsed_time) + ','
+            string += str(est.method2.elapsed_time) + ','
+            string += str(est.model.p) + ','
+            string += str(est.method1.error_log + est.method2.error_log[1:])
+            print(string, file=f)
+    else:
 
-    # plt.figure()
-    # plt.plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
-    # plt.plot(y_meas[:, 0], y_meas[:, 1], '--', label='real')
-    # plt.legend()
-    #
-    # plt.figure()
-    # plt.plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
-    # plt.plot(y_meas[:, 0], y_meas[:, 2], '--', label='real')
-    # plt.legend()
-    #
-    # plt.figure()
-    # plt.plot(est.method1.error_log)
-    #
-    # if est.method2:
-    #     plt.figure()
-    #     plt.plot(est.method2.error_log)
-    #
-    # plt.show()
+        plt.figure()
+        plt.plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
+        plt.plot(y_meas[:, 0], y_meas[:, 1], '--', label='real')
+        plt.legend()
+
+        plt.figure()
+        plt.plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
+        plt.plot(y_meas[:, 0], y_meas[:, 2], '--', label='real')
+        plt.legend()
+
+        plt.figure()
+        plt.plot(est.method1.error_log)
+
+        if est.method2:
+            plt.figure()
+            plt.plot(est.method2.error_log)
+
+        plt.show()
 
 
 if __name__ == '__main__':
