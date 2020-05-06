@@ -11,6 +11,25 @@ def estimate(n=5, file=None):
     u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
 
+    plt.figure()
+    plt.plot(u_meas[:, 0], u_meas[:, 1], 'k')
+    plt.xlim([0, 1])
+    plt.ylim([0.45, 1.1])
+    plt.xlabel('t (s)')
+    plt.ylabel(r'$V_{T}$ (pu)')
+
+    plt.figure()
+    plt.plot(u_meas[:, 0], u_meas[:, 3], 'k')
+    plt.xlim([0, 1])
+    plt.xlabel('t (s)')
+    plt.ylabel(r'$P_{e}$ (pu)')
+
+    plt.figure()
+    plt.plot(u_meas[:, 0], u_meas[:, 4], 'k')
+    plt.xlim([0, 1])
+    plt.xlabel('t (s)')
+    plt.ylabel(r'$Q_{e}$ (pu)')
+
     a = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
              RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
 
@@ -40,15 +59,20 @@ def estimate(n=5, file=None):
             string += str(est.method1.error_log + est.method2.error_log[1:])
             print(string, file=f)
     else:
-
         plt.figure()
-        plt.plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
-        plt.plot(y_meas[:, 0], y_meas[:, 1], '--', label='real')
+        plt.plot(y_meas[:, 0], y_meas[:, 1], 'grey', linewidth=2.5, label='Real')
+        plt.plot(est.model.y[:, 0], est.model.y[:, 1], 'k--', label='Model')
+        plt.xlim([0, 1])
+        plt.xlabel('t (s)')
+        plt.ylabel(r'$P_{e}$ (pu)')
         plt.legend()
 
         plt.figure()
-        plt.plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
-        plt.plot(y_meas[:, 0], y_meas[:, 2], '--', label='real')
+        plt.plot(y_meas[:, 0], y_meas[:, 2], 'grey', linewidth=2.5, label='Real')
+        plt.plot(est.model.y[:, 0], est.model.y[:, 2], 'k--', label='Model')
+        plt.xlim([0, 1])
+        plt.xlabel('t (s)')
+        plt.ylabel(r'$Q_{e}$ (pu)')
         plt.legend()
 
         plt.figure()
