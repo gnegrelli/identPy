@@ -82,10 +82,17 @@ def estimate(n=5, file=None):
             plt.figure()
             plt.plot(est.method2.error_log)
 
+        print(est.model.p)
+        print(est.method2.error_log[-1])
+        print(est.method1.elapsed_time)
+        print(est.method2.elapsed_time)
+
         plt.show()
 
 
 if __name__ == '__main__':
+
+    estimate(15)
 
     populations = [5, 10, 20, 50, 100]
 
