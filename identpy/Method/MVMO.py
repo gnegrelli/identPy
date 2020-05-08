@@ -229,6 +229,3 @@ class MVMO(Method):
         s2 = self.sf[1][i]
 
         return m*(1 - np.power(np.e, -u*s1)) + (1 - m)*np.power(np.e, (-(1 - u)*s2))
-
-    color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
-    marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']

@@ -125,6 +125,3 @@ class PSO(Method):
 
         # Return best particle
         return np.array(g_best[1]*(self.hi_p - self.lo_p) + self.lo_p)
-
-    color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
-    marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']

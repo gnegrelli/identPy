@@ -3,6 +3,9 @@ from abc import ABC
 
 class Method(ABC):
 
+    color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+    marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
+
     def __init__(self, plot=False, verbose=False):
         self.counter = 0
         self.error_log = []
