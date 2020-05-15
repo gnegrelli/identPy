@@ -44,8 +44,8 @@ class DFIG_improved(Model):
         self.v_pa_adj = 0
         self.v_qa_adj = 0
 
-        self.last_v_pas = 0
-        self.last_v_qas = 0
+        self.last_v_pa = 0
+        self.last_v_qa = 0
 
     def update_parameters(self, p):
         super().update_parameters(p)
@@ -78,22 +78,18 @@ class DFIG_improved(Model):
             v_pa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(i_pref - u[3]/u[1]) + self.v_pa_adj
             v_qa = self.p[2]*(self.p[3] + self.step_int)/self.p[3]*(u[4]/u[1] - i_qref) + self.v_qa_adj
 
-        if factor == 0:
+        if not factor:
             self.v_pa_adj = v_pa - self.p[2] * (i_pref - u[3] / u[1])
             self.v_qa_adj = v_qa - self.p[2] * (u[4] / u[1] - i_qref)
 
-        v_pas = -np.cos(u[2])*v_pa - np.sin(u[2])*v_qa
-        v_qas = np.sin(u[2])*v_pa - np.cos(u[2])*v_qa
-
-        if not factor:
-            self.last_v_pas = v_pas
-            self.last_v_qas = v_qas
+            self.last_v_pa = v_pa
+            self.last_v_qa = v_qa
         else:
-            v_pas = factor*(v_pas - self.last_v_pas) + self.last_v_pas
-            v_qas = factor*(v_qas - self.last_v_qas) + self.last_v_qas
+            v_pa = factor*(v_pa - self.last_v_pa) + self.last_v_pa
+            v_qa = factor*(v_qa - self.last_v_qa) + self.last_v_qa
 
-        f1 = (v_pas - x[0])/self.p[4]
-        f2 = (v_qas - x[1])/self.p[4]
+        f1 = (v_pa - x[0])/self.p[4]
+        f2 = (v_qa - x[1])/self.p[4]
 
         return np.array([f1, f2])
 
