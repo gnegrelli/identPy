@@ -3,7 +3,7 @@ import numpy as np
 from identpy.Model import Model
 
 
-class DFIG(Model):
+class DFIG_Erlich(Model):
 
     parameters = {
         'R': 'Equivalent Resistance',
@@ -17,8 +17,9 @@ class DFIG(Model):
 
     inputs = {
         'v<sub>T</sub>': 'Terminal Voltage Magnitude',
-        'i<sub>P</sub>': 'Current Active Component',
-        'i<sub>Q</sub>': 'Current Reactive Component',
+        'φ<sub>V</sub>': 'Terminal Voltage Angle',
+        'P<sub>e</sub>': 'Active Power',
+        'Q<sub>e</sub>': 'Reactive Power',
     }
 
     outputs = {
@@ -33,7 +34,7 @@ class DFIG(Model):
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.010484848484848, p_tref=0.982,
                  q_tref=0.057595555555556, v_tmin=0.9):
-        super(DFIG, self).__init__(x_0, u_0, u, method)
+        super().__init__(x_0, u_0, u, method)
 
         self.step_int = step_int
         self.v_tref = v_tref
@@ -48,7 +49,7 @@ class DFIG(Model):
         self.last_v_qas = 0
 
     def update_parameters(self, p):
-        super(DFIG, self).update_parameters(p)
+        super().update_parameters(p)
         self.reset_adjustments()
 
     def f(self, x=None, u=None, factor=0):

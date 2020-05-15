@@ -3,7 +3,7 @@ import numpy as np
 from identpy.Model import Model
 
 
-class improved_DFIG(Model):
+class DFIG_improved(Model):
 
     parameters = {
         'R': 'Equivalent Resistance',
@@ -33,7 +33,7 @@ class improved_DFIG(Model):
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None, step_int=0.001, v_tref=1.010484848484848, p_tref=0.982,
                  q_tref=0.057595555555556, v_tmin=0.9):
-        super(improved_DFIG, self).__init__(x_0, u_0, u, method)
+        super().__init__(x_0, u_0, u, method)
 
         self.step_int = step_int
         self.v_tref = v_tref
@@ -48,7 +48,7 @@ class improved_DFIG(Model):
         self.last_v_qas = 0
 
     def update_parameters(self, p):
-        super(improved_DFIG, self).update_parameters(p)
+        super().update_parameters(p)
         self.reset_adjustments()
 
     def f(self, x=None, u=None, factor=0):

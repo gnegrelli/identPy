@@ -4,7 +4,7 @@ from identpy.Model import Model
 
 
 # TODO: Test class and confirm equations
-class ZIM(Model):
+class ZIM_linearized(Model):
 
     parameters = {
         'X': 'Reactance',
