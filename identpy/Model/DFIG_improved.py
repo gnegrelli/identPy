@@ -110,18 +110,13 @@ class DFIG_improved(Model):
         return np.array([g1, g2])
 
     def reset_adjustments(self):
-        v = self.u_0[1]*np.cos(self.u_0[2]) + 1j*self.u_0[1]*np.sin(self.u_0[2])
-        i = np.conj(self.u_0[3] + 1j*self.u_0[4])/np.conj(v)
+        i = (self.u_0[3] - 1j * self.u_0[4]) / self.u_0[1]
 
-        e = v + i*(self.p[0] + 1j*self.p[1])
+        e = self.u_0[1] + i * (self.p[0] + 1j * self.p[1])
         vd = np.real(e)
         vq = np.imag(e)
 
-        ej = np.array([[-np.cos(self.u_0[2]), -np.sin(self.u_0[2])], [np.sin(self.u_0[2]), -np.cos(self.u_0[2])]])
-
-        va = np.linalg.solve(ej, np.array([[vd], [vq]]))
-
         self.x_0 = np.array([vd, vq])
 
-        self.v_pa_adj = va[0][0]
-        self.v_qa_adj = va[1][0]
+        self.v_pa_adj = vd
+        self.v_qa_adj = vq
