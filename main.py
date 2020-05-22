@@ -8,40 +8,48 @@ from identpy.Objects import Estimator
 
 
 def estimate():
+    # Create instance of class Estimator
+    est = Estimator()
+
+    # Create figure canvas and add it to estimator
+    fig = plt.figure()
+    est.add_figure(fig)
+
+    # Read input file and add output measurements to estimator
     u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
+    est.add_measures(y_meas)
 
-    a = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
-             RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
-    a.update_output(p=np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972,
-                                0.269505715408350, 1.998406311405870, 1.099838352995214]))
+    # Create model instance and add it to estimator
+    model = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
+                 RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
+    est.add_model(model)
 
+    # Create MVMO method instance and add it to estimator
     m1 = MVMO(np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
                         1.998406311405870, 1.099838352995214])*.8,
               np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
                         1.998406311405870, 1.099838352995214])*1.1,
-              wndw_sz=3, tol=0.1)
-
-    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]))
-
-    est = Estimator()
-    est.add_measures(y_meas)
-    est.add_model(a)
+              wndw_sz=3, tol=0.1, max_gen=1)
     est.add_method(m1)
+
+    # Create TS method instance and add it to estimator
+    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]), max_it=1)
     est.add_method(m2)
 
+    # Run estimation process
     est()
 
-    plt.figure()
-    plt.plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
-    plt.plot(y_meas[:, 0], y_meas[:, 1], '--', label='real')
-    plt.legend()
+    # Plot modelled and measured outputs
+    est.axs.flat[0].plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
+    est.axs.flat[0].plot(y_meas[:, 0], y_meas[:, 1], '--', label='real')
+    est.axs.flat[0].legend()
 
-    plt.figure()
-    plt.plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
-    plt.plot(y_meas[:, 0], y_meas[:, 2], '--', label='real')
-    plt.legend()
+    est.axs.flat[1].plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
+    est.axs.flat[1].plot(y_meas[:, 0], y_meas[:, 2], '--', label='real')
+    est.axs.flat[1].legend()
 
+    # Plot error evolution of both methods
     plt.figure()
     plt.plot(est.method1.error_log)
 
