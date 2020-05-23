@@ -30,11 +30,11 @@ def estimate():
                         1.998406311405870, 1.099838352995214])*.8,
               np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
                         1.998406311405870, 1.099838352995214])*1.1,
-              wndw_sz=3, tol=0.1, max_gen=1)
+              wndw_sz=3, tol=0.1)
     est.add_method(m1)
 
     # Create TS method instance and add it to estimator
-    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]), max_it=1)
+    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]), max_it=2)
     est.add_method(m2)
 
     # Run estimation process
@@ -51,11 +51,12 @@ def estimate():
 
     # Plot error evolution of both methods
     plt.figure()
-    plt.plot(est.method1.error_log)
-
-    if est.method2:
-        plt.figure()
-        plt.plot(est.method2.error_log)
+    plt.plot(est.method1.error_log, label='MVMO')
+    plt.plot(range(len(est.method1.error_log) - 1, len(est.method1.error_log) + len(est.method2.error_log) - 1),
+             est.method2.error_log, label='TS')
+    plt.title('Error Evolution')
+    plt.xlabel('Iteration')
+    plt.ylabel('Error')
 
     plt.show()
 
