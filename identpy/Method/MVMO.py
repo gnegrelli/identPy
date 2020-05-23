@@ -218,8 +218,8 @@ class MVMO(Method):
         self.elapsed_time = time.process_time() - self.elapsed_time
         print("MVMO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
-        # Return best individual
-        return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p
+        # Set parameters of model according to best individual found
+        parent.model.update_output(list_inds[0][1] * (self.hi_p - self.lo_p) + self.lo_p)
 
     # Mapping function h
     def h_function(self, u, i):
