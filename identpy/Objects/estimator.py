@@ -24,6 +24,10 @@ class Estimator:
 
         if isinstance(self.figure, plt.Figure):
             self.axs = self.figure.subplots(nrows=1, ncols=len(self.model.outputs))
+            for ax, op in zip(self.axs, self.model.outputs.values()):
+                ax.set_xlabel('Time (s)')
+                ax.set_ylabel(op)
+            plt.subplots_adjust(wspace=.4)
 
         self.method1(self)
         if self.method2:

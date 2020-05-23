@@ -34,7 +34,7 @@ def estimate():
     est.add_method(m1)
 
     # Create TS method instance and add it to estimator
-    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]), max_it=2)
+    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]))
     est.add_method(m2)
 
     # Run estimation process
