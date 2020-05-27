@@ -56,6 +56,14 @@ class Estimator:
 
         self.figure = fig
 
+    def refresh_figure(self):
+        for i, ax in enumerate(self.axs):
+            ax.cla()
+            ax.plot(self.model.y[:, 0], self.model.y[:, i + 1], label='model')
+            ax.plot(self.y_meas[:, 0], self.y_meas[:, i + 1], '--', label='real')
+            ax.legend()
+        plt.pause(.1)
+
     @staticmethod
     def input_read(file_path=None, u_indices=None, y_indices=None):
 

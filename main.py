@@ -40,14 +40,7 @@ def estimate():
     # Run estimation process
     est()
 
-    # Plot modelled and measured outputs
-    est.axs.flat[0].plot(est.model.y[:, 0], est.model.y[:, 1], label='model')
-    est.axs.flat[0].plot(y_meas[:, 0], y_meas[:, 1], '--', label='real')
-    est.axs.flat[0].legend()
-
-    est.axs.flat[1].plot(est.model.y[:, 0], est.model.y[:, 2], label='model')
-    est.axs.flat[1].plot(y_meas[:, 0], y_meas[:, 2], '--', label='real')
-    est.axs.flat[1].legend()
+    est.refresh_figure()
 
     # Plot error evolution of both methods
     plt.figure()
