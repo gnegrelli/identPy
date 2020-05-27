@@ -90,6 +90,11 @@ class MVMO(Method):
             print("Genes selected at the beginning: ", selected_genes)
             print("Error :", self.error_log[-1])
 
+        if parent.figure:
+            self.best_indiv = list_inds[0][1]
+            parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
+            parent.refresh_figure()
+
         nonzero_var = None
         self.mean = np.zeros(num_genes)
         var = np.zeros(num_genes)
@@ -201,6 +206,12 @@ class MVMO(Method):
             # Increase scaling factor fs in 1% after each iteration, capping it around 15
             if self.fs < 15:
                 self.fs *= 1.01
+
+            if parent.figure:
+                if (self.best_indiv != list_inds[0][1]).any():
+                    self.best_indiv = list_inds[0][1]
+                    parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
+                    parent.refresh_figure()
 
         # At the end of iteration process, mean, variance and final error value are presented
         if self.verbose:
