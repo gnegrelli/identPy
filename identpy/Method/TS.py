@@ -35,6 +35,7 @@ class TS(Method):
         if parent.model.p.any():
             self.p = parent.model.p
 
+        # Store initial value of parameters
         self.last_p = copy(self.p)
 
         # Parameters to be estimated
@@ -90,6 +91,7 @@ class TS(Method):
             self.p += self.p_active*delta_p.reshape(self.num_param, )
             parent.model.update_output(self.p)
 
+            # Update figure only in case of changes in parameter vector
             if (self.last_p != self.p).any():
                 self.last_p = copy(self.p)
                 parent.refresh_figure()
