@@ -35,6 +35,8 @@ class TS(Method):
         if parent.model.p.any():
             self.p = parent.model.p
 
+        self.last_p = copy(self.p)
+
         # Parameters to be estimated
         if isinstance(p_active, list):
             self.p_active = np.zeros_like(self.p)
@@ -87,6 +89,10 @@ class TS(Method):
             # Update parameters and model output
             self.p += self.p_active*delta_p.reshape(self.num_param, )
             parent.model.update_output(self.p)
+
+            if (self.last_p != self.p).any():
+                self.last_p = copy(self.p)
+                parent.refresh_figure()
 
             # Error is recalculated and stored
             self.error_log.append(wls_eval(parent.model.y, parent.y_meas))
