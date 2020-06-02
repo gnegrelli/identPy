@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from identpy.Model import Model
 from identpy.Method import Method
@@ -13,11 +14,20 @@ class Estimator:
         self.model = None
         self.method1 = None
         self.method2 = None
+        self.figure = None
+        self.axs = None
 
     def __call__(self):
         assert self.y_meas is not None, "Real output is missing"
         assert self.model is not None, "Model is missing"
         assert self.method1 is not None, "Method is missing"
+
+        if isinstance(self.figure, plt.Figure):
+            self.axs = self.figure.subplots(nrows=1, ncols=len(self.model.outputs))
+            for ax, op in zip(self.axs, self.model.outputs.values()):
+                ax.set_xlabel('Time (s)')
+                ax.set_ylabel(op)
+            plt.subplots_adjust(wspace=.4)
 
         self.method1(self)
         if self.method2:
@@ -40,6 +50,19 @@ class Estimator:
             self.method1 = method
         else:
             self.method2 = method
+
+    def add_figure(self, fig):
+        assert isinstance(fig, plt.Figure), "Figure must be an instance of matplotlib.pyplot.Figure"
+
+        self.figure = fig
+
+    def refresh_figure(self):
+        for i, ax in enumerate(self.axs):
+            ax.cla()
+            ax.plot(self.model.y[:, 0], self.model.y[:, i + 1], label='model')
+            ax.plot(self.y_meas[:, 0], self.y_meas[:, i + 1], '--', label='real')
+            ax.legend()
+        plt.pause(.1)
 
     @staticmethod
     def input_read(file_path=None, u_indices=None, y_indices=None):

@@ -90,6 +90,12 @@ class MVMO(Method):
             print("Genes selected at the beginning: ", selected_genes)
             print("Error :", self.error_log[-1])
 
+        # Update figure using best individual in initial popualtion
+        if parent.figure:
+            self.best_indiv = list_inds[0][1]
+            parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
+            parent.refresh_figure()
+
         nonzero_var = None
         self.mean = np.zeros(num_genes)
         var = np.zeros(num_genes)
@@ -202,6 +208,13 @@ class MVMO(Method):
             if self.fs < 15:
                 self.fs *= 1.01
 
+            # Update figure only in case of changes in best individual
+            if parent.figure:
+                if (self.best_indiv != list_inds[0][1]).any():
+                    self.best_indiv = list_inds[0][1]
+                    parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
+                    parent.refresh_figure()
+
         # At the end of iteration process, mean, variance and final error value are presented
         if self.verbose:
             print("----------------------------")
@@ -218,8 +231,8 @@ class MVMO(Method):
         self.elapsed_time = time.process_time() - self.elapsed_time
         print("MVMO elapsed time: {0:.2f} s".format(self.elapsed_time))
 
-        # Return best individual
-        return list_inds[0][1]*(self.hi_p - self.lo_p) + self.lo_p
+        # Set parameters of model according to best individual found
+        parent.model.update_output(list_inds[0][1] * (self.hi_p - self.lo_p) + self.lo_p)
 
     # Mapping function h
     def h_function(self, u, i):
