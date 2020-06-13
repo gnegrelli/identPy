@@ -96,6 +96,9 @@ class DFIG_Erlich(Model):
         f1 = (v_pas - x[0])/self.p[4]
         f2 = (v_qas - x[1])/self.p[4]
 
+        # with open('erlich_v.csv', 'a+') as f:
+        #     print('{},{},{},{},{},{},{},{}'.format(i_pref, i_qref, v_pa, v_qa, v_pas, v_qas, x[0], x[1]), file=f)
+
         return np.array([f1, f2])
 
     def g(self, x=None, u=None):
