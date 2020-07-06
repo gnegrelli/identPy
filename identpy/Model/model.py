@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import numpy as np
 
@@ -28,6 +28,12 @@ class Model(ABC):
         self.y = np.array([])
 
         self.method = method
+
+    def __str__(self):
+        string = 'Parameters: \n'
+        for name, value in list(zip(self.parameters.keys(), self.p)):
+            string += '\t{}: {:.4f}\n'.format(name, value)
+        return string
 
     def f(self, x=None, u=None, factor=0):
 
