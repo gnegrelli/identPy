@@ -27,15 +27,13 @@ def adapt_data_pf(path, output_path=None, time_step=None):
     df.reset_index(drop=True, inplace=True)
 
     data = df[1].to_list()
-    data = [re.sub(r'^\s+', '', d) for d in data]
-    data = [re.sub(r'\s+', ',', d) for d in data]
+    cols = data[0].split()
+    data = [d.split() for d in data if 'Time' not in d]
 
     with open(output, 'w+') as f:
-        print('% ' + data[0], file=f)
-        for row in data[1:]:
-            if row.startswith('Time'):
-                continue
-            print(row, file=f)
+        print('% ' + ','.join(cols), file=f)
+        for row in data:
+            print(','.join(row), file=f)
 
 
 if __name__ == '__main__':
