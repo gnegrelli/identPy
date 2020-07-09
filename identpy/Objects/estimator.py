@@ -33,6 +33,18 @@ class Estimator:
         if self.method2:
             self.method2(self)
 
+    def __str__(self):
+        s = str(self.model)
+
+        for method in [self.method2, self.method1]:
+            if str(method) != 'None':
+                s += str(method)
+                break
+        else:
+            s += str(None)
+
+        return s
+
     def add_measures(self, real_output):
         assert isinstance(real_output, np.ndarray), "Real output must be a numpy array"
 
