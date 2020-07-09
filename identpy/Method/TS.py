@@ -10,6 +10,8 @@ from identpy.Error import wls_eval
 
 class TS(Method):
 
+    name = 'TS'
+
     def __init__(self, p0, delta_p=0.001, step=0.005, max_it=25, tol=.0005, plot=False, verbose=False):
 
         assert isinstance(p0, np.ndarray), "Parameters must be a numpy array"

@@ -11,6 +11,8 @@ from identpy.Error import wls_eval
 
 class PSO(Method):
 
+    name = 'PSO'
+
     def __init__(self, lo_p, hi_p, swarm_sz=5, max_it=50000, p_speed=0.5, g_speed=0.15, tol=1., plot=False, verbose=False):
 
         assert isinstance(lo_p, np.ndarray), "Lower boundary of parameters must be a numpy array"
