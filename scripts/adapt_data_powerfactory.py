@@ -5,7 +5,7 @@ import argparse
 import pandas as pd
 
 
-def adapt_data_pf(path, output_path=None):
+def adapt_data_pf(path, output_path=None, time_step=None):
     df = pd.read_csv(path, header=None)
     df = df[df[0] == 'other']
     df = df[df[1].str.startswith(' ')]
@@ -33,6 +33,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Adapt data exported from DIgSILENT PowerFactory to identpy standard')
     parser.add_argument('filepath', help='Path of datafile exported from PowerFactory', type=argparse.FileType('r'))
     parser.add_argument('-o', '--output', help='Output path')
+    parser.add_argument('-t', '--time_step', help='Time step between data points', type=float, default=None)
 
     args = parser.parse_args()
 
@@ -43,4 +44,4 @@ if __name__ == '__main__':
         dir_ = pathlib.Path(args.filepath.name)
         output = dir_.parent
 
-    adapt_data_pf(args.filepath, output)
+    adapt_data_pf(args.filepath, output, args.time_step)
