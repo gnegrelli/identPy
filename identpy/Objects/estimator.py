@@ -34,16 +34,7 @@ class Estimator:
             method(self)
 
     def __str__(self):
-        s = str(self.model)
-
-        for method in list(reversed(self.methods)):
-            if str(method) != 'None':
-                s += str(method)
-                break
-        else:
-            s += str(None)
-
-        return s
+        return self.model_status() + self.method_status()
 
     def add_measures(self, real_output):
         assert isinstance(real_output, np.ndarray), "Real output must be a numpy array"
@@ -75,6 +66,16 @@ class Estimator:
             ax.plot(self.y_meas[:, 0], self.y_meas[:, i + 1], '--', label='real')
             ax.legend()
         plt.pause(.1)
+
+    def model_status(self):
+        return str(self.model)
+
+    def method_status(self):
+        for method in list(reversed(self.methods)):
+            if str(method) != 'None':
+                return str(method)
+        else:
+            return str(None)
 
     @staticmethod
     def input_read(file_path=None, u_indices=None, y_indices=None):
