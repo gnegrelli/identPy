@@ -11,16 +11,17 @@ class Estimator:
 
     def __init__(self):
         self.y_meas = None
+
         self.model = None
-        self.method1 = None
-        self.method2 = None
+        self.methods = []
+
         self.figure = None
         self.axs = None
 
     def __call__(self):
         assert self.y_meas is not None, "Real output is missing"
         assert self.model is not None, "Model is missing"
-        assert self.method1 is not None, "Method is missing"
+        assert len(self.methods), "No method set for estimation"
 
         if isinstance(self.figure, plt.Figure):
             self.axs = self.figure.subplots(nrows=1, ncols=len(self.model.outputs))
@@ -29,14 +30,13 @@ class Estimator:
                 ax.set_ylabel(op)
             plt.subplots_adjust(wspace=.4)
 
-        self.method1(self)
-        if self.method2:
-            self.method2(self)
+        for method in self.methods:
+            method(self)
 
     def __str__(self):
         s = str(self.model)
 
-        for method in [self.method2, self.method1]:
+        for method in list(reversed(self.methods)):
             if str(method) != 'None':
                 s += str(method)
                 break
@@ -58,10 +58,10 @@ class Estimator:
     def add_method(self, method):
         assert isinstance(method, Method), "Method must be an instance of Method class"
 
-        if self.method1 is None:
-            self.method1 = method
-        else:
-            self.method2 = method
+        self.methods.append(method)
+
+    def remove_method(self, i=-1):
+        return self.methods.pop(i)
 
     def add_figure(self, fig):
         assert isinstance(fig, plt.Figure), "Figure must be an instance of matplotlib.pyplot.Figure"
