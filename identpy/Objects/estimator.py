@@ -83,7 +83,7 @@ class Estimator:
         assert isinstance(u_indices, list), 'Input indices must be given in a list'
         assert isinstance(y_indices, list), 'Output indices must be given in a list'
         assert os.path.exists(file_path), 'Data file must exist'
-        assert file_path.split('.')[-1] in ['csv', 'txt', 'dat'], 'Only .csv, .txt and .dat file supported'
+        assert file_path.endswith(('csv', 'txt', 'dat')), 'Only .csv, .txt and .dat file supported'
 
         with open(file_path, 'r') as f:
             for line in f.read().split('\n'):
