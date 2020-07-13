@@ -5,6 +5,8 @@ from identpy.Model import Model
 
 class DFIG(Model):
 
+    name = 'Equivalent WPP Model'
+
     parameters = {
         'R': 'Equivalent Resistance',
         'X': 'Equivalent Reactance',

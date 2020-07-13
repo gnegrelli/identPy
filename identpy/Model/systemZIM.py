@@ -6,6 +6,8 @@ from identpy.Model import Model
 # TODO: Test class and confirm equations
 class ZIM(Model):
 
+    name = 'Linearized Z-IM Load Model'
+
     parameters = {
         'X': 'Reactance',
         "X'": 'Reactance',

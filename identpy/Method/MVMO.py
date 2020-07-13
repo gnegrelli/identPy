@@ -11,6 +11,7 @@ from identpy.Error import wls_eval
 class MVMO(Method):
 
     name = 'MVMO'
+
     string = '{}\tError: {:.6f}\tGen.: {}'
 
     # TODO: include p_active on kwargs so user can choose which parameters to estimate

@@ -5,6 +5,8 @@ from identpy.Model import Model
 
 class Pendulum(Model):
 
+    name = 'Simple Pendulum Model'
+
     parameters = {
         'b': 'Air friction',
         'l': 'Wire length',

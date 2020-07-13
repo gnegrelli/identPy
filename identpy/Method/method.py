@@ -5,7 +5,9 @@ class Method(ABC):
 
     color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     marker = ['.', 'v', '^', '<', '>', '1', '2', '3', '4', 's', 'p', '*', 'h', 'H', '+', 'D', 'd']
+
     name = 'Method'
+
     string = '{}\tError: {:.6f}\tIter.: {}'
 
     def __init__(self, plot=False, verbose=False):

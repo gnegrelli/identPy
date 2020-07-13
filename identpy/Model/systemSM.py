@@ -5,6 +5,8 @@ from identpy.Model import Model
 
 class SpringMass(Model):
 
+    name = 'Spring-Mass System Model'
+
     parameters = {
         'k': 'Stiffness coefficient',
         'm': 'Mass',
