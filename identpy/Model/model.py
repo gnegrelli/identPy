@@ -7,6 +7,8 @@ from identpy.Model.Implicit_Methods import IMethod as IM
 
 class Model(ABC):
 
+    name = 'Model'
+
     parameters = {}
     inputs = {}
     outputs = {}
