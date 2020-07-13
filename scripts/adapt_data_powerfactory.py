@@ -73,7 +73,9 @@ if __name__ == '__main__':
     parser.add_argument('filepath', help='Path of datafile exported from PowerFactory', type=str)
     parser.add_argument('-o', '--output', help='Output path', type=str, default=None)
     parser.add_argument('-t', '--time_step', help='Time step between data points', type=float, default=None)
+    parser.add_argument('-i', '--initial_time', help='Initial instant of timeseries', type=float, default=None)
+    parser.add_argument('-f', '--final_time', help='Final instant of timeseries', type=float, default=None)
 
     args = parser.parse_args()
 
-    adapt_data_pf(args.filepath, args.output, args.time_step)
+    adapt_data_pf(args.filepath, args.output, args.time_step, args.initial_time, args.final_time)
