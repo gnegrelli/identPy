@@ -5,7 +5,7 @@ import argparse
 import pandas as pd
 
 
-def adapt_data_pf(path, output_path=None, time_step=None):
+def adapt_data_pf(path, output_path=None, time_step=None, initial_time=0, final_time=1):
     assert pathlib.Path(path).is_file(), 'Filepath \'{}\' does not exist'.format(path)
     assert path.endswith('.csv'), 'Only .csv files are supported'
 
@@ -21,36 +21,17 @@ def adapt_data_pf(path, output_path=None, time_step=None):
         output = pathlib.Path(path).parent
     output = output / 'data_from_powerfactory.csv'
 
-    df = pd.read_csv(path, header=None)
-    df = df[(df[0] == 'other') & (df[1].str.startswith(' '))]
+    pat = re.compile(r'(^\"other\","\s+)(.*)(\"$)')
+    with open(path, 'r') as file:
+        data = [re.search(pat, row).group(2).split() for row in file.read().split('\n') if re.search(pat, row)]
 
-    df.reset_index(drop=True, inplace=True)
-
-    data = df[1].to_list()
-    cols = data[0].split()
-    data = [d.split() for d in data if 'Time' not in d]
-
-    with open(output, 'w+') as f:
-        print('% ' + ','.join(cols), file=f)
-        for row in data:
-            print(','.join(row), file=f)
+    cols = data[0]
+    data = [d for d in data if 'Time' not in d]
 
     df1 = pd.DataFrame(data, columns=cols, dtype=float)
-
     df1.set_index('Time', inplace=True)
-    print(df1.head())
 
-    t = df1.index[0] + time_step
-    while len(df1.loc[df1.index > t]):
-        print(t)
-        A = df1.loc[df1.index <= t].iloc[-1]
-        B = df1.loc[df1.index > t].iloc[0]
-        print(A.name, B.name)
-        print(A)
-        print(B)
-        print(A + (B - A) * (t - A.name) / (B.name - A.name))
-        print(30 * '~')
-        t += time_step
+    df1.to_csv(output)
 
 
 if __name__ == '__main__':
