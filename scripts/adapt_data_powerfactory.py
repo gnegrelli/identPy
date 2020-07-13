@@ -37,23 +37,23 @@ def adapt_data_pf(path, output_path=None, time_step=None, initial_time=None, fin
     df = pd.DataFrame(data=[d for d in data if 'Time' not in d], columns=data[0], dtype=float)
     df.set_index('Time', inplace=True)
 
+    # Get value of initial instant
+    t = df.index[0]
+    if initial_time is not None:
+        t = max(t, initial_time)
+
+    # Get value of final instant
+    tf = df.index[-1]
+    if final_time is not None:
+        tf = min(tf, final_time)
+
     if time_step is None:
         # If no adjustments in time step are needed, save dataframe in output
-        df.to_csv(output, float_format='%.6f')
+        df[(df.index >= t) & (df.index <= tf)].to_csv(output, float_format='%.6f')
     else:
         # Create dataframe for time step adjustments
         df_adj = pd.DataFrame(columns=df.columns)
         df_adj.index.name = df.index.name
-
-        # Get value of initial instant
-        t = df.index[0]
-        if initial_time is not None:
-            t = max(t, initial_time)
-
-        # Get value of final instant
-        tf = df.index[-1]
-        if final_time is not None:
-            tf = min(tf, final_time)
 
         while len(df.loc[df.index > t]) and t <= tf:
             # Get values on dataframe for instants immediately before and after time 't'
