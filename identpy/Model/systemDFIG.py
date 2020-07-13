@@ -49,10 +49,6 @@ class DFIG(Model):
         self.last_v_pas = 0
         self.last_v_qas = 0
 
-    def update_parameters(self, p):
-        super(DFIG, self).update_parameters(p)
-        self.reset_adjustments()
-
     def f(self, x=None, u=None, factor=0):
 
         x, u = super().f(x, u)
@@ -103,7 +99,6 @@ class DFIG(Model):
 
         x, u = super().g(x, u)
 
-        # TODO: Check calculation of vtd and vtq. Which angle should I use.
         vtd = u[1]*np.cos(u[2])
         vtq = u[1]*np.sin(u[2])
 
@@ -115,7 +110,7 @@ class DFIG(Model):
 
         return np.array([g1, g2])
 
-    def reset_adjustments(self):
+    def initial_conditions(self):
         v = self.u_0[1]*np.cos(self.u_0[2]) + 1j*self.u_0[1]*np.sin(self.u_0[2])
         i = np.conj(self.u_0[3] + 1j*self.u_0[4])/np.conj(v)
 

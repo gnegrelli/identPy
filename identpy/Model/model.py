@@ -67,6 +67,8 @@ class Model(ABC):
 
         self.p = p
 
+        self.initial_conditions()
+
     def update_output(self, p=None):
         if p is not None:
             self.update_parameters(p)
@@ -79,5 +81,5 @@ class Model(ABC):
 
         np.savetxt('Sample_Data/' + filename, self.y, delimiter=',')
 
-    def reset_adjustments(self):
+    def initial_conditions(self):
         pass
