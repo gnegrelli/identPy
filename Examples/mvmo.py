@@ -64,7 +64,7 @@ if block:
         selected_genes.sort()
 else:
     selected_genes = sorted(random.sample(range(0, len(lim_min)), wndw_size))
-print "Genes selected at the beginning: ", selected_genes
+print("Genes selected at the beginning: ", selected_genes)
 
 indiv = np.zeros(len(real))
 list_inds = []
@@ -97,7 +97,7 @@ while list_inds[0][0] > 0.01:
     ax1.axis([0, 10, 0, 10])
 
     for i in range(population):
-        print "Gen. %d - Specimen #%d: %s" % (gen, i, list_inds[i][1])
+        print("Gen. %d - Specimen #%d: %s" % (gen, i, list_inds[i][1]))
     gen += 1
 
     mean = np.zeros((1, len(real)))
@@ -114,13 +114,13 @@ while list_inds[0][0] > 0.01:
     var /= population
 
     if 0 in var:
-        print "DEU PAU!!!!"
+        print("DEU PAU!!!!")
         break
 
-    print "----------------------------"
-    print "Mean: ", mean
-    print "Variance: ", var
-    print "----------------------------\n\n"
+    print("----------------------------")
+    print("Mean: ", mean)
+    print("Variance: ", var)
+    print("----------------------------\n\n")
 
     # Shape factor calculation
     s = -f_s * np.log(var)
@@ -152,7 +152,7 @@ while list_inds[0][0] > 0.01:
         while selected_genes[-1] >= len(lim_min):
             selected_genes[-1] -= len(lim_min)
             selected_genes.sort()
-    print "Genes selected for mutation: ", selected_genes
+    print("Genes selected for mutation: ", selected_genes)
 
     # Creating a new geration
     for i in range(new_generation):
@@ -184,14 +184,14 @@ while list_inds[0][0] > 0.01:
     # list_inds = sorted(list_inds)[:population]
     error_log.append(list_inds[0][0])
 
-print "----------------------------"
-print "Mean: ", mean
-print "Variance: ", var
-print "----------------------------"
+print("----------------------------")
+print("Mean: ", mean)
+print("Variance: ", var)
+print("----------------------------")
 
 for i in range(population):
-    print "Final Generation #%d - Specimen #%d: %s" % (gen, i, list_inds[i][1])
-print "Final Error: %f" % list_inds[0][0]
+    print("Final Generation #%d - Specimen #%d: %s" % (gen, i, list_inds[i][1]))
+print("Final Error: %f" % list_inds[0][0])
 
 plt.figure()
 plt.plot(error_log)

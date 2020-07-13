@@ -1,11 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 28 18:01:23 2017
+import tkinter as tk
 
-@author: Gabriel
-"""
-
-import Tkinter as tk
 
 class Example(tk.Frame):
     def __init__(self, root):
@@ -34,9 +28,10 @@ class Example(tk.Frame):
     def disable_menu(self):
         self.menubar.entryconfig("Test2", state="disabled")
 
+
 if __name__ == "__main__":
     root = tk.Tk()
-    root.geometry("500x500")
+    root.geometry("500x300")
     app = Example(root)
     app.pack(fill="both", expand=True)
     root.mainloop()

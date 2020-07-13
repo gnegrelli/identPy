@@ -109,8 +109,8 @@ while gen < max_gen and g_best[0] > tol:
     if g_best[0] > min(list_ind)[0]:
         g_best = copy.copy(sorted(list_ind)[0])
 
-print gen
+print(gen)
 
-print g_best
+print(g_best)
 
 plt.show()
