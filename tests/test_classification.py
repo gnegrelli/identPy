@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from Method.Parameter_Classification.classification_methods import velez_reyes
+from identpy.Method.Parameter_Classification.classification_methods import velez_reyes
 
 
 class TestClassification(unittest.TestCase):
