@@ -2,6 +2,7 @@ import re
 import pathlib
 import argparse
 
+import numpy as np
 import pandas as pd
 
 
@@ -36,6 +37,11 @@ def adapt_data_pf(path, output_path=None, time_step=None, initial_time=None, fin
     # Create dataframe from data
     df = pd.DataFrame(data=[d for d in data if 'Time' not in d], columns=data[0], dtype=float)
     df.set_index('Time', inplace=True)
+
+    # Convert data recorded in degrees to radians and save in new column
+    for col in df.columns:
+        if '/deg' in col:
+            df[col.replace('deg', 'rad')] = df[col]*np.pi/180
 
     # Get value of initial instant
     t = df.index[0]
