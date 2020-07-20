@@ -70,8 +70,12 @@ def adapt_data_pf(path, output_path=None, time_step=None, initial_time=None, fin
             df_adj.loc[t] = prior + (post - prior) * (t - prior.name) / (post.name - prior.name)
             t = round(t + time_step, 6)
 
+        # Add comment symbol to first row (header)
+        with open(output, 'w+') as f:
+            print('%', file=f, end=' ')
+
         # Save adjusted dataframe in output
-        df_adj.to_csv(output, float_format='%.6f')
+        df_adj.to_csv(output, float_format='%.6f', mode='a')
 
 
 if __name__ == '__main__':
