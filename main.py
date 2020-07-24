@@ -14,6 +14,7 @@ def estimate():
     # Create figure canvas and add it to estimator
     fig = plt.figure()
     est.add_figure(fig)
+    plt.pause(.01)
 
     # Read input file and add output measurements to estimator
     u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
@@ -42,6 +43,7 @@ def estimate():
 
     est.refresh_figure()
 
+    # TODO: Fix error evolution plot. method1 and method2 were replaced by methods list.
     # Plot error evolution of both methods
     plt.figure()
     plt.plot(est.method1.error_log, label='MVMO')
