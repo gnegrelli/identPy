@@ -4,6 +4,8 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
+from blinker import signal
+
 from identpy.Method import Method
 from identpy.Error import wls_eval
 
@@ -218,6 +220,9 @@ class MVMO(Method):
                     self.best_indiv = list_inds[0][1]
                     parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
                     parent.refresh_figure()
+
+            signal('iteration').send(self, counter=self.counter, error=self.error_log[-1], p=list(self.best_indiv),
+                                     name=self.name)
 
         # At the end of iteration process, mean, variance and final error value are presented
         if self.verbose:

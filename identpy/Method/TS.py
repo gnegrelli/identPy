@@ -3,6 +3,7 @@ import time
 import numpy as np
 
 from copy import copy
+from blinker import signal
 
 from identpy.Method import Method
 from identpy.Error import wls_eval
@@ -104,6 +105,9 @@ class TS(Method):
             if self.verbose:
                 print("\nIteration #%d: %s" % (self.counter, self.p))
                 print("Error: ", self.error_log[-1])
+
+            signal('iteration').send(self, counter=self.counter, error=self.error_log[-1], p=list(self.p),
+                                     name=self.name)
 
         self.elapsed_time = time.process_time() - self.elapsed_time
         print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
