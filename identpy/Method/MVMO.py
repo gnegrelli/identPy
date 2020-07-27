@@ -221,7 +221,8 @@ class MVMO(Method):
                     parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
                     parent.refresh_figure()
 
-            signal('iteration').send(self, counter=self.counter, error=self.error_log[-1], p=list(self.best_indiv),
+            signal('iteration').send(self, counter=self.counter, error=self.error_log[-1],
+                                     p=list(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p),
                                      name=self.name)
 
         # At the end of iteration process, mean, variance and final error value are presented
