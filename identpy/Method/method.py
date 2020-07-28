@@ -1,5 +1,7 @@
 from abc import ABC
 
+from blinker import signal
+
 
 class Method(ABC):
 
@@ -20,7 +22,7 @@ class Method(ABC):
         self.elapsed_time = 0
 
     def __call__(self, *args, **kwargs):
-        pass
+        signal('start_method').send(self)
 
     def __str__(self):
         if self.counter > 0:

@@ -28,6 +28,8 @@ class TS(Method):
 
     def __call__(self, parent, p_active=None, active_iter=0):
 
+        super().__call__()
+
         self.elapsed_time = time.process_time()
 
         print("---------Trajectory Sensitivity---------")

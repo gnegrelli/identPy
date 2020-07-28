@@ -48,6 +48,8 @@ class MVMO(Method):
 
     def __call__(self, parent):
 
+        super().__call__()
+
         self.elapsed_time = time.process_time()
 
         print("------------------MVMO------------------")
