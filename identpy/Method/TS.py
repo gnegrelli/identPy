@@ -114,6 +114,8 @@ class TS(Method):
         self.elapsed_time = time.process_time() - self.elapsed_time
         print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
 
+        signal('end_method').send(self)
+
     @staticmethod
     def gamma_function(sens, diff):
         """

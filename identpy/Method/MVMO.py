@@ -246,6 +246,8 @@ class MVMO(Method):
         # Set parameters of model according to best individual found
         parent.model.update_output(list_inds[0][1] * (self.hi_p - self.lo_p) + self.lo_p)
 
+        signal('end_method').send(self)
+
     # Mapping function h
     def h_function(self, u, i):
 
