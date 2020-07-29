@@ -99,6 +99,7 @@ class TS(Method):
             # Update figure only in case of changes in parameter vector
             if (self.last_p != self.p).any():
                 self.last_p = copy(self.p)
+                signal('solution_updated').send(self)
                 parent.refresh_figure()
 
             # Error is recalculated and stored

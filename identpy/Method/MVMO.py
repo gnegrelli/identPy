@@ -221,6 +221,7 @@ class MVMO(Method):
                 if (self.best_indiv != list_inds[0][1]).any():
                     self.best_indiv = list_inds[0][1]
                     parent.model.update_output(self.best_indiv*(self.hi_p - self.lo_p) + self.lo_p)
+                    signal('solution_updated').send(self)
                     parent.refresh_figure()
 
             signal('iteration').send(self, counter=self.counter, error=self.error_log[-1],
