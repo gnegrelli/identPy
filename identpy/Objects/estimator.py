@@ -23,11 +23,8 @@ class Estimator:
         assert self.model is not None, "Model is missing"
         assert len(self.methods), "No method set for estimation"
 
-        if isinstance(self.figure, plt.Figure):
+        if self.figure is not None:
             self.axs = self.figure.subplots(nrows=1, ncols=len(self.model.outputs))
-            for ax, op in zip(self.axs, self.model.outputs.values()):
-                ax.set_xlabel('Time (s)')
-                ax.set_ylabel(op)
             plt.subplots_adjust(wspace=.4)
 
         for method in self.methods:
@@ -60,10 +57,14 @@ class Estimator:
         self.figure = fig
 
     def refresh_figure(self):
-        for i, ax in enumerate(self.axs):
+        for i, (ax, op) in enumerate(zip(self.axs, self.model.outputs.values())):
             ax.cla()
             ax.plot(self.model.y[:, 0], self.model.y[:, i + 1], label='model')
             ax.plot(self.y_meas[:, 0], self.y_meas[:, i + 1], '--', label='real')
+
+            ax.set_xlabel('Time (s)')
+            ax.set_ylabel(op)
+
             ax.legend()
             ax.figure.canvas.draw()
 
