@@ -43,12 +43,13 @@ def estimate():
 
     est.refresh_figure()
 
-    # TODO: Fix error evolution plot. method1 and method2 were replaced by methods list.
     # Plot error evolution of both methods
     plt.figure()
-    plt.plot(est.method1.error_log, label='MVMO')
-    plt.plot(range(len(est.method1.error_log) - 1, len(est.method1.error_log) + len(est.method2.error_log) - 1),
-             est.method2.error_log, label='TS')
+    offset = 0
+    for method in est.methods:
+        x_ticks = list(map(lambda x: x + offset, range(len(method.error_log))))
+        offset += len(method.error_log) - 1
+        plt.plot(x_ticks, method.error_log, label=method.name)
     plt.title('Error Evolution')
     plt.xlabel('Iteration')
     plt.ylabel('Error')
