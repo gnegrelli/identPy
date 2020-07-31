@@ -3,6 +3,7 @@ import time
 import numpy as np
 
 from copy import copy
+from blinker import signal
 
 from identpy.Method import Method
 from identpy.Error import wls_eval
@@ -26,6 +27,8 @@ class TS(Method):
         super().__init__(plot, verbose)
 
     def __call__(self, parent, p_active=None, active_iter=0):
+
+        super().__call__()
 
         self.elapsed_time = time.process_time()
 
@@ -96,6 +99,7 @@ class TS(Method):
             # Update figure only in case of changes in parameter vector
             if (self.last_p != self.p).any():
                 self.last_p = copy(self.p)
+                signal('solution_updated').send(self)
                 parent.refresh_figure()
 
             # Error is recalculated and stored
@@ -105,8 +109,13 @@ class TS(Method):
                 print("\nIteration #%d: %s" % (self.counter, self.p))
                 print("Error: ", self.error_log[-1])
 
+            signal('iteration').send(self, counter=self.counter, error=self.error_log[-1], p=list(self.p),
+                                     name=self.name)
+
         self.elapsed_time = time.process_time() - self.elapsed_time
         print("Trajectory Sensitivity elapsed time: {0:.2f} s".format(self.elapsed_time))
+
+        signal('end_method').send(self)
 
     @staticmethod
     def gamma_function(sens, diff):

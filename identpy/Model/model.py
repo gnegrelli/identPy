@@ -31,10 +31,12 @@ class Model(ABC):
 
         self.method = method
 
-    def __str__(self):
-        string = 'Parameters: \n'
+    def __str__(self, title=True):
+        string = 'Parameters: \n' if title else ''
         for name, value in list(zip(self.parameters.keys(), self.p)):
-            string += '\t{}: {:.4f}\n'.format(name, value)
+            if title:
+                string += '\t'
+            string += '{}: {:.4f}\n'.format(name, value)
         return string
 
     def f(self, x=None, u=None, factor=0):
