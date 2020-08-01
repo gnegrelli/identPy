@@ -19,8 +19,9 @@ class DFIG(Model):
 
     inputs = {
         'v<sub>T</sub>': 'Terminal Voltage Magnitude',
-        'i<sub>P</sub>': 'Current Active Component',
-        'i<sub>Q</sub>': 'Current Reactive Component',
+        'θ<sub>v</sub>': 'Terminal Voltage Angle',
+        'P<sub>e</sub>': 'Active Power',
+        'Q<sub>e</sub>': 'Reactive Power',
     }
 
     outputs = {
