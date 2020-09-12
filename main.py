@@ -17,7 +17,7 @@ def estimate():
     plt.pause(.01)
 
     # Read input file and add output measurements to estimator
-    u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
+    u_meas, y_meas = Estimator.input_read('sample_data/DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
     est.add_measures(y_meas)
 
