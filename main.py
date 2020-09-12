@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from identpy.Model import SpringMass, Pendulum, ZIM, DFIG
-from identpy.Model.Implicit_Methods import RK4
-from identpy.Method import MVMO, PSO, TS
-from identpy.Objects import Estimator
+from identpy.models import SpringMass, Pendulum, ZIM, DFIG
+from identpy.models.implicit_methods import RK4
+from identpy.methods import MVMO, PSO, TS
+from identpy.objects import Estimator
 
 
 def estimate():
@@ -14,9 +14,10 @@ def estimate():
     # Create figure canvas and add it to estimator
     fig = plt.figure()
     est.add_figure(fig)
+    plt.pause(.01)
 
     # Read input file and add output measurements to estimator
-    u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
+    u_meas, y_meas = Estimator.input_read('sample_data/DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
     est.add_measures(y_meas)
 
@@ -44,9 +45,11 @@ def estimate():
 
     # Plot error evolution of both methods
     plt.figure()
-    plt.plot(est.method1.error_log, label='MVMO')
-    plt.plot(range(len(est.method1.error_log) - 1, len(est.method1.error_log) + len(est.method2.error_log) - 1),
-             est.method2.error_log, label='TS')
+    offset = 0
+    for method in est.methods:
+        x_ticks = list(map(lambda x: x + offset, range(len(method.error_log))))
+        offset += len(method.error_log) - 1
+        plt.plot(x_ticks, method.error_log, label=method.name)
     plt.title('Error Evolution')
     plt.xlabel('Iteration')
     plt.ylabel('Error')
