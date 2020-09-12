@@ -2,7 +2,7 @@ import numpy as np
 
 from copy import copy
 
-from identpy.Model.Implicit_Methods import IMethod as IM
+from identpy.objects import ImplicitMethod as IM
 
 
 class RK4(IM):

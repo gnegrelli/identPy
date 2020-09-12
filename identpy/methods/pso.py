@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 from copy import copy
 
-from identpy.Method import Method
-from identpy.Error import wls_eval
+from identpy.objects import Method
+from identpy.error_evaluation import wls_eval
 
 
 class PSO(Method):

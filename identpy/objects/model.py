@@ -1,8 +1,8 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import numpy as np
 
-from identpy.Model.Implicit_Methods import IMethod as IM
+from .implicit_method import ImplicitMethod as IM
 
 
 class Model(ABC):

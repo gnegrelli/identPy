@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 from blinker import signal
 
-from identpy.Method import Method
-from identpy.Error import wls_eval
+from identpy.objects import Method
+from identpy.error_evaluation import wls_eval
 
 
 class MVMO(Method):

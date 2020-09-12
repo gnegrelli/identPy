@@ -1,14 +1,16 @@
 import numpy as np
 
-from identpy.Model import Model
+from identpy.objects import Model
 
 
-class SpringMass(Model):
+class Pendulum(Model):
 
-    name = 'Spring-Mass System Model'
+    name = 'Simple Pendulum Model'
 
     parameters = {
-        'k': 'Stiffness coefficient',
+        'b': 'Air friction',
+        'l': 'Wire length',
+        'g': 'Gravity acceleration',
         'm': 'Mass',
     }
 
@@ -17,13 +19,13 @@ class SpringMass(Model):
     }
 
     outputs = {
-        'x': 'Mass position',
-        'v': 'Mass speed',
+        'θ': 'Angle from vertical',
+        'ω': 'Angular velocity',
     }
 
     states = {
-        'x': 'Mass position',
-        'v': 'Mass speed',
+        'θ': 'Angle from vertical',
+        'ω': 'Angular velocity',
     }
 
     def __init__(self, x_0=0, u_0=0, u=0, method=None):
@@ -35,7 +37,7 @@ class SpringMass(Model):
         x, u = super().f(x, u)
 
         f1 = x[1]
-        f2 = -self.p[1]/self.p[0]*x[0] + 1/self.p[0]*u[1]
+        f2 = -self.p[2]*np.cos(self.x_0[0])/self.p[1]*x[0] - self.p[0]/self.p[3] * x[1] + 1/(self.p[1]*self.p[3])*u[1]
 
         return np.array([f1, f2])
 

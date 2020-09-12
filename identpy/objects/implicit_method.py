@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class IMethod(ABC):
+class ImplicitMethod(ABC):
 
     @abstractmethod
     def __init__(self):

@@ -5,8 +5,8 @@ import numpy as np
 from copy import copy
 from blinker import signal
 
-from identpy.Method import Method
-from identpy.Error import wls_eval
+from identpy.objects import Method
+from identpy.error_evaluation import wls_eval
 
 
 class TS(Method):

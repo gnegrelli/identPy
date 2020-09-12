@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from identpy.Model import SpringMass, Pendulum, ZIM, DFIG
-from identpy.Model.Implicit_Methods import RK4
-from identpy.Method import MVMO, PSO, TS
-from identpy.Objects import Estimator
+from identpy.models import SpringMass, Pendulum, ZIM, DFIG
+from identpy.models.implicit_methods import RK4
+from identpy.methods import MVMO, PSO, TS
+from identpy.objects import Estimator
 
 
 def estimate():

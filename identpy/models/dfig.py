@@ -1,6 +1,6 @@
 import numpy as np
 
-from identpy.Model import Model
+from identpy.objects import Model
 
 
 class DFIG(Model):

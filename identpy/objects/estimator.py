@@ -3,8 +3,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from identpy.Model import Model
-from identpy.Method import Method
+from .model import Model
+from .method import Method
 
 
 class Estimator:

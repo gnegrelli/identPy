@@ -5,7 +5,7 @@ setup(
     version='1.0.0',
     packages=find_packages(),
     author='Gabriel Negrelli',
-    author_email='gabriel.jose.gomes@usp.br',
+    author_email='gnegrelli13@gmail.com',
     description='identPy - A tool for parameter estimation of mathematical models',
     install_requires=[
         'blinker==1.4',
