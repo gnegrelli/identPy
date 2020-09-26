@@ -11,11 +11,11 @@ def estimate():
     u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
 
-    # plt.figure(1)
-    # plt.plot(y_meas[:, 0], y_meas[:, 1], label='Measurements', linewidth=2.5)
-    #
-    # plt.figure(2)
-    # plt.plot(y_meas[:, 0], y_meas[:, 2], label='Measurements', linewidth=2.5)
+    plt.figure(1)
+    plt.plot(y_meas[:, 0], y_meas[:, 1], label='Measurements', linewidth=2.5)
+
+    plt.figure(2)
+    plt.plot(y_meas[:, 0], y_meas[:, 2], label='Measurements', linewidth=2.5)
 
     a = DFIG_improved(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
                       RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
@@ -30,7 +30,8 @@ def estimate():
 
     a = DFIG_Erlich(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
                     RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
-    a.update_output(p=np.array([0.0337, 0.1988, 6.4479, 0.0349, 0.2511, 1.9989, 1.1005]))
+    a.update_output(p=np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972,
+                                0.269505715408350, 1.998406311405870, 1.099838352995214]))
 
     plt.figure(1)
     plt.plot(a.y[:, 0], a.y[:, 1], 'k-.', label='Original_model', linewidth=1.5)

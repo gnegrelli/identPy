@@ -91,9 +91,6 @@ class DFIG_improved(Model):
         f1 = (-v_pa - x[0])/self.p[4]
         f2 = (-v_qa - x[1])/self.p[4]
 
-        # with open('improved_v.csv', 'a+') as f:
-        #     print('{},{},{},{},{},{}'.format(i_pref, i_qref, v_pa, v_qa, x[0], x[1]), file=f)
-
         return np.array([f1, f2])
 
     def g(self, x=None, u=None):
@@ -101,7 +98,7 @@ class DFIG_improved(Model):
         x, u = super().g(x, u)
 
         # Limits of x (-1 <= x <= 1)
-        x = np.clip(x, a_max=1, a_min=-1)
+        x = np.clip(x, a_max=1.1, a_min=-1)
 
         g1 = (self.p[0]*u[1]*(x[0] - u[1]) + self.p[1]*u[1]*x[1])/(self.p[0]**2 + self.p[1]**2)
         g2 = (self.p[1]*u[1]*(x[0] - u[1]) - self.p[0]*u[1]*x[1])/(self.p[0]**2 + self.p[1]**2)
