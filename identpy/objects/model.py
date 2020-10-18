@@ -31,12 +31,16 @@ class Model(ABC):
 
         self.method = method
 
-    def __str__(self, title=True):
+    def __str__(self, title: bool = True, as_html: bool = False):
         string = 'Parameters: \n' if title else ''
         for name, value in list(zip(self.parameters.keys(), self.p)):
             if title:
                 string += '\t'
             string += '{}: {:.4f}\n'.format(name, value)
+
+        if as_html:
+            string = string.replace('\n', '<br>')
+
         return string
 
     def f(self, x=None, u=None, factor=0):
