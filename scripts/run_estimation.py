@@ -17,26 +17,24 @@ def run_estimation():
     plt.pause(.01)
 
     # Read input file and add output measurements to estimator
-    u_meas, y_meas = Estimator.input_read('/home/gabriel/Desktop/identPy/sample_data/DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
-                                          y_indices=[4, 5])
+    u_meas, y_meas = Estimator.input_read('/home/gabriel/Desktop/identPy/sample_data/DFIG_Erlich.csv',
+                                          u_indices=[1, 2, 4, 5], y_indices=[4, 5])
     estimator.add_measures(y_meas)
 
     # Create model instance and add it to estimator
-    model = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
-                 RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
+    model = DFIG_improved(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
+                          RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
     estimator.add_model(model)
 
     # Create MVMO method instance and add it to estimator
-    m1 = MVMO(np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
-                        1.998406311405870, 1.099838352995214])*.8,
-              np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972, 0.269505715408350,
-                        1.998406311405870, 1.099838352995214])*1.1,
-              wndw_sz=3, tol=0.1)
-    estimator.add_method(m1)
+    method_1 = MVMO(np.array([0.01, 0.05, 3, 0.01, 0.1, 1, .7]),
+                    np.array([0.1, 0.8, 15, 0.2, 1, 5, 1.6]),
+                    wndw_sz=3, tol=0.001)
+    estimator.add_method(method_1)
 
     # Create TS method instance and add it to estimator
-    m2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]))
-    estimator.add_method(m2)
+    method_2 = TS(np.array([1, 1, 1, 1, 1, 1, 1]))
+    estimator.add_method(method_2)
 
     # Run estimation process
     estimator()
