@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from identpy.models import SpringMass, Pendulum, ZIM, DFIG
+from identpy.models import SpringMass, Pendulum, ZIM, DFIG, DFIG_improved
 from identpy.models.implicit_methods import RK4
 from identpy.methods import MVMO, PSO, TS
 from identpy.objects import Estimator
