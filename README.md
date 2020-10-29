@@ -1,23 +1,59 @@
 # identPy
 
-This project focus on building a parameter estimation software for any type of non-linear model.
+_IdentPy_ is a framework for estimation of parameters of mathematical models used for describing dynamic nonlinear systems.
 
-## Getting Started
+### Estimation methods
 
-Run main.py to estimate parameters of a non-linear model.
+The following estimation methods are implemented on identPy and can be used to estimate the model parameters.
 
-Models implemented are:
+* Mean-Variance Mapping Optimization (MVMO)
+* Trajectory Sensitivity
+
+### Implemented systems
+
+The following systems have mathematical models implemented  and can be estimated using on identPy.
 
 * Spring-Mass
 * Simple Pendulum
-* Z-IM Load Model
-* DFIG Model (under construction)
+* Linearized Z-IM Load Model
+* DFIG Model (2 mathematical models)
 
-Estimation process implemented are:
+## Requirements
 
-* Particle Swarm Optimization (PSO)
-* Mean-Variance Mapping Optimization (MVMO)
-* Trajectory Sensitivity
+IdentPy requires Python 3.6 or higher as weel as blinker, numpy, scipy and matplotlib packages.
+
+## Installation
+
+### Using pip
+
+Users can install identPy by downloading the project from its GitHub page and running:
+
+```bash
+$ pip install <path/to/indetPy>
+```
+
+### Contributing
+
+In order to contribute to this package, the user must install the package in develop mode. When contributing to identPy, it is generally recommended to install packages in a virtual environment to avoid modifying system state:
+
+```bash
+$ python -m venv venv
+$ source venv/bin/activate
+(venv)$ pip install -e <path/to/indetPy>
+```
+
+## Versioning
+
+TBR. 
+
+## Authors
+
+* **Gabriel Negrelli** 
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
 <!---
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
@@ -83,13 +119,11 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+TBR. 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Gabriel Negrelli** 
 
 ## License
 
