@@ -29,7 +29,7 @@ IdentPy requires Python 3.6 or higher as weel as blinker, numpy, scipy and matpl
 Users can install identPy by downloading the project from its GitHub page and running:
 
 ```bash
-$ pip install <path/to/indetPy>
+$ pip install <path/to/identPy>
 ```
 
 ### Contributing
@@ -39,7 +39,7 @@ In order to contribute to this package, the user must install the package in dev
 ```bash
 $ python -m venv venv
 $ source venv/bin/activate
-(venv)$ pip install -e <path/to/indetPy>
+(venv)$ pip install -e <path/to/identPy>
 ```
 
 ## Versioning
