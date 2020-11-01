@@ -44,7 +44,7 @@ $ git clone https://github.com/gnegrelli/identPy.git
 $ cd identPy
 $ python -m venv venv
 $ source venv/bin/activate
-(venv)$ pip install -e <path/to/identPy>
+(venv)$ pip install -e .
 ```
 
 ## Running estimations
