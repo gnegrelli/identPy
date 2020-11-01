@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='identpy',
     version='1.0.0',
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(exclude=('tests',)),
     author='Gabriel Negrelli',
     author_email='gnegrelli13@gmail.com',
     description='identPy - A tool for parameter estimation of mathematical models',
