@@ -25,4 +25,4 @@ jobs:
 
       - name: Testing with pytest
         run: |
-          pytest tests/*
+          pytest identpy/tests/*
