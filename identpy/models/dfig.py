@@ -19,14 +19,14 @@ class DFIG(Model):
 
     inputs = {
         'v<sub>T</sub>': 'Terminal Voltage Magnitude',
-        'θ<sub>v</sub>': 'Terminal Voltage Angle',
-        'P<sub>e</sub>': 'Active Power',
-        'Q<sub>e</sub>': 'Reactive Power',
+        'ϕ<sub>v</sub>': 'Terminal Voltage Angle',
+        'P': 'Active Power',
+        'Q': 'Reactive Power',
     }
 
     outputs = {
-        'P<sub>e</sub>': 'Active Power',
-        'Q<sub>e</sub>': 'Reactive Power',
+        'P': 'Active Power',
+        'Q': 'Reactive Power',
     }
 
     states = {

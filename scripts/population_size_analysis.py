@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 from identpy.models import SpringMass, Pendulum, ZIM, DFIG, DFIG_improved
 from identpy.models.implicit_methods import RK4
@@ -10,6 +9,7 @@ from identpy.objects import Estimator
 def analyse_pop_size(n=5, file=None):
     estimator = Estimator()
 
+    # Read measurement data and add it to estimator
     u_meas, y_meas = Estimator.input_read('Sample_Data/Sample_DFIG_Erlich.csv', u_indices=[1, 2, 4, 5],
                                           y_indices=[4, 5])
     estimator.add_measures(y_meas)
@@ -17,6 +17,7 @@ def analyse_pop_size(n=5, file=None):
     # Create model instance and add it to estimator
     model = DFIG(np.array([0.995628884585680, 0.396820283647337]), u_meas[0], u_meas,
                  RK4(initial_time=u_meas[0][0], final_time=u_meas[-1][0]))
+    estimator.add_model(model)
 
     # Create MVMO method instance and add it to estimator
     method_1 = MVMO(np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972,
@@ -24,9 +25,6 @@ def analyse_pop_size(n=5, file=None):
                     np.array([0.033626225647791, 0.199200232546442, 6.977405042044428, 0.035473950408972,
                               0.269505715408350, 1.998406311405870, 1.099838352995214])*1.2,
                     wndw_sz=3, tol=0.1, pop_sz=n)
-
-    estimator.add_measures(y_meas)
-    estimator.add_model(model)
     estimator.add_method(method_1)
 
     # Run estimation process

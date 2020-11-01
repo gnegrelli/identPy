@@ -1,103 +1,57 @@
 # identPy
 
-This project focus on building a parameter estimation software for any type of non-linear model.
+_IdentPy_ is a framework for estimation of parameters of mathematical models used for describing dynamic nonlinear systems.
 
-## Getting Started
+### Estimation methods
 
-Run main.py to estimate parameters of a non-linear model.
+The following estimation methods are implemented on identPy and can be used to estimate the model parameters.
 
-Models implemented are:
+* Mean-Variance Mapping Optimization (MVMO)
+* Trajectory Sensitivity
+
+### Implemented systems
+
+The following systems have mathematical models implemented  and can be estimated using on identPy.
 
 * Spring-Mass
 * Simple Pendulum
-* Z-IM Load Model
-* DFIG Model (under construction)
+* Linearized Z-IM Load Model
+* DFIG Model (2 mathematical models)
 
-Estimation process implemented are:
+## Requirements
 
-* Particle Swarm Optimization (PSO)
-* Mean-Variance Mapping Optimization (MVMO)
-* Trajectory Sensitivity
-<!---
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+IdentPy requires Python 3.6 or higher as weel as blinker, numpy, scipy and matplotlib packages.
 
-### Prerequisites
+## Installation
 
-What things you need to install the software and how to install them
+Installation of identPy can be done by following the instructions below.
 
-```
-Give examples
-```
+### Using pip
 
-### Installing
+Users can install identPy by downloading the project from its GitHub page and running the following command on terminal.
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
+```bash
+$ pip install <path/to/identPy>
 ```
 
-And repeat
+### Contributing
 
-```
-until finished
-```
+In order to contribute to this package, the user must install the package in develop mode. When contributing to identPy, it is generally recommended to install packages in a virtual environment to avoid modifying system state:
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+```bash
+$ python -m venv venv
+$ source venv/bin/activate
+(venv)$ pip install -e <path/to/identPy>
 ```
 
-### And coding style tests
+## Running estimations
 
-Explain what these tests test and why
+Inside the `scripts` folder, users can look at examples on how to perform parameter estimation using identPy.
 
-```
-Give an example
-```
+On `run_estimation.py`, MVMO and TSM are used to estimate the parameters of an improved DFIG model with measurements imported from a file. The output behaviour are plotted throughout the estimation process and, at the its end, the error evolution is also presented.
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+The `population_size_analysis.py` script was developed to evaluate the effects of population size on the estimation performance. For every size given in a list, 35 estimations are performed and their results, as well as the time duration, are saved into a file.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
--->
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
