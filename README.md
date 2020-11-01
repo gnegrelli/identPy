@@ -4,14 +4,14 @@ _IdentPy_ is a framework for estimation of parameters of mathematical models use
 
 ### Estimation methods
 
-The following estimation methods are implemented on identPy and can be used to estimate the model parameters.
+The following estimation methods are implemented on identPy and can be used to estimate the model parameters. The corresponding classes can be found inside the `methods` subfolder.
 
 * Mean-Variance Mapping Optimization (MVMO)
 * Trajectory Sensitivity
 
 ### Implemented systems
 
-The following systems have mathematical models implemented  and can be estimated using on identPy.
+The following systems have mathematical models implemented  and can be estimated using on identPy. The corresponding classes can be found inside the `models` subfolder.
 
 * Spring-Mass
 * Simple Pendulum
@@ -31,6 +31,7 @@ Installation of identPy can be done by following the instructions below.
 Users can install identPy by downloading the project from its GitHub page and running the following command on terminal.
 
 ```bash
+$ git clone https://github.com/gnegrelli/identPy.git
 $ pip install <path/to/identPy>
 ```
 
@@ -39,6 +40,8 @@ $ pip install <path/to/identPy>
 In order to contribute to this package, the user must install the package in develop mode. When contributing to identPy, it is generally recommended to install packages in a virtual environment to avoid modifying system state:
 
 ```bash
+$ git clone https://github.com/gnegrelli/identPy.git
+$ cd identPy
 $ python -m venv venv
 $ source venv/bin/activate
 (venv)$ pip install -e <path/to/identPy>
@@ -54,4 +57,4 @@ The `population_size_analysis.py` script was developed to evaluate the effects o
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
