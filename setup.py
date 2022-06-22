@@ -9,7 +9,7 @@ setup(
     description='identPy - A tool for parameter estimation of mathematical models',
     install_requires=[
         'blinker==1.4',
-        'numpy==1.17.4',
+        'numpy==1.22.0',
         'scipy==1.4.1',
         'matplotlib==3.1.2',
     ],
