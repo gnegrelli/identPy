@@ -10,7 +10,7 @@ setup(
     install_requires=[
         'blinker==1.4',
         'numpy==1.17.4',
-        'scipy==1.4.1',
+        'scipy==1.10.0',
         'matplotlib==3.1.2',
     ],
 )
